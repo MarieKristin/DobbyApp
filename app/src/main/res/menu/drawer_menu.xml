@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/home_id"
+            android:title="Connect"
+            android:icon="@android:drawable/ic_menu_compass"
+            ></item>
+        <item
+            android:id="@+id/id_logout"
+            android:title="Logout"
+            android:icon="@android:drawable/ic_input_delete"
+            ></item>
+    </group>
+
+    <item android:title="About this Project">
+        <menu>
+            <item
+                android:title="General Information"
+                android:id="@+id/id_information"
+                android:icon="@android:drawable/ic_menu_info_details"
+                ></item>
+        </menu>
+    </item>
+</menu>
