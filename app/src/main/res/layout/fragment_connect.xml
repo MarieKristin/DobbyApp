@@ -1,0 +1,103 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    tools:context="teamdobby.dobby.ConnectFragment">
+
+    <EditText
+        android:id="@+id/hostname"
+        android:hint="@string/main_txt_1"
+        android:padding="8dp"
+        android:singleLine="true"
+        android:inputType="text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:id="@+id/port"
+        android:hint="@string/main_txt_2"
+        android:padding="8dp"
+        android:singleLine="true"
+        android:inputType="number"
+        android:layout_below="@+id/hostname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:id="@+id/timeout"
+        android:hint="@string/main_txt_3"
+        android:padding="8dp"
+        android:singleLine="true"
+        android:inputType="number"
+        android:layout_below="@+id/port"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <com.dd.CircularProgressButton
+        android:id="@+id/btnConnect"
+        android:layout_below="@+id/timeout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:cpb_textComplete="@string/main_txt_4"
+        app:cpb_textError="@string/main_txt_5"
+        app:cpb_textIdle="@string/main_txt_6"
+        app:cpb_cornerRadius="12dp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/frameOutput"
+        android:layout_below="@id/btnConnect"
+        android:layout_marginBottom="30dp">
+    <TextView
+        android:id="@+id/cmdOutput"
+        android:ems="10"
+        android:padding="8dp"
+        android:gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+    </FrameLayout>
+
+    <EditText
+        android:id="@+id/cmdInput"
+        android:hint="@string/main_txt_7"
+        android:singleLine="true"
+        android:imeOptions="actionDone"
+        android:padding="8dp"
+        android:gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+</RelativeLayout>
