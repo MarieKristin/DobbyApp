@@ -7,10 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.app.Activity;
+//import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
-import android.content.Intent;
+//import android.content.Intent;
 import android.graphics.Color;
 import android.os.Parcelable;
 import android.text.Spannable;
@@ -18,9 +18,9 @@ import android.text.method.ScrollingMovementMethod;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
+/*import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
+import android.view.MenuItem;*/
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -58,9 +58,9 @@ public class ConnectFragment extends Fragment implements WebSocket.WebSocketConn
     private TextView cmdOutput;
     private CircularProgressButton connectButton;
 
-    private EditText hostname;
-    private EditText portNumber;
-    private EditText timeout;
+    private String hostname;
+    private String portNumber;
+    private String timeout;
 
     public ConnectFragment() {
         // Required empty public constructor
@@ -77,9 +77,12 @@ public class ConnectFragment extends Fragment implements WebSocket.WebSocketConn
         wrappers.add(onClickWrapperExit);
         SuperActivityToast.onRestoreState(savedInstanceState, getActivity(), wrappers);
 
-        hostname = (EditText) view.findViewById(R.id.hostname);
+        /*hostname = (EditText) view.findViewById(R.id.hostname);
         portNumber = (EditText) view.findViewById(R.id.port);
-        timeout = (EditText) view.findViewById(R.id.timeout);
+        timeout = (EditText) view.findViewById(R.id.timeout);*/
+        hostname = "192.168.0.1";
+        portNumber = "8080";
+        timeout = "3000";
 
         cmdInput = (EditText) view.findViewById(R.id.cmdInput);
         cmdOutput = (TextView) view.findViewById(R.id.cmdOutput);
@@ -98,7 +101,7 @@ public class ConnectFragment extends Fragment implements WebSocket.WebSocketConn
                 if (connectButton.getProgress() == 0) {
                     connectButton.setProgress(50);
 
-                    if ((hostname.getText().toString().equals("")) ||
+                    /*if ((hostname.getText().toString().equals("")) ||
                             (portNumber.getText().toString().equals("")) ||
                             (timeout.getText().toString().equals(""))) {
 
@@ -106,12 +109,15 @@ public class ConnectFragment extends Fragment implements WebSocket.WebSocketConn
                         show_info(getResources().getString(R.string.info_msg_1), false);
                         connectButton.setProgress(-1);
                         return;
-                    }
+                    }*/
 
                     /* save last settings */
-                    Settings.pref_set_hostname(getActivity().getBaseContext(), hostname.getText().toString());
-                    Settings.pref_set_port_number(getActivity().getBaseContext(), portNumber.getText().toString());
-                    Settings.pref_set_timeout(getActivity().getBaseContext(), timeout.getText().toString());
+                    /*Settings.pref_set_hostname(getActivity().getBaseContext());
+                    Settings.pref_set_port_number(getActivity().getBaseContext());
+                    Settings.pref_set_timeout(getActivity().getBaseContext());*/
+                    Log.i(TAG_LOG, "pref_set_hostname() value: " + "192.168.0.1");
+                    Log.i(TAG_LOG, "pref_set_port_number() value: " + "8080");
+                    Log.i(TAG_LOG, "pref_set_timeout() value: " + "3000");
 
                     /* connect */
                     if (!wsConnect()) {
@@ -141,9 +147,12 @@ public class ConnectFragment extends Fragment implements WebSocket.WebSocketConn
 
     @Override
     public void onResume() {
-        hostname.setText(Settings.pref_get_hostname(getActivity().getBaseContext()));
-        portNumber.setText(Settings.pref_get_port_number(getActivity().getBaseContext()));
-        timeout.setText(Settings.pref_get_timeout(getActivity().getBaseContext()));
+        hostname = "192.168.0.1";
+        Log.i(TAG_LOG, "pref_get_hostname() value: " + hostname);
+        portNumber = "8080";
+        Log.i(TAG_LOG, "pref_get_port_number() value: " + portNumber);
+        timeout = "3000";
+        Log.i(TAG_LOG, "pref_get_timeout() value: " + timeout);
         super.onResume();
     }
 
@@ -153,10 +162,10 @@ public class ConnectFragment extends Fragment implements WebSocket.WebSocketConn
 
             this.wsConnection = new WebSocketConnection();
             this.wsOptions = new WebSocketOptions();
-            wsOptions.setSocketConnectTimeout(Integer.parseInt(timeout.getText().toString()));
+            wsOptions.setSocketConnectTimeout(Integer.parseInt(timeout));
 
             try {
-                this.wsURI = new URI("ws://" + hostname.getText().toString() + ":" + portNumber.getText().toString());
+                this.wsURI = new URI("ws://" + hostname + ":" + portNumber);
                 wsConnection.connect(wsURI, this, wsOptions);
             } catch (WebSocketException e) {
                 Log.e(TAG_LOG,  "Can't connect to server - 'WebSocketException'");
@@ -287,7 +296,7 @@ public class ConnectFragment extends Fragment implements WebSocket.WebSocketConn
 
     @Override
     public void onRawTextMessage (byte[] payload) {
-        Log.wtf (TAG_LOG, "We didn't expect 'RawTextMessage'");
+        Log.wtf(TAG_LOG, "We didn't expect 'RawTextMessage'");
     }
 
     @Override

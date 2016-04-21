@@ -15,10 +15,10 @@ import android.util.Log;
  * Created by Marie on 14.04.2016.
  */
 public class Settings extends Activity{
-    private static final String TAG_LOG = "WebSocketsClient";
+    /*private static final String TAG_LOG = "WebSocketsClient";
     private static final String TAG_HOSTNAME = "hostname";
     private static final String TAG_PORT_NUMBER = "port";
-    private static final String TAG_TIMEOUT = "timeout";
+    private static final String TAG_TIMEOUT = "timeout";*/
     private static final String TAG_DISABLE_NOTIFICATIONS = "disable_notifications";
     private static final String TAG_DISABLE_MULTIPLE_NOTIFICATIONS = "disable_multiple_notifications";
 
@@ -42,50 +42,44 @@ public class Settings extends Activity{
         }
     }
 
-    public static String pref_get_hostname (Context context){
-        String value;
-        value =  PreferenceManager.getDefaultSharedPreferences(context).getString(TAG_HOSTNAME, null);
-        Log.i(TAG_LOG, "pref_get_hostname() value: " + value);
-        return value;
-    }
+    /*public static String pref_get_hostname (){
+        Log.i(TAG_LOG, "pref_get_hostname() value: " + "192.168.0.1");
+        return "192.168.0.1";
+    }*/
 
-    public static void pref_set_hostname (Context context, String value){
+    /*public static void pref_set_hostname (Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(TAG_HOSTNAME, value);
+        editor.putString(TAG_HOSTNAME, "192.168.0.1");
         editor.commit();
-        Log.i(TAG_LOG, "pref_set_hostname() value: " + value);
-    }
+        Log.i(TAG_LOG, "pref_set_hostname() value: " + "192.168.0.1");
+    }*/
 
-    public static String pref_get_port_number (Context context){
-        String value;
-        value =  PreferenceManager.getDefaultSharedPreferences(context).getString(TAG_PORT_NUMBER, null);
-        Log.i(TAG_LOG, "pref_get_port_number() value: " + value);
-        return value;
-    }
+    /*public static String pref_get_port_number (){
+        Log.i(TAG_LOG, "pref_get_port_number() value: " + "8080");
+        return "8080";
+    }*/
 
-    public static void pref_set_port_number (Context context, String value){
+    /*public static void pref_set_port_number (Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(TAG_PORT_NUMBER, value);
+        editor.putString(TAG_PORT_NUMBER, "8080");
         editor.commit();
-        Log.i(TAG_LOG, "pref_set_port_number() value: " + value);
-    }
+        Log.i(TAG_LOG, "pref_set_port_number() value: " + "8080");
+    }*/
 
-    public static String pref_get_timeout (Context context){
-        String value;
-        value =  PreferenceManager.getDefaultSharedPreferences(context).getString(TAG_TIMEOUT, null);
-        Log.i(TAG_LOG, "pref_get_timeout() value: " + value);
-        return value;
-    }
+    /*public static String pref_get_timeout (){
+        Log.i(TAG_LOG, "pref_get_timeout() value: " + "3000");
+        return "3000";
+    }*/
 
-    public static void pref_set_timeout (Context context, String value){
+    /*public static void pref_set_timeout (Context context){
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(TAG_TIMEOUT, value);
+        editor.putString(TAG_TIMEOUT, "3000");
         editor.commit();
-        Log.i(TAG_LOG, "pref_set_timeout() value: " + value);
-    }
+        Log.i(TAG_LOG, "pref_set_timeout() value: " + "3000");
+    }*/
 
     public static Boolean pref_notifications_disabled (Context context){
         return PreferenceManager.getDefaultSharedPreferences(context).getBoolean(TAG_DISABLE_NOTIFICATIONS, false);
