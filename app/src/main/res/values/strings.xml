@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Dobby</string>
+    <string name="drawer_open">drawer open</string>
+    <string name="drawer_clse">drawer close</string>
+
+    <string name="main_txt_1">"Host Name or IP Address"</string>
+    <string name="main_txt_2">"Port"</string>
+    <string name="main_txt_3">"Timeout [ms]"</string>
+    <string name="main_txt_4">"Connection Established"</string>
+    <string name="main_txt_5">"Connection Error - try again"</string>
+    <string name="main_txt_6">"Connect"</string>
+    <string name="main_txt_7">"Enter command here"</string>
+
+    <string name="info_msg_1">"Invalid connection settings"</string>
+    <string name="info_msg_2">"No connection to the server"</string>
+    <string name="info_msg_3">"To exit press the 'Exit'"</string>
+    <string name="info_msg_4">"Received invalid JSON from server"</string>
+
+    <string name="settings_msg_1">"Notifications"</string>
+    <string name="settings_msg_2">"Disable notifications"</string>
+    <string name="settings_msg_3">"Disable all notifications from server"</string>
+    <string name="settings_msg_4">"Disable multiple notifications"</string>
+    <string name="settings_msg_5">"Show only the last received notification"</string>
+
+
+    <string name="title_infoabout">InfoAbout</string>
+    <string name="infotext">
+        "<b>Dobby-App v0.1</b>\n\n The Dobby-App is a part of the Dobby-Project, which is part of the course Software Engineering at the Karlsruhe Cooperative State University.\n\n
+        <b>Involved Persons</b>\n\nThis project has been developed by <i>Daniel Stumpf</i>, <i>Nicolas Huentz</i>, <i>Marie Kaiser</i> and <i>Martin Mössner</i>.\n\n
+        <b>Disclaimer</b>\n\nPlease mind that this app is build for educational purposes and we can not provide any guarantees for this software.
+        "
+    </string>
+</resources>
