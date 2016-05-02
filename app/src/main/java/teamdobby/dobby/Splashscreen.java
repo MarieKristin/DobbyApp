@@ -16,6 +16,7 @@ public class Splashscreen extends Activity {
     private static int SPLASH_TIME_OUT = 3000;*/
 
     ImageView imageView;
+    Animation animation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,26 +24,10 @@ public class Splashscreen extends Activity {
         setContentView(R.layout.activity_splash);
 
         imageView = (ImageView) findViewById(R.id.imgLogo);
-        Animation animation = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.welcome_animation);
+        animation = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.welcome_animation);
         imageView.setAnimation(animation);
 
-        animation.setAnimationListener(new Animation.AnimationListener() {
-            @Override
-            public void onAnimationStart(Animation animation) {
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animation animation) {
-                finish();
-                startActivity(new Intent(getApplicationContext(),Login.class));
-            }
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {
-
-            }
-        });
+        animationListener(animation);
 
         /*new Handler().postDelayed(new Runnable() {
 
@@ -62,6 +47,26 @@ public class Splashscreen extends Activity {
                 finish();
             }
         }, SPLASH_TIME_OUT);*/
+    }
+
+    private void animationListener(Animation animation){
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                finish();
+                startActivity(new Intent(getApplicationContext(),Login.class));
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
     }
 
     @Override

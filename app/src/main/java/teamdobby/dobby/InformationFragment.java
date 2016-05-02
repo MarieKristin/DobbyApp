@@ -1,6 +1,7 @@
 package teamdobby.dobby;
 
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.design.widget.FloatingActionButton;
@@ -26,16 +27,40 @@ public class InformationFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_information, container, false);
 
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Soon you will have the option to mail the Dobby-team", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        clickListener(view);
+
         return view;
     }
+
+    private void clickListener(View view) {
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        if (fab != null) {
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Snackbar.make(view, "Soon you will have the option to mail the Dobby-team", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            });
+            //fab.setOnClickListener(new MyClickListener());
+        }
+    }
+
+    /*public static class MyClickListener implements View.OnClickListener {
+
+        boolean success = false;
+
+        public MyClickListener() {
+
+        }
+
+        @Override
+        public void onClick(View view) {
+            Snackbar.make(view, "Soon you will have the option to mail the Dobby-team", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+            this.success = true;
+        }
+    }*/
 
 
 }
