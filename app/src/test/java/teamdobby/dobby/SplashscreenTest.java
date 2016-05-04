@@ -53,6 +53,7 @@ public class SplashscreenTest {
         doReturn(imageView).when(splashscreen).findViewById(anyInt());
         doReturn(context).when(splashscreen).getApplicationContext();
         //doNothing().when(splashscreen).animationListener(mock(Animation.class));
+        doNothing().when(splashscreen).finish();
 
         suppress(method(Activity.class, "onCreate", Bundle.class));
         suppress(method(Activity.class, "setContentView", int.class));
@@ -76,4 +77,10 @@ public class SplashscreenTest {
 
         verify(animation).setAnimationListener((Animation.AnimationListener) Matchers.any());
     }*/
+
+    @Test
+    public void testOnBackPressed() {
+        splashscreen.onBackPressed();
+        assertTrue(true);
+    }
 }
