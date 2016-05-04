@@ -17,6 +17,8 @@ public class Login extends AppCompatActivity{
     Button confirm;
     EditText NameText;
     EditText PassText;
+    String Name;
+    String Pass;
     CharSequence text = "";
 
     @Override
@@ -42,14 +44,12 @@ public class Login extends AppCompatActivity{
 
     public void onClickFunction(View v) {
         if(v==confirm){
-            String tmpname=NameText.getText().toString();
-            String tmppass=PassText.getText().toString();
-            if(LoginData.isValidName(tmpname)){
-                if(LoginData.isValidPass(tmpname,tmppass)){
+            setUser();
+            if(LoginData.isValidName(Name)){
+                if(LoginData.isValidPass(Name,Pass)){
                     text="Successfully logged in";
-                    Intent myIntent = new Intent(Login.this, ConnectDrawer.class);
-                    Login.this.startActivity(myIntent);
-                    LoginData.setCurrUser(tmpname);
+                    startIntent();
+                    LoginData.setCurrUser(Name);
                     LoginData.setLogged();
                     finish();
                 }
@@ -63,6 +63,16 @@ public class Login extends AppCompatActivity{
 
             this.toastShow();
         }
+    }
+
+    private void setUser() {
+        Name=NameText.getText().toString();
+        Pass=PassText.getText().toString();
+    }
+
+    private void startIntent() {
+        Intent myIntent = new Intent(Login.this, ConnectDrawer.class);
+        Login.this.startActivity(myIntent);
     }
 
     private void toastShow() {

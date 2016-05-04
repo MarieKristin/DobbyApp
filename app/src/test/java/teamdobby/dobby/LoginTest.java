@@ -2,6 +2,7 @@ package teamdobby.dobby;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -43,7 +44,7 @@ import static org.mockito.Mockito.*;
  * Created by Marie on 03.05.2016.
  */
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Login.class,Activity.class,Button.class})
+@PrepareForTest({Login.class})
 public class LoginTest {
 
     private Login login;
@@ -53,30 +54,15 @@ public class LoginTest {
         login = PowerMockito.spy(new Login());
 
         doNothing().when(login).finish();
-        doReturn(mock(Context.class)).when(login).getApplicationContext();
-        //when(login.getApplicationContext()).thenReturn(mock(Context.class));
-
-        suppress(method(Activity.class, "onCreate", Bundle.class));
-        suppress(method(Activity.class, "setContentView", int.class));
-        suppress(method(Button.class, "setOnClickListener", View.OnClickListener.class));
-        //suppress(method(Toast.class, "makeText", android.content.Context.class, CharSequence.class, int.class));
-    }
-
-    @Test
-    public void testOnCreate() {
-        //login.onCreate(null);
+        suppress(method(Login.class, "toastShow"));
+        suppress(method(Login.class, "setUser"));
     }
 
     @Test
     public void testOnClickFunction_withNoUser() {
-        suppress(method(Login.class, "toastShow"));
-        Editable sequence = mock(SpannableStringBuilder.class);
-        login.NameText = PowerMockito.spy(new EditText(mock(Context.class)));
-        login.PassText = PowerMockito.spy(new EditText(mock(Context.class)));
-
-        doReturn(sequence).when(login.NameText).getText();
-        doReturn(sequence).when(login.PassText).getText();
-        doReturn("").when(sequence).toString();
+        login.Name = "";
+        login.Pass = "";
+        LoginData.main();
 
         Button mockButton = mock(Button.class);
         CharSequence should = "User not found";
@@ -88,16 +74,9 @@ public class LoginTest {
 
     @Test
     public void testOnClickFunction_withWrongUser() {
-        suppress(method(Login.class, "toastShow"));
-        Editable sequenceName = mock(SpannableStringBuilder.class);
-        Editable sequencePass = mock(SpannableStringBuilder.class);
-        login.NameText = PowerMockito.spy(new EditText(mock(Context.class)));
-        login.PassText = PowerMockito.spy(new EditText(mock(Context.class)));
-
-        doReturn(sequenceName).when(login.NameText).getText();
-        doReturn(sequencePass).when(login.PassText).getText();
-        doReturn("xy").when(sequenceName).toString();
-        doReturn("").when(sequencePass).toString();
+        login.Name = "xy";
+        login.Pass = "xy";
+        LoginData.main();
 
         Button mockButton = mock(Button.class);
         CharSequence should = "User not found";
@@ -107,21 +86,10 @@ public class LoginTest {
         assertThat("Text should be 'User not found'", login.text, is(should));
     }
 
-    /*@Test
     public void testOnClickFunction_withRightUserButWrongPassword() {
-        suppress(method(Login.class, "toastShow"));
-        Editable sequenceName = mock(SpannableStringBuilder.class);
-        Editable sequencePass = mock(SpannableStringBuilder.class);
-        login.NameText = PowerMockito.spy(new EditText(mock(Context.class)));
-        login.PassText = PowerMockito.spy(new EditText(mock(Context.class)));
-
-        doReturn(sequenceName).when(login.NameText).getText();
-        doReturn(sequencePass).when(login.PassText).getText();
-        doReturn("Dobby").when(sequenceName).toString();
-        doReturn("xy").when(sequencePass).toString();
-
-        assertThat(sequenceName.toString(), is("Dobby"));
-        assertThat(login.NameText.getText().toString(), is("Dobby"));
+        login.Name = "Dobby";
+        login.Pass = "";
+        LoginData.main();
 
         Button mockButton = mock(Button.class);
         CharSequence should = "Wrong Password";
@@ -133,21 +101,10 @@ public class LoginTest {
 
     @Test
     public void testOnClickFunction_withRightUserAndRightPassword() {
-        suppress(method(Login.class, "toastShow"));
-        Editable sequenceName = mock(SpannableStringBuilder.class);
-        Editable sequencePass = mock(SpannableStringBuilder.class);
-        login.NameText = PowerMockito.spy(new EditText(mock(Context.class)));
-        login.PassText = PowerMockito.spy(new EditText(mock(Context.class)));
-
-        doReturn(sequenceName).when(login.NameText).getText();
-        doReturn(sequencePass).when(login.PassText).getText();
-        doReturn("Dobby").when(sequenceName).toString();
-        doReturn("123").when(sequencePass).toString();
-        //when(login.NameText.getText().toString()).thenReturn("Dobby");
-        sequenceName = login.NameText.getText();
-        String mockString = sequenceName.toString();
-        when(LoginData.isValidName(mockString)).thenReturn(true);
-        //doReturn(true).when(LoginData).isValidName(mockString);
+        suppress(method(Login.class, "startIntent"));
+        login.Name = "Dobby";
+        login.Pass = "123";
+        LoginData.main();
 
         Button mockButton = mock(Button.class);
         CharSequence should = "Successfully logged in";
@@ -155,7 +112,7 @@ public class LoginTest {
         login.confirm = mockButton;
         login.onClickFunction(mockButton);
         assertThat("Text should be 'Successfully logged in'", login.text, is(should));
-    }*/
+    }
 
     @Test
     public void testOnBackPressed() {
