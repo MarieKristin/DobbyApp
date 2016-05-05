@@ -1,0 +1,593 @@
+@startuml
+
+
+interface welcome_animation  << (A,lightgreen) Animation >>
+
+interface background << (J,grey) JPG >>
+interface dobbykopf << (P,lightgrey) PNG >>
+interface logo << (P,lightgrey) PNG >>
+interface ic_launcher << (P,lightgrey) PNG >>
+
+interface drawer_menu << (M,darkgrey) MENU >>
+interface toolbar_layout << (T,blue) TOOLBAR >>
+interface settings << (P,darkblue) PREFERENCESCREEN >>
+interface AndroidManifest << (M,gold) MANIFEST >>
+
+interface colors << (R,pink) RESOURCES >>
+interface dimens << (R,pink) RESOURCES >>
+interface strings << (R,pink) RESOURCES >>
+interface styles << (R,pink) RESOURCES >>
+
+interface activity_connect_drawer << (X,darkgrey) XML >>
+interface activity_login << (X,darkgrey) XML >>
+interface activity_splash << (X,darkgrey) XML >>
+interface content_infoabout << (X,darkgrey) XML >>
+interface fragment_connect << (X,darkgrey) XML >>
+interface fragment_information << (X,darkgrey) XML >>
+interface head_background << (X,darkgrey) XML >>
+interface navigation_drawer_header << (X,darkgrey) XML >>
+
+styles --> colors
+
+AndroidManifest --> ic_launcher
+AndroidManifest ..> strings
+AndroidManifest --> styles
+AndroidManifest --> Splashscreen
+AndroidManifest --> Login
+AndroidManifest --> ConnectDrawer
+
+activity_connect_drawer --> toolbar_layout
+activity_connect_drawer --> navigation_drawer_header
+activity_connect_drawer --> drawer_menu
+
+activity_login --> logo
+activity_login --> dimens
+activity_splash --> logo
+activity_splash --> background
+
+content_infoabout ..> strings
+fragment_connect ..> strings
+settings ..> strings
+
+fragment_information --> dimens
+fragment_information --> content_infoabout
+
+navigation_drawer_header --> dobbykopf
+navigation_drawer_header --> head_background
+
+class ConnectDrawer << AppCompatActivity >> {
+DrawerLayout drawerLayout
+Toolbar toolbar
+ActionBarDrawerToggle actionBarDrawerToggle
+FragmentTransaction fragmentTransaction
+NavigationView navigationView
+
+# void onCreate(Bundle savedInstanceState)
++ void onBackPressed()
+# void onPostCreate(Bundle savedInstanceState)
+}
+
+ConnectDrawer ..|> activity_connect_drawer
+ConnectDrawer ..> strings
+ConnectDrawer ..> ConnectFragment
+ConnectDrawer ..> LoginData
+ConnectDrawer ..> Splashscreen
+ConnectDrawer ..> InformationFragment
+
+class ConnectFragment << Fragment >> {
+- {static} final String TAG_LOG
+- {static} final String TAG_JSON_TYPE
+- {static} final String TAG_JSON_MSG
+- volatile boolean isConnected
+- WebSocketConnection wsConnection
+- WebSocketOptions wsOptions
+- URI wsURI
+- EditText cmdInput
+- TextView cmdOutput
+- CircularProgressButton connectButton
+- String hostname
+- String portNumber
+- String timeout
+
++ ConnectFragment()
++ View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
++ void onResume()
+boolean wsConnect()
+void wsDisconnect()
+void wsSend()
++ void onOpen()
++ void onClose (WebSocketCloseNotification code, String reason)
++ void onTextMessage (String payload)
++ void onRawTextMessage (byte[] payload)
++ void onBinaryMessage (byte[] payload)
+void show_info (String info, boolean showButton)
+{static} void appendText (TextView textView, String text, int textColor)
+}
+
+ConnectFragment ..|> WebSocketConnectionObserver
+ConnectFragment --> WebSocketConnection
+ConnectFragment --> WebSocketOptions
+ConnectFragment ..|> fragment_connect
+ConnectFragment ..> strings
+ConnectFragment ..> Settings
+
+class InformationFragment << Fragment >> {
++ InformationFragment()
++ View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+- void clickListener(View view)
+}
+
+InformationFragment ..|> fragment_information
+
+class Login << AppCompatActivity >> {
+Button confirm
+EditText NameText
+EditText PassText
+String Name
+String Pass
+CharSequence text
+
+# void onCreate(Bundle savedInstanceState)
++ void onClickFunction(View v)
+- void setUser()
+- void startIntent()
+- void toastShow()
++ void onBackPressed()
+}
+
+Login ..|> activity_login
+Login ..> LoginData
+Login ..> ConnectDrawer
+
+class LoginData {
+{static} String curruser
+{static} boolean logged
+String name
+String pass
+{static} ArrayList<LoginData> user
+
+{static} void main()
++ LoginData(String name, String pass)
+{static} boolean isValidName(String name)
+{static} boolean isValidPass(String name, String pass)
+{static} void setCurrUser(String Name)
+{static} String getCurrUser()
+{static} void setLogged()
+{static} void notLogged()
+{static} boolean getLogged()
+}
+
+class Settings << Activity >> {
+- {static} final String TAG_DISABLE_NOTIFICATIONS
+- {static} final String TAG_DISABLE_MULTIPLE_NOTIFICATIONS
+
++ void onCreate(Bundle savedInstanceState)
++ {static} Boolean pref_notifications_disabled(Context context)
++ {static} Boolean pref_multiple_notifications_disabled(Context context)
+}
+class PrefsFragment << PreferenceFragment >> {
++ void onCreate(Bundle savedInstanceState)
+}
+
+Settings --|> PrefsFragment
+PrefsFragment ..|> settings
+
+class Splashscreen << Activity >> {
+ImageView imageView
+Animation animation
+
+# void onCreate(Bundle savedInstanceState)
+- void animationListener(Animation animation)
++ void onBackPressed()
+}
+
+Splashscreen ..|> activity_splash
+Splashscreen ..> welcome_animation
+
+class NoCopyByteArrayOutputStream << ByteArrayOutputStream >> {
++ NoCopyByteArrayOutputStream()
++ NoCopyByteArrayOutputStream(int size)
++ InputStream getInputStream()
++ byte[] getByteArray()
+}
+
+class Utf8Validator {
+- {static} final int[] DFA
+- {static} final int ACCEPT = 0
+- {static} final int REJECT = 1
+- int mState
+- int mPos
+
++ Utf8Validator()
++ void reset()
++ int position()
++ boolean isValid()
++ boolean validate(byte[] data, int off, int len)
++ boolean validate(byte[] data)
+}
+
+interface WebSocket {
++ {static} final String UTF8_ENCODING
+
++ void connect(URI uri, WebSocketConnectionObserver observer)
++ void connect(URI uri, WebSocketConnectionObserver observer, WebSocketOptions options)
++ void disconnect()
++ boolean isConnected()
++ void sendBinaryMessage(byte[] payload)
++ void sendRawTextMessage(byte[] payload)
++ void sendTextMessage(String payload)
+}
+interface WebSocketConnectionObserver {
++ void onOpen()
++ void onClose(WebSocketCloseNotification code, String reason)
++ void onTextMessage(String payload)
++ void onRawTextMessage(byte[] payload)
++ void onBinaryMessage(byte[] payload)
+}
+enum WebSocketCloseNotification {
+NORMAL
+CANNOT_CONNECT
+CONNECTION_LOST
+PROTOCOL_ERROR
+INTERNAL_ERROR
+SERVER_ERROR
+RECONNECT
+}
+
+WebSocket --|> WebSocketConnectionObserver
+WebSocket ..> WebSocketException
+WebSocket ..> WebSocketOptions
+WebSocketConnectionObserver --|> WebSocketCloseNotification
+
+class WebSocketConnection {
+- {static} final String TAG
+- {static} final String WS_URI_SCHEME
+- {static} final String WSS_URI_SCHEME
+- {static} final String WS_WRITER
+- {static} final String WS_READER
+- final Handler mHandler
+- WebSocketReader mWebSocketReader
+- WebSocketWriter mWebSocketWriter
+- Socket mSocket
+- SocketThread mSocketThread
+- URI mWebSocketURI
+- String[] mWebSocketSubprotocols
+- WeakReference<WebSocketConnectionObserver> mWebSocketConnectionObserver
+- WebSocketOptions mWebSocketOptions
+- boolean mPreviousConnection
+
++ WebSocketConnection()
++ void sendTextMessage(String payload)
++ void sendRawTextMessage(byte[] payload)
++ void sendBinaryMessage(byte[] payload)
++ boolean isConnected()
+- void failConnection(WebSocketCloseNotification code, String reason)
++ void connect(URI webSocketURI, WebSocket.WebSocketConnectionObserver connectionObserver)
++ void connect(URI webSocketURI, WebSocket.WebSocketConnectionObserver connectionObserver, WebSocketOptions options)
++ void connect(URI webSocketURI, String[] subprotocols, WebSocket.WebSocketConnectionObserver connectionObserver, WebSocketOptions options)
++ void disconnect()
++ boolean reconnect()
+- void connect()
+# boolean scheduleReconnect()
+- void onClose(WebSocketCloseNotification code, String reason)
+# void processAppMessage(Object message)
+# void createWriter()
+# void createReader()
+- void handleMessage(Message message)
+}
+class SocketThread << Thread >> {
+- {static} final String WS_CONNECTOR
+- final URI mWebSocketURI
+- Socket mSocket
+- String mFailureMessage
+- Handler mHandler
+
++ SocketThread(URI uri, WebSocketOptions options)
++ void run()
++ void startConnection()
++ void stopConnection()
++ Handler getHandler()
++ Socket getSocket()
++ String getFailureMessage()
+}
+class ThreadHandler << Handler >> {
+- final WeakReference<WebSocketConnection> mWebSocketConnection
+
++ void handleMessage(Message message)
+}
+
+WebSocketConnection ..|> WebSocket
+WebSocketConnection --> WebSocketReader
+WebSocketConnection --> WebSocketWriter
+WebSocketConnection ..> WebSocketConnectionObserver
+WebSocketConnection --> WebSocketOptions
+WebSocketConnection ..> WebSocketCloseNotification
+WebSocketConnection ..> WebSocketException
+WebSocketConnection ..> Message
+WebSocketConnection ..|> SocketThread
+SocketThread ..> WebSocketOptions
+WebSocketConnection ..|> ThreadHandler
+ThreadHandler ..> WebSocketConnection
+
+class WebSocketException << Exception >> {
+- {static} final long serialVersionUID
+
++ WebSocketException(String message)
++ WebSocketException(String message, Throwable t)
+}
+
+class WebSocketFrameHeader {
+- int mOpcode
+- boolean mFin
+- int mReserved
+- int mHeaderLen
+- int mPayloadLen
+- int mTotalLen
+- byte[] mMask
+
++ int getOpcode()
++ void setOpcode(int opcode)
++ boolean isFin()
++ void setFin(boolean fin)
++ int getReserved()
++ void setReserved(int reserved)
++ int getHeaderLength()
++ void setHeaderLength(int headerLength)
++ int getPayloadLength()
++ void setPayloadLength(int payloadLength)
++ int getTotalLength()
++ void setTotalLen(int totalLength)
++ byte[] getMask() {
++ void setMask(byte[] mask)
+}
+
+class WebSocketMessage {
+}
+class WebSocketCloseCode {
++ {static} final int NORMAL
++ {static} final int ENDPOINT_GOING_AWAY
++ {static} final int ENDPOINT_PROTOCOL_ERROR
++ {static} final int ENDPOINT_UNSUPPORTED_DATA_TYPE
++ {static} final int RESERVED
++ {static} final int RESERVED_NO_STATUS
++ {static} final int RESERVED_NO_CLOSING_HANDSHAKE
++ {static} final int ENDPOINT_BAD_DATA
++ {static} final int POLICY_VIOLATION
++ {static} final int MESSAGE_TOO_BIG
++ {static} final int ENDPOINT_NEEDS_EXTENSION
++ {static} final int UNEXPECTED_CONDITION
++ {static} final int RESERVED_TLS_REQUIRED
+}
+class Message
+class Quit
+class ClientHandshake {
+- final URI mURI
+- final URI mOrigin
+- final String[] mSubprotocols
+
+ClientHandshake(URI uri)
+ClientHandshake(URI uri, URI origin, String[] subprotocols)
++ URI getURI()
++ URI getOrigin()
++ String[] getSubprotocols()
+}
+class ServerHandshake {
++ boolean mSuccess
+
++ ServerHandshake(boolean success)
+}
+class ConnectionLost
+class ServerError {
++ int mStatusCode
++ String mStatusMessage
+
++ ServerError(int statusCode, String statusMessage)
+}
+class ProtocolViolation {
++ WebSocketException mException
+
++ ProtocolViolation(WebSocketException e)
+}
+class Error {
++ Exception mException
+
++ Error(Exception e)
+}
+class TextMessage {
++ String mPayload;
+
+TextMessage(String payload)
+}
+class RawTextMessage {
++ byte[] mPayload
+
+RawTextMessage(byte[] payload)
+}
+class BinaryMessage {
++ byte[] mPayload
+
+BinaryMessage(byte[] payload)
+}
+class Close {
+- int mCode
+- String mReason
+
+Close()
+Close(int code)
+Close(int code, String reason)
++ int getCode()
++ String getReason()
+}
+class Ping {
++ byte[] mPayload
+
+Ping()
+Ping(byte[] payload)
+}
+class Pong {
++ byte[] mPayload
+
+Pong()
+Pong(byte[] payload)
+}
+
+WebSocketMessage ..|> WebSocketCloseCode
+WebSocketMessage ..|> Message
+WebSocketMessage ..|> Quit
+Quit --|> Message
+WebSocketMessage ..|> ClientHandshake
+ClientHandshake --|> Message
+WebSocketMessage ..|> ServerHandshake
+ServerHandshake --|> Message
+WebSocketMessage ..|> ConnectionLost
+ConnectionLost --|> Message
+WebSocketMessage ..|> ServerError
+ServerError --|> Message
+WebSocketMessage ..|> ProtocolViolation
+ProtocolViolation --|> Message
+ProtocolViolation --> WebSocketException
+WebSocketMessage ..|> Error
+Error --|> Message
+WebSocketMessage ..|> TextMessage
+TextMessage --|> Message
+WebSocketMessage ..|> RawTextMessage
+RawTextMessage --|> Message
+WebSocketMessage ..|> BinaryMessage
+BinaryMessage --|> Message
+WebSocketMessage ..|> Close
+Close --|> Message
+WebSocketMessage ..|> Ping
+Ping --|> Message
+WebSocketMessage ..|> Pong
+Pong --|> Message
+
+class WebSocketOptions {
+- int mMaxFramePayloadSize
+- int mMaxMessagePayloadSize
+- boolean mReceiveTextMessagesRaw
+- boolean mTcpNoDelay
+- int mSocketReceiveTimeout
+- int mSocketConnectTimeout
+- boolean mValidateIncomingUtf8
+- boolean mMaskClientFrames
+- int mReconnectInterval
+
++ WebSocketOptions()
++ WebSocketOptions(WebSocketOptions other)
++ void setReceiveTextMessagesRaw(boolean enabled)
++ boolean getReceiveTextMessagesRaw()
++ void setMaxFramePayloadSize(int size)
++ int getMaxFramePayloadSize()
++ void setMaxMessagePayloadSize(int size)
++ int getMaxMessagePayloadSize()
++ void setTcpNoDelay(boolean enabled)
++ boolean getTcpNoDelay()
++ void setSocketReceiveTimeout(int timeoutMs)
++ int getSocketReceiveTimeout()
++ void setSocketConnectTimeout(int timeoutMs)
++ int getSocketConnectTimeout()
++ void setValidateIncomingUtf8(boolean enabled)
++ boolean getValidateIncomingUtf8()
++ void setMaskClientFrames(boolean enabled)
++ boolean getMaskClientFrames()
++ void setReconnectInterval(int reconnectInterval)
++ int getReconnectInterval()
+}
+
+class WebSocketReader << Thread >> {
+- {static} final String TAG
+- final Handler mWebSocketConnectionHandler
+- final Socket mSocket
+- InputStream mInputStream
+- final WebSocketOptions mWebSocketOptions
+- volatile boolean mStopped
+- final byte[] mNetworkBuffer
+- final ByteBuffer mApplicationBuffer
+- NoCopyByteArrayOutputStream mMessagePayload
+- ReaderState mState
+- boolean mInsideMessage
+- int mMessageOpcode
+- WebSocketFrameHeader mFrameHeader
+- Utf8Validator mUTF8Validator
+
++ WebSocketReader(Handler master, Socket socket, WebSocketOptions options, String threadName)
++ void quit()
+# void notify(Object message)
+- boolean processData()
+# void onHandshake(boolean success)
+# void onClose(int code, String reason)
+# void onPing(byte[] payload)
+# void onPong(byte[] payload)
+# void onTextMessage(String payload)
+# void onRawTextMessage(byte[] payload)
+# void onBinaryMessage(byte[] payload)
+- boolean processHandshake()
+- Pair<Integer, String> parseHTTPStatus()
+- boolean consumeData()
++ void run()
+}
+enum ReaderState {
+STATE_CLOSED
+STATE_CONNECTING
+STATE_CLOSING
+STATE_OPEN
+}
+
+WebSocketReader ..|> ReaderState
+WebSocketReader --> WebSocketOptions
+WebSocketReader --> WebSocketFrameHeader
+WebSocketReader --> Utf8Validator
+WebSocketReader --> NoCopyByteArrayOutputStream
+WebSocketReader ..> Message
+WebSocketReader ..> WebSocketException
+WebSocketReader ..> WebSocketMessage
+WebSocketReader ..> WebSocket
+
+class WebSocketWriter << Thread >> {
+- {static} final String TAG
+- {static} final int WEB_SOCKETS_VERSION
+- {static} final String CRLF
+- final Random mRandom
+- final Handler mWebSocketConnectionHandler
+- final WebSocketOptions mWebSocketOptions
+- final ByteBuffer mApplicationBuffer
+- final Socket mSocket
+- OutputStream mOutputStream
+- Handler mHandler
+
++ WebSocketWriter(Handler master, Socket socket, WebSocketOptions options, String threadName)
++ void forward(Object message)
+- void notify(Object message)
+- String newHandshakeKey()
+- byte[] newFrameMask()
+- void sendClientHandshake(WebSocketMessage.ClientHandshake message)
+- void sendClose(WebSocketMessage.Close message)
+- void sendPing(WebSocketMessage.Ping message)
+- void sendPong(WebSocketMessage.Pong message)
+- void sendBinaryMessage(WebSocketMessage.BinaryMessage message)
+- void sendTextMessage(WebSocketMessage.TextMessage message)
+- void sendRawTextMessage(WebSocketMessage.RawTextMessage message)
+# void sendFrame(int opcode, boolean fin, byte[] payload)
+# void sendFrame(int opcode, boolean fin, byte[] payload, int offset, int length)
+# void processMessage(Object msg)
++ void writeMessageToBuffer(Message message)
+# void processAppMessage(Object msg)
++ void run()
+}
+class ThreadHandler << Handler >> {
+- final WeakReference<WebSocketWriter> mWebSocketWriterReference
+
++ ThreadHandler(WebSocketWriter webSocketWriter)
++ void handleMessage(Message message)
+}
+
+WebSocketWriter --> WebSocketOptions
+WebSocketWriter ..> Message
+WebSocketWriter ..> ClientHandshake
+WebSocketWriter ..> WebSocketException
+WebSocketWriter ..> WebSocketMessage
+WebSocketWriter --|> ThreadHandler
+ThreadHandler ..> WebSocketWriter
+ThreadHandler ..> Message
+
+@enduml
