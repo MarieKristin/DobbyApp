@@ -27,9 +27,9 @@ interface fragment_information << (X,darkgrey) XML >>
 interface head_background << (X,darkgrey) XML >>
 interface navigation_drawer_header << (X,darkgrey) XML >>
 
-styles --> colors
+styles -left-> colors
 
-AndroidManifest --> ic_launcher
+AndroidManifest -right-> ic_launcher
 AndroidManifest ..> strings
 AndroidManifest --> styles
 AndroidManifest --> Splashscreen
@@ -37,7 +37,7 @@ AndroidManifest --> Login
 AndroidManifest --> ConnectDrawer
 
 activity_connect_drawer --> toolbar_layout
-activity_connect_drawer --> navigation_drawer_header
+activity_connect_drawer -left-> navigation_drawer_header
 activity_connect_drawer --> drawer_menu
 
 activity_login --> logo
@@ -50,7 +50,7 @@ fragment_connect ..> strings
 settings ..> strings
 
 fragment_information --> dimens
-fragment_information --> content_infoabout
+fragment_information -left-> content_infoabout
 
 navigation_drawer_header --> dobbykopf
 navigation_drawer_header --> head_background
@@ -71,7 +71,7 @@ ConnectDrawer ..|> activity_connect_drawer
 ConnectDrawer ..> strings
 ConnectDrawer ..> ConnectFragment
 ConnectDrawer ..> LoginData
-ConnectDrawer ..> Splashscreen
+ConnectDrawer .right.> Splashscreen
 ConnectDrawer ..> InformationFragment
 
 class ConnectFragment << Fragment >> {
@@ -105,7 +105,7 @@ void show_info (String info, boolean showButton)
 }
 
 ConnectFragment ..|> WebSocketConnectionObserver
-ConnectFragment --> WebSocketConnection
+ConnectFragment -right-> WebSocketConnection
 ConnectFragment --> WebSocketOptions
 ConnectFragment ..|> fragment_connect
 ConnectFragment ..> strings
@@ -136,8 +136,8 @@ CharSequence text
 }
 
 Login ..|> activity_login
-Login ..> LoginData
-Login ..> ConnectDrawer
+Login .left.> LoginData
+Login .right.> ConnectDrawer
 
 class LoginData {
 {static} String curruser
@@ -182,7 +182,7 @@ Animation animation
 }
 
 Splashscreen ..|> activity_splash
-Splashscreen ..> welcome_animation
+Splashscreen .right.> welcome_animation
 
 class NoCopyByteArrayOutputStream << ByteArrayOutputStream >> {
 + NoCopyByteArrayOutputStream()
@@ -237,7 +237,7 @@ RECONNECT
 WebSocket --|> WebSocketConnectionObserver
 WebSocket ..> WebSocketException
 WebSocket ..> WebSocketOptions
-WebSocketConnectionObserver --|> WebSocketCloseNotification
+WebSocketConnectionObserver -right-|> WebSocketCloseNotification
 
 class WebSocketConnection {
 - {static} final String TAG
@@ -297,7 +297,7 @@ class ThreadHandler << Handler >> {
 }
 
 WebSocketConnection ..|> WebSocket
-WebSocketConnection --> WebSocketReader
+WebSocketConnection -right-> WebSocketReader
 WebSocketConnection --> WebSocketWriter
 WebSocketConnection ..> WebSocketConnectionObserver
 WebSocketConnection --> WebSocketOptions
@@ -533,9 +533,9 @@ STATE_CLOSING
 STATE_OPEN
 }
 
-WebSocketReader ..|> ReaderState
+WebSocketReader .right.|> ReaderState
 WebSocketReader --> WebSocketOptions
-WebSocketReader --> WebSocketFrameHeader
+WebSocketReader -right-> WebSocketFrameHeader
 WebSocketReader --> Utf8Validator
 WebSocketReader --> NoCopyByteArrayOutputStream
 WebSocketReader ..> Message
