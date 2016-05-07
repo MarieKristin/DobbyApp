@@ -17,6 +17,7 @@
  ******************************************************************************/
 
 package teamdobby.dobby.SecureWebSockets;
+//VIEWMODEL
 
 import android.os.Handler;
 import android.os.Message;

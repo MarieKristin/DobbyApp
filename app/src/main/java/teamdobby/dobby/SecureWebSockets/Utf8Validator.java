@@ -20,6 +20,7 @@
  ******************************************************************************/
 
 package teamdobby.dobby.SecureWebSockets;
+//MODEL
 
 /**
  *  Incremental UTF-8 validator. The validator runs with constant memory

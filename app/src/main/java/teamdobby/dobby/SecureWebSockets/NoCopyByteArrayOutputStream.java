@@ -17,6 +17,7 @@
  ******************************************************************************/
 
 package teamdobby.dobby.SecureWebSockets;
+//VIEWMODEL
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

@@ -1,4 +1,5 @@
 package teamdobby.dobby.SecureWebSockets;
+//VIEWMODEL
 
 /**
  * Created by Marie on 11.04.2016.

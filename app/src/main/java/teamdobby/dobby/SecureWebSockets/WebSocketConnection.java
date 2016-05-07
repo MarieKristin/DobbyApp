@@ -17,6 +17,7 @@
  ******************************************************************************/
 
 package teamdobby.dobby.SecureWebSockets;
+//VIEWMODEL
 
 import android.net.SSLCertificateSocketFactory;
 import android.os.Handler;

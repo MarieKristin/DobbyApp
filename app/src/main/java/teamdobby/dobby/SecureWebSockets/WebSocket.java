@@ -1,4 +1,5 @@
 package teamdobby.dobby.SecureWebSockets;
+//VIEWMODEL
 
 import java.net.URI;
 

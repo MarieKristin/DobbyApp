@@ -1,4 +1,5 @@
 package teamdobby.dobby;
+//VIEWMODEL
 
 import android.content.Context;
 import android.content.Intent;
