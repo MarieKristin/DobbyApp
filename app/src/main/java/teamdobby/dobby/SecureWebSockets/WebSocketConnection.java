@@ -32,6 +32,7 @@ import java.net.URI;
 
 import javax.net.SocketFactory;
 
+import teamdobby.dobby.R;
 import teamdobby.dobby.SecureWebSockets.WebSocket.WebSocketConnectionObserver.WebSocketCloseNotification;
 import teamdobby.dobby.SecureWebSockets.WebSocketMessage.WebSocketCloseCode;
 
@@ -39,12 +40,6 @@ import teamdobby.dobby.SecureWebSockets.WebSocketMessage.WebSocketCloseCode;
  * Created by Marie on 11.04.2016.
  */
 public class WebSocketConnection implements WebSocket {
-    private static final String TAG = "SecureWebSockets";
-    private static final String WS_URI_SCHEME = "ws";
-    private static final String WSS_URI_SCHEME = "wss";
-    private static final String WS_WRITER = "WebSocketWriter";
-    private static final String WS_READER = "WebSocketReader";
-
     private final Handler mHandler;
 
     private WebSocketReader mWebSocketReader;
@@ -62,7 +57,7 @@ public class WebSocketConnection implements WebSocket {
     private boolean mPreviousConnection = false;
 
     public WebSocketConnection() {
-        Log.d(TAG, "WebSocket connection created.");
+        Log.d(WebSocketStrings.TAG, WebSocketStrings.Conn_created);
 
         this.mHandler = new ThreadHandler(this);
     }
@@ -85,7 +80,7 @@ public class WebSocketConnection implements WebSocket {
     }
 
     private void failConnection(WebSocketCloseNotification code, String reason) {
-        Log.d(TAG, "fail connection [code = " + code + ", reason = " + reason);
+        Log.d(WebSocketStrings.TAG, WebSocketStrings.Conn_fail_1 + code + WebSocketStrings.Conn_fail_2 + reason);
 
         if (mWebSocketReader != null) {
             mWebSocketReader.quit();
@@ -96,7 +91,7 @@ public class WebSocketConnection implements WebSocket {
                 e.printStackTrace();
             }
         } else {
-            Log.d(TAG, "mReader already NULL");
+            Log.d(WebSocketStrings.TAG, WebSocketStrings.mReader_null);
         }
 
         if (mWebSocketWriter != null) {
@@ -108,7 +103,7 @@ public class WebSocketConnection implements WebSocket {
                 e.printStackTrace();
             }
         } else {
-            Log.d(TAG, "mWriter already NULL");
+            Log.d(WebSocketStrings.TAG, WebSocketStrings.mWriter_null);
         }
 
         if (mSocket != null) {
@@ -120,7 +115,7 @@ public class WebSocketConnection implements WebSocket {
                 }
             });
         } else {
-            Log.d(TAG, "mTransportChannel already NULL");
+            Log.d(WebSocketStrings.TAG, WebSocketStrings.mTransportChannel_null);
         }
 
         mSocketThread.getHandler().post(new Runnable() {
@@ -133,7 +128,7 @@ public class WebSocketConnection implements WebSocket {
 
         onClose(code, reason);
 
-        Log.d(TAG, "worker threads stopped");
+        Log.d(WebSocketStrings.TAG, WebSocketStrings.worker_stopped);
     }
 
     public void connect(URI webSocketURI, WebSocket.WebSocketConnectionObserver connectionObserver) throws WebSocketException {
@@ -146,15 +141,15 @@ public class WebSocketConnection implements WebSocket {
 
     public void connect(URI webSocketURI, String[] subprotocols, WebSocket.WebSocketConnectionObserver connectionObserver, WebSocketOptions options) throws WebSocketException {
         if (mSocket != null && mSocket.isConnected()) {
-            throw new WebSocketException("already connected");
+            throw new WebSocketException(WebSocketStrings.Conn_exists);
         }
 
         if (webSocketURI == null) {
-            throw new WebSocketException("WebSockets URI null.");
+            throw new WebSocketException(WebSocketStrings.Uri_null);
         } else {
             this.mWebSocketURI = webSocketURI;
-            if (!mWebSocketURI.getScheme().equals(WS_URI_SCHEME) && !mWebSocketURI.getScheme().equals(WSS_URI_SCHEME)) {
-                throw new WebSocketException("unsupported scheme for WebSockets URI");
+            if (!mWebSocketURI.getScheme().equals(WebSocketStrings.WS_URI_SCHEME) && !mWebSocketURI.getScheme().equals(WebSocketStrings.WSS_URI_SCHEME)) {
+                throw new WebSocketException(WebSocketStrings.Uri_unsupported);
             }
 
             this.mWebSocketSubprotocols = subprotocols;
@@ -169,7 +164,7 @@ public class WebSocketConnection implements WebSocket {
         if (mWebSocketWriter != null && mWebSocketWriter.isAlive()) {
             mWebSocketWriter.forward(new WebSocketMessage.Close());
         } else {
-            Log.d(TAG, "Could not send WebSocket Close .. writer already null");
+            Log.d(WebSocketStrings.TAG, WebSocketStrings.close_null);
         }
 
         this.mPreviousConnection = false;
@@ -227,7 +222,7 @@ public class WebSocketConnection implements WebSocket {
                 onClose(WebSocketCloseNotification.INTERNAL_ERROR, e.getLocalizedMessage());
             }
         } else {
-            onClose(WebSocketCloseNotification.CANNOT_CONNECT, "could not connect to WebSockets server");
+            onClose(WebSocketCloseNotification.CANNOT_CONNECT, WebSocketStrings.Conn_failed);
         }
     }
 
@@ -246,11 +241,11 @@ public class WebSocketConnection implements WebSocket {
         int interval = mWebSocketOptions.getReconnectInterval();
         boolean shouldReconnect = mSocket.isConnected() && mPreviousConnection && (interval > 0);
         if (shouldReconnect) {
-            Log.d(TAG, "WebSocket reconnection scheduled");
+            Log.d(WebSocketStrings.TAG, WebSocketStrings.Reconn_scheduled);
             mHandler.postDelayed(new Runnable() {
 
                 public void run() {
-                    Log.d(TAG, "WebSocket reconnecting...");
+                    Log.d(WebSocketStrings.TAG, WebSocketStrings.Reconn_started);
                     reconnect();
                 }
             }, interval);
@@ -283,7 +278,7 @@ public class WebSocketConnection implements WebSocket {
                 e.printStackTrace();
             }
         } else {
-            Log.d(TAG, "WebSocketObserver null");
+            Log.d(WebSocketStrings.TAG, WebSocketStrings.observer_null);
         }
     }
 
@@ -294,7 +289,7 @@ public class WebSocketConnection implements WebSocket {
      * Create WebSockets background writer.
      */
     protected void createWriter() {
-        mWebSocketWriter = new WebSocketWriter(mHandler, mSocket, mWebSocketOptions, WS_WRITER);
+        mWebSocketWriter = new WebSocketWriter(mHandler, mSocket, mWebSocketOptions, WebSocketStrings.WS_WRITER);
         mWebSocketWriter.start();
 
         synchronized (mWebSocketWriter) {
@@ -304,7 +299,7 @@ public class WebSocketConnection implements WebSocket {
             }
         }
 
-        Log.d(TAG, "WebSocket writer created and started.");
+        Log.d(WebSocketStrings.TAG, WebSocketStrings.writer_created);
     }
 
     /**
@@ -312,7 +307,7 @@ public class WebSocketConnection implements WebSocket {
      */
     protected void createReader() {
 
-        mWebSocketReader = new WebSocketReader(mHandler, mSocket, mWebSocketOptions, WS_READER);
+        mWebSocketReader = new WebSocketReader(mHandler, mSocket, mWebSocketOptions, WebSocketStrings.WS_READER);
         mWebSocketReader.start();
 
         synchronized (mWebSocketReader) {
@@ -322,7 +317,7 @@ public class WebSocketConnection implements WebSocket {
             }
         }
 
-        Log.d(TAG, "WebSocket reader created and started.");
+        Log.d(WebSocketStrings.TAG, WebSocketStrings.reader_created);
     }
 
     private void handleMessage(Message message) {
@@ -334,7 +329,7 @@ public class WebSocketConnection implements WebSocket {
             if (webSocketObserver != null) {
                 webSocketObserver.onTextMessage(textMessage.mPayload);
             } else {
-                Log.d(TAG, "could not call onTextMessage() .. handler already NULL");
+                Log.d(WebSocketStrings.TAG, WebSocketStrings.onTextMessage_null);
             }
 
         } else if (message.obj instanceof WebSocketMessage.RawTextMessage) {
@@ -343,7 +338,7 @@ public class WebSocketConnection implements WebSocket {
             if (webSocketObserver != null) {
                 webSocketObserver.onRawTextMessage(rawTextMessage.mPayload);
             } else {
-                Log.d(TAG, "could not call onRawTextMessage() .. handler already NULL");
+                Log.d(WebSocketStrings.TAG, WebSocketStrings.onRawTextMessage_null);
             }
 
         } else if (message.obj instanceof WebSocketMessage.BinaryMessage) {
@@ -352,12 +347,12 @@ public class WebSocketConnection implements WebSocket {
             if (webSocketObserver != null) {
                 webSocketObserver.onBinaryMessage(binaryMessage.mPayload);
             } else {
-                Log.d(TAG, "could not call onBinaryMessage() .. handler already NULL");
+                Log.d(WebSocketStrings.TAG, WebSocketStrings.onBinaryMessage_null);
             }
 
         } else if (message.obj instanceof WebSocketMessage.Ping) {
             WebSocketMessage.Ping ping = (WebSocketMessage.Ping) message.obj;
-            Log.d(TAG, "WebSockets Ping received");
+            Log.d(WebSocketStrings.TAG, WebSocketStrings.ping_received);
 
             WebSocketMessage.Pong pong = new WebSocketMessage.Pong();
             pong.mPayload = ping.mPayload;
@@ -366,44 +361,44 @@ public class WebSocketConnection implements WebSocket {
         } else if (message.obj instanceof WebSocketMessage.Pong) {
             WebSocketMessage.Pong pong = (WebSocketMessage.Pong) message.obj;
 
-            Log.d(TAG, "WebSockets Pong received" + pong.mPayload);
+            Log.d(WebSocketStrings.TAG, WebSocketStrings.pong_received + pong.mPayload);
 
         } else if (message.obj instanceof WebSocketMessage.Close) {
             WebSocketMessage.Close close = (WebSocketMessage.Close) message.obj;
 
-            Log.d(TAG, "WebSockets Close received (" + close.getCode() + " - " + close.getReason() + ")");
+            Log.d(WebSocketStrings.TAG, WebSocketStrings.close_received + "(" + close.getCode() + " - " + close.getReason() + ")");
 
             mWebSocketWriter.forward(new WebSocketMessage.Close(WebSocketCloseCode.NORMAL));
 
         } else if (message.obj instanceof WebSocketMessage.ServerHandshake) {
             WebSocketMessage.ServerHandshake serverHandshake = (WebSocketMessage.ServerHandshake) message.obj;
 
-            Log.d(TAG, "opening handshake received");
+            Log.d(WebSocketStrings.TAG, WebSocketStrings.handshake_received);
 
             if (serverHandshake.mSuccess) {
                 if (webSocketObserver != null) {
                     webSocketObserver.onOpen();
                 } else {
-                    Log.d(TAG, "could not call onOpen() .. handler already NULL");
+                    Log.d(WebSocketStrings.TAG, WebSocketStrings.onOpen_null);
                 }
                 mPreviousConnection = true;
             }
 
         } else if (message.obj instanceof WebSocketMessage.ConnectionLost) {
             //			WebSocketMessage.ConnectionLost connectionLost = (WebSocketMessage.ConnectionLost) message.obj;
-            failConnection(WebSocketCloseNotification.CONNECTION_LOST, "WebSockets connection lost");
+            failConnection(WebSocketCloseNotification.CONNECTION_LOST, WebSocketStrings.Conn_lost);
 
         } else if (message.obj instanceof WebSocketMessage.ProtocolViolation) {
             //			WebSocketMessage.ProtocolViolation protocolViolation = (WebSocketMessage.ProtocolViolation) message.obj;
-            failConnection(WebSocketCloseNotification.PROTOCOL_ERROR, "WebSockets protocol violation");
+            failConnection(WebSocketCloseNotification.PROTOCOL_ERROR, WebSocketStrings.protocol_viol);
 
         } else if (message.obj instanceof WebSocketMessage.Error) {
             WebSocketMessage.Error error = (WebSocketMessage.Error) message.obj;
-            failConnection(WebSocketCloseNotification.INTERNAL_ERROR, "WebSockets internal error (" + error.mException.toString() + ")");
+            failConnection(WebSocketCloseNotification.INTERNAL_ERROR, WebSocketStrings.intern_err + "(" + error.mException.toString() + ")");
 
         } else if (message.obj instanceof WebSocketMessage.ServerError) {
             WebSocketMessage.ServerError error = (WebSocketMessage.ServerError) message.obj;
-            failConnection(WebSocketCloseNotification.SERVER_ERROR, "Server error " + error.mStatusCode + " (" + error.mStatusMessage + ")");
+            failConnection(WebSocketCloseNotification.SERVER_ERROR, WebSocketStrings.serv_err + error.mStatusCode + " (" + error.mStatusMessage + ")");
 
         } else {
             processAppMessage(message.obj);
@@ -412,15 +407,13 @@ public class WebSocketConnection implements WebSocket {
     }
 
     public static class SocketThread extends Thread {
-
-        private static final String WS_CONNECTOR = "WebSocketConnector";
         private final URI mWebSocketURI;
         private Socket mSocket = null;
         private String mFailureMessage = null;
         private Handler mHandler;
 
         public SocketThread(URI uri, WebSocketOptions options) {
-            this.setName(WS_CONNECTOR);
+            this.setName(WebSocketStrings.WS_CONNECTOR);
 
             this.mWebSocketURI = uri;
         }
@@ -434,7 +427,7 @@ public class WebSocketConnection implements WebSocket {
             }
 
             Looper.loop();
-            Log.d(TAG, "SocketThread exited.");
+            Log.d(WebSocketStrings.TAG, WebSocketStrings.sock_exit);
         }
 
         public void startConnection() {
@@ -443,7 +436,7 @@ public class WebSocketConnection implements WebSocket {
                 int port = mWebSocketURI.getPort();
 
                 if (port == -1) {
-                    if (mWebSocketURI.getScheme().equals(WSS_URI_SCHEME)) {
+                    if (mWebSocketURI.getScheme().equals(WebSocketStrings.WSS_URI_SCHEME)) {
                         port = 443;
                     } else {
                         port = 80;
@@ -451,7 +444,7 @@ public class WebSocketConnection implements WebSocket {
                 }
 
                 SocketFactory factory = null;
-                if (mWebSocketURI.getScheme().equalsIgnoreCase(WSS_URI_SCHEME)) {
+                if (mWebSocketURI.getScheme().equalsIgnoreCase(WebSocketStrings.WSS_URI_SCHEME)) {
                     factory = SSLCertificateSocketFactory.getDefault();
                 } else {
                     factory = SocketFactory.getDefault();

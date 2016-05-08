@@ -28,8 +28,6 @@ import java.util.Random;
  * Created by Marie on 11.04.2016.
  */
 public class WebSocketWriter extends Thread {
-    private static final String TAG = "SecureWebSockets";
-
     private static final int WEB_SOCKETS_VERSION = 13;
     private static final String CRLF = "\r\n";
     private final Random mRandom = new Random();
@@ -49,7 +47,7 @@ public class WebSocketWriter extends Thread {
 
         this.mApplicationBuffer = ByteBuffer.allocate(options.getMaxFramePayloadSize() + 14);
 
-        Log.d(TAG, "WebSocket writer created.");
+        Log.d(WebSocketStrings.TAG, WebSocketStrings.wwriter_created);
     }
 
     /**
@@ -110,18 +108,18 @@ public class WebSocketWriter extends Thread {
             path = "/";
         }
 
-        mApplicationBuffer.put(("GET " + path + " HTTP/1.1" + CRLF).getBytes());
-        mApplicationBuffer.put(("Host: " + message.getURI().getHost() + CRLF).getBytes());
-        mApplicationBuffer.put(("Upgrade: WebSocket" + CRLF).getBytes());
-        mApplicationBuffer.put(("Connection: Upgrade" + CRLF).getBytes());
-        mApplicationBuffer.put(("Sec-WebSocket-Key: " + newHandshakeKey() + CRLF).getBytes());
+        mApplicationBuffer.put((WebSocketStrings.applBuff_get + path + WebSocketStrings.applBuff_http + CRLF).getBytes());
+        mApplicationBuffer.put((WebSocketStrings.applBuff_host + message.getURI().getHost() + CRLF).getBytes());
+        mApplicationBuffer.put((WebSocketStrings.applBuff_upWeb + CRLF).getBytes());
+        mApplicationBuffer.put((WebSocketStrings.applBuff_conn + CRLF).getBytes());
+        mApplicationBuffer.put((WebSocketStrings.applBuff_secKey + newHandshakeKey() + CRLF).getBytes());
 
         if (message.getOrigin() != null) {
-            mApplicationBuffer.put(("Origin: " + message.getOrigin().toString() + CRLF).getBytes());
+            mApplicationBuffer.put((WebSocketStrings.applBuff_orig + message.getOrigin().toString() + CRLF).getBytes());
         }
 
         if (message.getSubprotocols() != null && message.getSubprotocols().length > 0) {
-            mApplicationBuffer.put(("Sec-WebSocket-Protocol: ").getBytes());
+            mApplicationBuffer.put((WebSocketStrings.applBuff_secProt).getBytes());
             for (int i = 0; i < message.getSubprotocols().length; ++i) {
                 mApplicationBuffer.put((message.getSubprotocols()[i]).getBytes());
                 mApplicationBuffer.put((", ").getBytes());
@@ -129,7 +127,7 @@ public class WebSocketWriter extends Thread {
             mApplicationBuffer.put((CRLF).getBytes());
         }
 
-        mApplicationBuffer.put(("Sec-WebSocket-Version: " + WEB_SOCKETS_VERSION + CRLF).getBytes());
+        mApplicationBuffer.put((WebSocketStrings.applBuff_secVers + WEB_SOCKETS_VERSION + CRLF).getBytes());
         mApplicationBuffer.put((CRLF).getBytes());
     }
 
@@ -151,7 +149,7 @@ public class WebSocketWriter extends Thread {
             }
 
             if (payload != null && payload.length > 125) {
-                throw new WebSocketException("close payload exceeds 125 octets");
+                throw new WebSocketException(WebSocketStrings.cls_tooLarge);
             }
 
             payload[0] = (byte)((message.getCode() >> 8) & 0xff);
@@ -179,7 +177,7 @@ public class WebSocketWriter extends Thread {
      */
     private void sendPong(WebSocketMessage.Pong message) throws IOException, WebSocketException {
         if (message.mPayload != null && message.mPayload.length > 125) {
-            throw new WebSocketException("pong payload exceeds 125 octets");
+            throw new WebSocketException(WebSocketStrings.pong_tooLarge);
         }
         sendFrame(10, true, message.mPayload);
     }
@@ -189,7 +187,7 @@ public class WebSocketWriter extends Thread {
      */
     private void sendBinaryMessage(WebSocketMessage.BinaryMessage message) throws IOException, WebSocketException {
         if (message.mPayload.length > mWebSocketOptions.getMaxMessagePayloadSize()) {
-            throw new WebSocketException("message payload exceeds payload limit");
+            throw new WebSocketException(WebSocketStrings.msgPay_tooLarge);
         }
         sendFrame(2, true, message.mPayload);
     }
@@ -200,7 +198,7 @@ public class WebSocketWriter extends Thread {
     private void sendTextMessage(WebSocketMessage.TextMessage message) throws IOException, WebSocketException {
         byte[] payload = message.mPayload.getBytes(WebSocket.UTF8_ENCODING);
         if (payload.length > mWebSocketOptions.getMaxMessagePayloadSize()) {
-            throw new WebSocketException("message payload exceeds payload limit");
+            throw new WebSocketException(WebSocketStrings.msgPay_tooLarge);
         }
         sendFrame(1, true, payload);
     }
@@ -210,7 +208,7 @@ public class WebSocketWriter extends Thread {
      */
     private void sendRawTextMessage(WebSocketMessage.RawTextMessage message) throws IOException, WebSocketException {
         if (message.mPayload.length > mWebSocketOptions.getMaxMessagePayloadSize()) {
-            throw new WebSocketException("message payload exceeds payload limit");
+            throw new WebSocketException(WebSocketStrings.msgPay_tooLarge);
         }
         sendFrame(1, true, message.mPayload);
     }
@@ -328,7 +326,7 @@ public class WebSocketWriter extends Thread {
         } else if (msg instanceof WebSocketMessage.Quit) {
             Looper.myLooper().quit();
 
-            Log.d(TAG, "WebSocket writer ended.");
+            Log.d(WebSocketStrings.TAG, WebSocketStrings.writer_ended);
         } else {
             processAppMessage(msg);
         }
@@ -342,11 +340,11 @@ public class WebSocketWriter extends Thread {
 
             mOutputStream.write(mApplicationBuffer.array(), mApplicationBuffer.position(), mApplicationBuffer.limit());
         } catch (SocketException e) {
-            Log.e(TAG, "run() : SocketException (" + e.toString() + ")");
+            Log.e(WebSocketStrings.TAG, WebSocketStrings.run_sockExc + " (" + e.toString() + ")");
 
             notify(new WebSocketMessage.ConnectionLost());
         } catch (IOException e) {
-            Log.e(TAG, "run() : IOException (" + e.toString() + ")");
+            Log.e(WebSocketStrings.TAG, WebSocketStrings.run_ioExc + " (" + e.toString() + ")");
 
         } catch (Exception e) {
             notify(new WebSocketMessage.Error(e));
@@ -360,7 +358,7 @@ public class WebSocketWriter extends Thread {
      * @param msg      Message from foreground thread to process.
      */
     protected void processAppMessage(Object msg) throws WebSocketException, IOException {
-        throw new WebSocketException("unknown message received by WebSocketWriter");
+        throw new WebSocketException(WebSocketStrings.unkwn_msg);
     }
 
     // Thread method overrides
@@ -370,7 +368,7 @@ public class WebSocketWriter extends Thread {
         try {
             outputStream = mSocket.getOutputStream();
         } catch (IOException e) {
-            Log.e(TAG, e.getLocalizedMessage());
+            Log.e(WebSocketStrings.TAG, e.getLocalizedMessage());
         }
 
         this.mOutputStream = outputStream;
@@ -378,7 +376,7 @@ public class WebSocketWriter extends Thread {
         this.mHandler = new ThreadHandler(this);
 
         synchronized (this) {
-            Log.d(TAG, "WebSocker writer running.");
+            Log.d(WebSocketStrings.TAG, WebSocketStrings.writer_run);
             notifyAll();
         }
 

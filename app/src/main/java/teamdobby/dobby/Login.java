@@ -48,18 +48,18 @@ public class Login extends AppCompatActivity{
             setUser();
             if(LoginData.isValidName(Name)){
                 if(LoginData.isValidPass(Name,Pass)){
-                    text="Successfully logged in";
+                    text=getString(R.string.logged_in);
                     startIntent();
                     LoginData.setCurrUser(Name);
                     LoginData.setLogged();
                     finish();
                 }
                 else {
-                    text="Wrong Password";
+                    text=getString(R.string.inv_pass);
                 }
             }
             else {
-                text = "User not found";
+                text = getString(R.string.inv_usr);
             }
 
             this.toastShow();

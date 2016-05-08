@@ -7,13 +7,13 @@ import java.net.URI;
  * Created by Marie on 11.04.2016.
  */
 public interface WebSocket {
-    public static final String UTF8_ENCODING = "UTF-8";
+    String UTF8_ENCODING = "UTF-8";
 
     /**
      * Session handler for WebSocket sessions.
      */
-    public interface WebSocketConnectionObserver {
-        public static enum WebSocketCloseNotification {
+    interface WebSocketConnectionObserver {
+        enum WebSocketCloseNotification {
             NORMAL,
             CANNOT_CONNECT,
             CONNECTION_LOST,
@@ -27,7 +27,7 @@ public interface WebSocket {
          * Fired when the WebSockets connection has been established.
          * After this happened, messages may be sent.
          */
-        public void onOpen();
+        void onOpen();
 
         /**
          * Fired when the WebSockets connection has deceased (or could
@@ -36,7 +36,7 @@ public interface WebSocket {
          * @param code       Close code.
          * @param reason     Close reason (human-readable).
          */
-        public void onClose(WebSocketCloseNotification code, String reason);
+        void onClose(WebSocketCloseNotification code, String reason);
 
         /**
          * Fired when a text message has been received (and text
@@ -44,7 +44,7 @@ public interface WebSocket {
          *
          * @param payload    Text message payload or null (empty payload).
          */
-        public void onTextMessage(String payload);
+        void onTextMessage(String payload);
 
         /**
          * Fired when a text message has been received (and text
@@ -52,21 +52,21 @@ public interface WebSocket {
          *
          * @param payload    Text message payload as raw UTF-8 or null (empty payload).
          */
-        public void onRawTextMessage(byte[] payload);
+        void onRawTextMessage(byte[] payload);
 
         /**
          * Fired when a binary message has been received.
          *
          * @param payload    Binar message payload or null (empty payload).
          */
-        public void onBinaryMessage(byte[] payload);
+        void onBinaryMessage(byte[] payload);
     }
 
-    public void connect(URI uri, WebSocketConnectionObserver observer) throws WebSocketException;
-    public void connect(URI uri, WebSocketConnectionObserver observer, WebSocketOptions options) throws WebSocketException;
-    public void disconnect();
-    public boolean isConnected();
-    public void sendBinaryMessage(byte[] payload);
-    public void sendRawTextMessage(byte[] payload);
-    public void sendTextMessage(String payload);
+    void connect(URI uri, WebSocketConnectionObserver observer) throws WebSocketException;
+    void connect(URI uri, WebSocketConnectionObserver observer, WebSocketOptions options) throws WebSocketException;
+    void disconnect();
+    boolean isConnected();
+    void sendBinaryMessage(byte[] payload);
+    void sendRawTextMessage(byte[] payload);
+    void sendTextMessage(String payload);
 }

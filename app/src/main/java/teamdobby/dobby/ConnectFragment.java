@@ -80,9 +80,9 @@ public class ConnectFragment extends Fragment implements WebSocket.WebSocketConn
         /*hostname = (EditText) view.findViewById(R.id.hostname);
         portNumber = (EditText) view.findViewById(R.id.port);
         timeout = (EditText) view.findViewById(R.id.timeout);*/
-        hostname = "192.168.0.1";
-        portNumber = "8080";
-        timeout = "3000";
+        hostname = getString(R.string.ip);
+        portNumber = getString(R.string.port);
+        timeout = getString(R.string.timeout);
 
         cmdInput = (EditText) view.findViewById(R.id.cmdInput);
         cmdOutput = (TextView) view.findViewById(R.id.cmdOutput);
@@ -115,9 +115,9 @@ public class ConnectFragment extends Fragment implements WebSocket.WebSocketConn
                     /*Settings.pref_set_hostname(getActivity().getBaseContext());
                     Settings.pref_set_port_number(getActivity().getBaseContext());
                     Settings.pref_set_timeout(getActivity().getBaseContext());*/
-                    Log.i(TAG_LOG, "pref_set_hostname() value: " + "192.168.0.1");
-                    Log.i(TAG_LOG, "pref_set_port_number() value: " + "8080");
-                    Log.i(TAG_LOG, "pref_set_timeout() value: " + "3000");
+                    Log.i(TAG_LOG, getString(R.string.pref_name) + getString(R.string.ip));
+                    Log.i(TAG_LOG, getString(R.string.pref_port) + getString(R.string.port));
+                    Log.i(TAG_LOG, getString(R.string.pref_time) + getString(R.string.timeout));
 
                     /* connect */
                     if (!wsConnect()) {
@@ -147,12 +147,12 @@ public class ConnectFragment extends Fragment implements WebSocket.WebSocketConn
 
     @Override
     public void onResume() {
-        hostname = "192.168.0.1";
-        Log.i(TAG_LOG, "pref_get_hostname() value: " + hostname);
-        portNumber = "8080";
-        Log.i(TAG_LOG, "pref_get_port_number() value: " + portNumber);
-        timeout = "3000";
-        Log.i(TAG_LOG, "pref_get_timeout() value: " + timeout);
+        hostname = getString(R.string.ip);
+        Log.i(TAG_LOG, getString(R.string.pref_g_name) + hostname);
+        portNumber = getString(R.string.port);
+        Log.i(TAG_LOG, getString(R.string.pref_g_port) + portNumber);
+        timeout = getString(R.string.timeout);
+        Log.i(TAG_LOG, getString(R.string.pref_g_time) + timeout);
         super.onResume();
     }
 
@@ -168,31 +168,31 @@ public class ConnectFragment extends Fragment implements WebSocket.WebSocketConn
                 this.wsURI = new URI("ws://" + hostname + ":" + portNumber);
                 wsConnection.connect(wsURI, this, wsOptions);
             } catch (WebSocketException e) {
-                Log.e(TAG_LOG,  "Can't connect to server - 'WebSocketException'");
+                Log.e(TAG_LOG,  getString(R.string.conn_fail_wExc));
                 this.isConnected = false;
                 return false;
             } catch (URISyntaxException e1) {
-                Log.e (TAG_LOG, "Can't connect to server - 'URISyntaxException'");
+                Log.e (TAG_LOG, getString(R.string.conn_fail_uri));
                 this.isConnected = false;
                 return false;
             } catch (Exception ex) {
-                Log.e (TAG_LOG, "Can't connect to server - 'Exception'");
+                Log.e (TAG_LOG, getString(R.string.conn_fail_exc));
                 this.isConnected = false;
                 return false;
             }
 
-            Log.i (TAG_LOG, "Connected");
+            Log.i (TAG_LOG, getString(R.string.conn));
             this.isConnected = true;
             return true;
         }
 
-        Log.w(TAG_LOG, "You are already connected to the server");
+        Log.w(TAG_LOG, getString(R.string.conn_already));
         return true;
     }
 
     void wsDisconnect() {
         if (isConnected) {
-            Log.i(TAG_LOG, "Disconnected");
+            Log.i(TAG_LOG, getString(R.string.conn_exit));
             wsConnection.disconnect();
             connectButton.setProgress(0);
         }
@@ -202,7 +202,7 @@ public class ConnectFragment extends Fragment implements WebSocket.WebSocketConn
         if (isConnected) {
 
             /* send message to the server */
-            Log.i (TAG_LOG, "Message has been successfully sent");
+            Log.i (TAG_LOG, getString(R.string.msg_sent));
             wsConnection.sendTextMessage(cmdInput.getText().toString());
             appendText(cmdOutput, "[CLIENT] " + cmdInput.getText().toString() + "\n", Color.RED);
 
@@ -218,7 +218,7 @@ public class ConnectFragment extends Fragment implements WebSocket.WebSocketConn
     @Override
     public void onOpen() {
 
-        Log.i (TAG_LOG, "onOpen() - connection opened to: " + wsURI.toString());
+        Log.i (TAG_LOG, getString(R.string.conn_open) + wsURI.toString());
         this.isConnected = true;
         connectButton.setProgress(100);
     }
@@ -236,7 +236,7 @@ public class ConnectFragment extends Fragment implements WebSocket.WebSocketConn
 
         try {
 
-            Log.i(TAG_LOG, "New message from server");
+            Log.i(TAG_LOG, getString(R.string.msg_newServ));
             JSONObject jsonObj = new JSONObject(payload);
 
             if ((jsonObj.has(TAG_JSON_TYPE)) && (jsonObj.has(TAG_JSON_MSG))) {
@@ -248,7 +248,7 @@ public class ConnectFragment extends Fragment implements WebSocket.WebSocketConn
 
                     if (Settings.pref_notifications_disabled(getActivity().getBaseContext())) {
 
-                        Log.i(TAG_LOG, "Notifications are disabled");
+                        Log.i(TAG_LOG, getString(R.string.notif_dis));
 
                     } else {
 
@@ -268,7 +268,7 @@ public class ConnectFragment extends Fragment implements WebSocket.WebSocketConn
                         NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(getActivity().NOTIFICATION_SERVICE);
                         notificationManager.notify(notification_id, new_notification);
 
-                        appendText(cmdOutput, "[SERVER] Asynchronous Notification\n", Color.parseColor("#ff0099cc"));
+                        appendText(cmdOutput, getString(R.string.notif_async) + "\n", Color.parseColor("#ff0099cc"));
                     }
 
                 /*
@@ -283,25 +283,25 @@ public class ConnectFragment extends Fragment implements WebSocket.WebSocketConn
                  */
                 } else {
                     show_info (getResources().getString(R.string.info_msg_4), false);
-                    Log.e (TAG_LOG, "Received invalid JSON from server");
+                    Log.e (TAG_LOG, getString(R.string.info_msg_4));
                 }
             }
         } catch (JSONException e) {
 
             /* JSON object is not valid */
             show_info (getResources().getString(R.string.info_msg_4), false);
-            Log.e (TAG_LOG, "Received invalid JSON from server");
+            Log.e (TAG_LOG, getString(R.string.info_msg_4));
         }
     }
 
     @Override
     public void onRawTextMessage (byte[] payload) {
-        Log.wtf(TAG_LOG, "We didn't expect 'RawTextMessage'");
+        Log.wtf(TAG_LOG, getString(R.string.nExp_rTM));
     }
 
     @Override
     public void onBinaryMessage (byte[] payload) {
-        Log.wtf (TAG_LOG, "We didn't expect 'BinaryMessage'");
+        Log.wtf (TAG_LOG, getString(R.string.nExp_bM));
     }
 
     void show_info (String info, boolean showButton) {

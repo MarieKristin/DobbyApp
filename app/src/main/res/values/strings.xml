@@ -31,4 +31,47 @@
         <b>Disclaimer</b>\n\nPlease mind that this app is build for educational purposes and we can not provide any guarantees for this software.
         "
     </string>
+
+    <!-- for ConnectDrawer -->
+    <string name="conn_frag">Connect Fragment</string>
+    <string name="conn_tDobby">Connect to Dobby</string>
+    <string name="logged_out">Successfully logged out</string>
+    <string name="gen_info">General Information</string>
+
+    <!-- for InformationFragment -->
+    <string name="mail_info">Soon you will have the option to mail the Dobby-team</string>
+
+    <!-- for Login -->
+    <string name="logged_in">Successfully logged in</string>
+    <string name="inv_pass">Wrong Password</string>
+    <string name="inv_usr">User not found</string>
+
+    <!-- for ConnectFragment -->
+    <string name="ip">192.168.0.1</string>
+    <string name="port">8080</string>
+    <string name="timeout">3000</string>
+
+    <string name="pref_name">pref_set_hostname() value: </string>
+    <string name="pref_port">pref_set_port_number() value: </string>
+    <string name="pref_time">pref_set_timeout() value: </string>
+    <string name="pref_g_name">pref_get_hostname() value: </string>
+    <string name="pref_g_port">pref_get_port_number() value: </string>
+    <string name="pref_g_time">pref_get_timeout() value: </string>
+
+    <string name="conn_fail_wExc">Can't connect to server - 'WebSocketException'</string>
+    <string name="conn_fail_uri">Can't connect to server - 'URISyntaxException'</string>
+    <string name="conn_fail_exc">Can't connect to server - 'Exception'</string>
+    <string name="conn">Connected</string>
+    <string name="conn_already">You are already connected to the server</string>
+    <string name="conn_exit">Disconnected</string>
+    <string name="conn_open">onOpen() - connection opened to: </string>
+
+    <string name="msg_sent">Message has been successfully sent</string>
+    <string name="msg_newServ">New message from server</string>
+
+    <string name="notif_dis">Notifications are disabled</string>
+    <string name="notif_async">[SERVER] Asynchronous Notification</string>
+
+    <string name="nExp_rTM">We didn't expect 'RawTextMessage'</string>
+    <string name="nExp_bM">We didn't expect 'BinaryMessage'</string>
 </resources>

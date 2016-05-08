@@ -93,117 +93,120 @@ interface head_background << (S,darkgreen) SHAPE >>
 interface welcome_animation << (S,lightgreen) SET >>
 
 class Splashscreen < extends Activity > {
-	ImageView imageView
-	Animation animation
+	imageView:ImageView
+	animation:Animation
 
-	protected void onCreate(Bundle savedInstanceState)
-	private void animationListener(Animation animation)
-	public void onBackPressed()
+	# onCreate(savedInstanceState:Bundle)
+	- animationListener(animation:Animation)
+	+ onBackPressed()
 }
 Splashscreen ..> activity_splash
 Splashscreen ..> welcome_animation
 Splashscreen ..> Login
 
 class Settings < extends Activity > {
-	private static final String TAG_DISABLE_NOTIFICATIONS
-	private static final String TAG_DISABLE_MULTIPLE_NOTIFICATIONS
+	- {static} TAG_DISABLE_NOTIFICATIONS:String
+	- {static} TAG_DISABLE_MULTIPLE_NOTIFICATIONS:String
 
-	public void onCreate(Bundle savedInstanceState)
-	public static Boolean pref_notifications_disabled (Context context)
-	public static Boolean pref_multiple_notifications_disabled (Context context)
+	+ onCreate(savedInstanceState:Bundle)
+	+ {static} pref_notifications_disabled(context:Context):Boolean
+	+ {static} pref_multiple_notifications_disabled(context:Context):Boolean
 }
 Settings +-- PrefsFragment
+
 class PrefsFragment < extends PreferenceFragment > {
-	public void onCreate(Bundle savedInstanceState)
+	+ onCreate(savedInstanceState:Bundle)
 }
 PrefsFragment ..> settings
 
 class LoginData <<MODEL>> {
-	static String curruser
-	static boolean logged
-	String name
-	String pass
-	static ArrayList<LoginData> user
+	{static} curruser:String
+	{static} logged:boolean
+	name:String
+	pass:String
+	{static} user:ArrayList<LoginData>
 
-	static void main()
-	public LoginData(String name, String pass)
-	static boolean isValidName(String name)
-	static boolean isValidPass(String name, String pass)
-	static void setCurrUser(String Name)
-	static String getCurrUser()
-	static void setLogged()
-	static void notLogged()
-	static boolean getLogged()
+	{static} main()
+	+ LoginData(name:String, pass:String)
+	{static} isValidName(name:String):boolean
+	{static} isValidPass(name:String, pass:String):boolean
+	{static} setCurrUser(Name:String)
+	{static} getCurrUser():String
+	{static} setLogged()
+	{static} notLogged()
+	{static} getLogged():boolean
 }
 
 class Login < extends AppCompatActivity > {
-	Button confirm
-	EditText NameText
-	EditText PassText
-	String Name
-	String Pass
-	CharSequence text
+	confirm:Button
+	NameText:EditText
+	PassText:EditText
+	Name:String
+	Pass:String
+	text:CharSequence
 
-	protected void onCreate(Bundle savedInstanceState)
-	public void onClickFunction(View v)
-	private void setUser()
-	private void startIntent()
-	private void toastShow()
-	public void onBackPressed()
+	# onCreate(savedInstanceState:Bundle)
+	+ onClickFunction(v:View)
+	- setUser()
+	- startIntent()
+	- toastShow()
+	+ onBackPressed()
 }
 Login ..> activity_login
 Login ..> LoginData
+Login ..> strings
 
 class InformationFragment < extends Fragment > {
-	public InformationFragment()
+	+ InformationFragment()
 
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-	private void clickListener(View view)
+	+ onCreateView(inflater:LayoutInflater, container:ViewGroup, savedInstanceState:Bundle):View
+	- clickListener(view:View)
 }
 InformationFragment ..> fragment_information
+InformationFragment ..> strings
 
 class ConnectFragment < extends Fragment > {
-	private static final String TAG_LOG
-	private static final String TAG_JSON_TYPE
-	private static final String TAG_JSON_MSG
-	private volatile boolean isConnected
-	private WebSocketConnection wsConnection
-	private WebSocketOptions wsOptions
-	private URI wsURI
-	private EditText cmdInput
-	private TextView cmdOutput
-	private CircularProgressButton connectButton
-	private String hostname
-	private String portNumber
-	private String timeout
-	OnClickWrapper onClickWrapperExit
+	- {static} TAG_LOG:String
+	- {static} TAG_JSON_TYPE:String
+	- {static} TAG_JSON_MSG:String
+	- isConnected:boolean
+	- wsConnection:WebSocketConnection
+	- wsOptions:WebSocketOptions
+	- wsURI:URI
+	- cmdInput:EditText
+	- cmdOutput:TextView
+	- connectButton:CircularProgressButton
+	- hostname:String
+	- portNumber:String
+	- timeout:String
+	onClickWrapperExit:OnClickWrapper
 
-	public ConnectFragment()
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-	public void onResume()
-	boolean wsConnect()
-	void wsSend()
-	public void onOpen()
-	public void onClose (WebSocketCloseNotification code, String reason)
-	public void onTextMessage (String payload)
-	public void onRawTextMessage (byte[] payload)
-	public void onBinaryMessage (byte[] payload)
-	void show_info (String info, boolean showButton)
-	static void appendText (TextView textView, String text, int textColor)
+	+ ConnectFragment()
+	+ onCreateView(inflater:LayoutInflater, container:ViewGroup, savedInstanceState:Bundle):View
+	+ onResume()
+	wsConnect():boolean
+	wsSend()
+	+ onOpen()
+	+ onClose (code:WebSocketCloseNotification, reason:String)
+	+ onTextMessage (payload:String)
+	+ onRawTextMessage (payload:byte[])
+	+ onBinaryMessage (payload:byte[])
+	show_info (info:String, showButton:boolean)
+	{static} appendText(textView:TextView, text:String, textColor:int)
 }
 ConnectFragment ..> fragment_connect
 ConnectFragment ..> strings
 
 class ConnectDrawer < extends AppCompatActivity > {
-	DrawerLayout drawerLayout
-    Toolbar toolbar
-    ActionBarDrawerToggle actionBarDrawerToggle
-    FragmentTransaction fragmentTransaction
-    NavigationView navigationView
+	drawerLayout:DrawerLayout
+	toolbar:Toolbar
+	actionBarDrawerToggle:ActionBarDrawerToggle
+	fragmentTransaction:FragmentTransaction
+	navigationView:NavigationView
 
-    protected void onCreate(Bundle savedInstanceState)
-    public void onBackPressed()
-    protected void onPostCreate(Bundle savedInstanceState)
+	# onCreate(savedInstanceState:Bundle)
+	+ onBackPressed()
+	# onPostCreate(savedInstanceState:Bundle)
 }
 ConnectDrawer ..> activity_connect_drawer
 ConnectDrawer ..> strings
@@ -211,6 +214,8 @@ ConnectDrawer --> ConnectFragment
 ConnectDrawer ..> LoginData
 ConnectDrawer ..> Splashscreen
 ConnectDrawer --> InformationFragment
+ConnectDrawer ..> strings
+
 
 
 
@@ -220,96 +225,91 @@ ConnectFragment --> WebSocketConnection
 ConnectFragment --> WebSocketOptions
 
 class NoCopyByteArrayOutputStream < extends ByteArrayOutputStream > {
-	public NoCopyByteArrayOutputStream()
-	public NoCopyByteArrayOutputStream(int size)
-	public InputStream getInputStream()
-	public byte[] getByteArray()
+	+ NoCopyByteArrayOutputStream()
+	+ NoCopyByteArrayOutputStream(size:int)
+	+ getInputStream():InputStream
+	+ getByteArray():byte[]
 }
 
 class Utf8Validator << MODEL >>{
-	private static final int[] DFA
-	private static final int ACCEPT
-	private static final int REJECT
-	private int mState
-	private int mPos
+	- {static} DFA:int[]
+	- {static} ACCEPT:int
+	- {static} REJECT:int
+	- mState:int
+	- mPos:int
 
-	public Utf8Validator()
-	public void reset()
-	public int position()
-	public boolean isValid()
-	public boolean validate(byte[] data, int off, int len)
-	public boolean validate(byte[] data)
+	+ Utf8Validator()
+	+ reset()
+	+ position():int
+	+ isValid():boolean
+	+ validate(data:byte[], off:int, len:int):boolean
+	+ validate(data:byte[]):boolean
 }
 
 interface WebSocket {
-	public static final String UTF8_ENCODING
+	+ {static} String UTF8_ENCODING
 
-	public void connect(URI uri, WebSocketConnectionObserver observer)
-    public void connect(URI uri, WebSocketConnectionObserver observer, WebSocketOptions options)
-    public void disconnect()
-    public boolean isConnected()
-    public void sendBinaryMessage(byte[] payload)
-    public void sendRawTextMessage(byte[] payload)
-    public void sendTextMessage(String payload)
+	+ connect(uri:URI, observer:WebSocketConnectionObserver)
+	+ connect(uri:URI, observer:WebSocketConnectionObserver, options:WebSocketOptions)
+	+ disconnect()
+	+ isConnected():boolean
+	+ sendBinaryMessage(payload:byte[])
+	+ sendRawTextMessage(payload:byte[])
+	+ sendTextMessage(payload:String)
 }
 WebSocket +-- WebSocketConnectionObserver
 WebSocket ..> WebSocketOptions
 WebSocket ..> WebSocketException : throws
 
 interface WebSocketConnectionObserver {
-	public void onOpen()
-	public void onClose(WebSocketCloseNotification code, String reason)
-	public void onTextMessage(String payload)
-	public void onRawTextMessage(byte[] payload)
-	public void onBinaryMessage(byte[] payload)
+	+ onOpen()
+	+ onClose(code:WebSocketCloseNotification, reason:String)
+	+ onTextMessage(payload:String)
+	+ onRawTextMessage(payload:byte[])
+	+ onBinaryMessage(payload:byte[])
 }
 WebSocketConnectionObserver +-- WebSocketCloseNotification
 
-enum WebSocketCloseNotification {
-	NORMAL
-	CANNOT_CONNECT
-	CONNECTION_LOST
-	PROTOCOL_ERROR
-	INTERNAL_ERROR
-	SERVER_ERROR
-	RECONNECT
+enum WebSocketCloseNotification << MODEL >> {
+	+{static}NORMAL
+	+{static}CANNOT_CONNECT
+	+{static}CONNECTION_LOST
+	+{static}PROTOCOL_ERROR
+	+{static}INTERNAL_ERROR
+	+{static}SERVER_ERROR
+	+{static}RECONNECT
 }
 
 class WebSocketConnection implements WebSocket {
-	private static final String TAG
-	private static final String WS_URI_SCHEME
-	private static final String WSS_URI_SCHEME
-	private static final String WS_WRITER
-	private static final String WS_READER
-	private final Handler mHandler
-	private WebSocketReader mWebSocketReader
-	private WebSocketWriter mWebSocketWriter
-	private Socket mSocket
-	private SocketThread mSocketThread
-	private URI mWebSocketURI
-	private String[] mWebSocketSubprotocols
-	private WeakReference<WebSocketConnectionObserver> mWebSocketConnectionObserver
-	private WebSocketOptions mWebSocketOptions
-	private boolean mPreviousConnection
+	- mHandler:Handler
+	- mWebSocketReader:WebSocketReader
+	- mWebSocketWriter:WebSocketWriter
+	- mSocket:Socket
+	- mSocketThread:SocketThread
+	- mWebSocketURI:URI
+	- mWebSocketSubprotocols:String[]
+	- mWebSocketConnectionObserver:WeakReference<WebSocketConnectionObserver>
+	- mWebSocketOptions:WebSocketOptions
+	- mPreviousConnection:boolean
 
-	public WebSocketConnection()
-	public void sendTextMessage(String payload)
-	public void sendRawTextMessage(byte[] payload)
-	public void sendBinaryMessage(byte[] payload)
-	public boolean isConnected()
-	private void failConnection(WebSocketCloseNotification code, String reason)
-	public void connect(URI webSocketURI, WebSocket.WebSocketConnectionObserver connectionObserver)
-	public void connect(URI webSocketURI, WebSocket.WebSocketConnectionObserver connectionObserver, WebSocketOptions options)
-	public void connect(URI webSocketURI, String[] subprotocols, WebSocket.WebSocketConnectionObserver connectionObserver, WebSocketOptions options)
-	public void disconnect()
-	public boolean reconnect()
-	private void connect()
-	protected boolean scheduleReconnect()
-	private void onClose(WebSocketCloseNotification code, String reason)
-	protected void processAppMessage(Object message)
-	protected void createWriter()
-	protected void createReader()
-	private void handleMessage(Message message)
+	+ WebSocketConnection()
+	+ sendTextMessage(payload:String)
+	+ sendRawTextMessage(payload:byte[])
+	+ sendBinaryMessage(payload:byte[])
+	+ isConnected():boolean
+	- failConnection(code:WebSocketCloseNotification, reason:String)
+	+ connect(webSocketURI:URI, connectionObserver:WebSocket.WebSocketConnectionObserver)
+	+ connect(webSocketURI:URI, connectionObserver:WebSocket.WebSocketConnectionObserver, options:WebSocketOptions)
+	+ connect(webSocketURI:URI, subprotocols:String[], connectionObserver:WebSocket.WebSocketConnectionObserver, options:WebSocketOptions)
+	+ disconnect()
+	+ reconnect():boolean
+	- connect()
+	# scheduleReconnect():boolean
+	- onClose(code:WebSocketCloseNotification, reason:String)
+	# processAppMessage(message:Object)
+	# createWriter()
+	# createReader()
+	- handleMessage(message:Message)
 }
 WebSocketConnection +-- SocketThread
 WebSocketConnection +-- ThreadHandler
@@ -330,62 +330,159 @@ WebSocketConnection --> Close
 WebSocketConnection --> ServerHandshake
 WebSocketConnection --> Error
 WebSocketConnection --> ServerError
+WebSocketConnection ..> WebSocketStrings
+
+class WebSocketStrings << MODEL >> {
+	+ {static} TAG:String
+	+ {static} run_sockExc:String
+	+ {static} run_ioExc:String
+	..For WebSocketConnection..
+	+ {static} WS_URI_SCHEME:String
+	+ {static} WSS_URI_SCHEME:String
+	+ {static} WS_WRITER:String
+	+ {static} WS_READER:String
+	+ {static} Conn_created:String
+	+ {static} Conn_exists:String
+	+ {static} Conn_fail_1:String
+	+ {static} Conn_fail_2:String
+	+ {static} Conn_failed:String
+	+ {static} Conn_lost:String
+	+ {static} Reconn_scheduled:String
+	+ {static} Reconn_started:String
+	+ {static} mReader_null:String
+	+ {static} mWriter_null:String
+	+ {static} close_null:String
+	+ {static} mTransportChannel_null:String
+	+ {static} observer_null:String
+	+ {static} onTextMessage_null:String
+	+ {static} onRawTextMessage_null:String
+	+ {static} onBinaryMessage_null:String
+	+ {static} onOpen_null:String
+	+ {static} Uri_null:String
+	+ {static} Uri_unsupported:String
+	+ {static} ping_received:String
+	+ {static} pong_received:String
+	+ {static} close_received:String
+	+ {static} handshake_received:String
+	+ {static} protocol_viol:String
+	+ {static} intern_err:String
+	+ {static} serv_err:String
+	+ {static} writer_created:String
+	+ {static} reader_created:String
+	+ {static} worker_stopped:String
+	..For SocketThread..
+	+ {static} WS_CONNECTOR:String
+	+ {static} sock_exit:String
+	..For WebSocketReader..
+	+ {static} wreader_created:String
+	+ {static} reader_run:String
+	+ {static} read_fail:String
+	+ {static} reader_ended:String
+	+ {static} quit:String
+	+ {static} logik_err:String
+	+ {static} rsv_notNull:String
+	+ {static} utf_uni_err:String
+	+ {static} masked_servFrame:String
+	+ {static} dataFrame_opc:String
+	+ {static} frag_contrFrame:String
+	+ {static} contr_framePay:String
+	+ {static} contr_frameOpc:String
+	+ {static} frameLenght_tooLarge:String
+	+ {static} msg_tooLarge:String
+	+ {static} cls_contrFrame:String
+	+ {static} contFrame:String
+	+ {static} nonContFrame:String
+	+ {static} inv_frameLenght_notMinEnc:String
+	+ {static} inv_frameLenght:String
+	+ {static} cls_inv:String
+	+ {static} clsRsn_inv:String
+	+ {static} msg_inv:String
+	+ {static} run_connLost:String
+	+ {static} run_wExc:String
+	+ {static} run_Exc:String
+	..For WebSocketWriter..
+	+ {static} wwriter_created:String
+	+ {static} writer_ended:String
+	+ {static} writer_run:String
+	+ {static} unkwn_msg:String
+	+ {static} applBuff_get:String
+	+ {static} applBuff_http:String
+	+ {static} applBuff_host:String
+	+ {static} applBuff_upWeb:String
+	+ {static} applBuff_conn:String
+	+ {static} applBuff_secKey:String
+	+ {static} applBuff_orig:String
+	+ {static} applBuff_secProt:String
+	+ {static} applBuff_secVers:String
+	+ {static} cls_tooLarge:String
+	+ {static} pong_tooLarge:String
+	+ {static} msgPay_tooLarge:String
+}
 
 class SocketThread < extends Thread > {
-	private static final String WS_CONNECTOR
-	private final URI mWebSocketURI
-	private Socket mSocket
-	private String mFailureMessage
-	private Handler mHandler
+	- mWebSocketURI:URI
+	- mSocket:Socket
+	- mFailureMessage:String
+	- mHandler:Handler
 
-	public SocketThread(URI uri, WebSocketOptions options)
-	public void run()
-	public void startConnection()
-	public void stopConnection()
-	public Handler getHandler()
-	public Socket getSocket()
-	public String getFailureMessage()
+	+ SocketThread(uri:URI, options:WebSocketOptions)
+	+ run()
+	+ startConnection()
+	+ stopConnection()
+	+ getHandler():Handler
+	+ getSocket():Socket
+	+ getFailureMessage():String
 }
 SocketThread ..> WebSocketOptions
+SocketThread ..> WebSocketStrings
 
 class ThreadHandler < extends Handler > {
-	private final WeakReference<WebSocketConnection> mWebSocketConnection
-
-	public ThreadHandler(WebSocketConnection webSocketConnection)
-	public void handleMessage(Message message)
+	..implemented by WebSocketConnection..
+	- mWebSocketConnection:WeakReference<WebSocketConnection>
+	__
+	+ ThreadHandler(webSocketConnection:WebSocketConnection)
+	+ handleMessage(message:Message)
+	==
+	..implemented by WebSocketWriter..
+	- mWebSocketWriterReference:WeakReference<WebSocketWriter>
+	__
+	+ ThreadHandler(webSocketWriter:WebSocketWriter)
+	+ handleMessage(message:Message)
 }
 ThreadHandler ..> WebSocketConnection
 ThreadHandler ..> Message
+ThreadHandler ..> WebSocketWriter
 
 class WebSocketException < extends Exception > {
-	private static final long serialVersionUID
-	public WebSocketException(String message)
-	public WebSocketException(String message, Throwable t)
+	- {static} serialVersionUID:long
+
+	+ WebSocketException(message:String)
+	+ WebSocketException(message:String, t:Throwable)
 }
 
 class WebSocketFrameHeader {
-	private int mOpcode
-    private boolean mFin
-    private int mReserved
-    private int mHeaderLen
-    private int mPayloadLen
-    private int mTotalLen
-    private byte[] mMask
+	- int mOpcode
+	- boolean mFin
+	- int mReserved
+	- int mHeaderLen
+	- int mPayloadLen
+	- int mTotalLen
+	- byte[] mMask
 
-    public int getOpcode()
-    public void setOpcode(int opcode)
-    public boolean isFin()
-    public void setFin(boolean fin)
-    public int getReserved()
-    public void setReserved(int reserved)
-    public int getHeaderLength()
-    public void setHeaderLength(int headerLength)
-    public int getPayloadLength()
-    public void setPayloadLength(int payloadLength)
-    public int getTotalLength()
-    public void setTotalLen(int totalLength)
-    public byte[] getMask()
-    public void setMask(byte[] mask)
+	+ getOpcode():int
+	+ setOpcode(opcode:int)
+	+ isFin():boolean
+	+ setFin(fin:boolean)
+	+ getReserved():int
+	+ setReserved(reserved:int)
+	+ getHeaderLength():int
+	+ setHeaderLength(headerLength:int)
+	+ getPayloadLength():int
+	+ setPayloadLength(payloadLength:int)
+	+ getTotalLength():int
+	+ setTotalLen(totalLength:int)
+	+ getMask():byte[]
+	+ setMask(mask:byte[])
 }
 
 class WebSocketMessage {
@@ -406,20 +503,20 @@ WebSocketMessage +-- Close
 WebSocketMessage +-- Ping
 WebSocketMessage +-- Pong
 
-class WebSocketCloseCode {
-	public static final int NORMAL
-	public static final int ENDPOINT_GOING_AWAY
-	public static final int ENDPOINT_PROTOCOL_ERROR
-	public static final int ENDPOINT_UNSUPPORTED_DATA_TYPE
-	public static final int RESERVED
-	public static final int RESERVED_NO_STATUS
-	public static final int RESERVED_NO_CLOSING_HANDSHAKE
-	public static final int ENDPOINT_BAD_DATA
-	public static final int POLICY_VIOLATION
-	public static final int MESSAGE_TOO_BIG
-	public static final int ENDPOINT_NEEDS_EXTENSION
-	public static final int UNEXPECTED_CONDITION
-	public static final int RESERVED_TLS_REQUIRED
+class WebSocketCloseCode << MODEL >> {
+	+ {static} NORMAL:int
+	+ {static} ENDPOINT_GOING_AWAY:int
+	+ {static} ENDPOINT_PROTOCOL_ERROR:int
+	+ {static} ENDPOINT_UNSUPPORTED_DATA_TYPE:int
+	+ {static} RESERVED:int
+	+ {static} RESERVED_NO_STATUS:int
+	+ {static} RESERVED_NO_CLOSING_HANDSHAKE:int
+	+ {static} ENDPOINT_BAD_DATA:int
+	+ {static} POLICY_VIOLATION:int
+	+ {static} MESSAGE_TOO_BIG:int
+	+ {static} ENDPOINT_NEEDS_EXTENSION:int
+	+ {static} UNEXPECTED_CONDITION:int
+	+ {static} RESERVED_TLS_REQUIRED:int
 }
 
 class Message
@@ -427,150 +524,149 @@ class Quit extends Message
 class ConnectionLost extends Message
 
 class ClientHandshake extends Message {
-	private final URI mURI
-	private final URI mOrigin
-	private final String[] mSubprotocols
+	- mURI:URI
+	- mOrigin:URI
+	- mSubprotocols:String[]
 
-	ClientHandshake(URI uri)
-	ClientHandshake(URI uri, URI origin, String[] subprotocols)
-	public URI getURI()
-	public String[] getSubprotocols()
+	ClientHandshake(uri:URI)
+	ClientHandshake(uri:URI, origin:URI, subprotocols:String[])
+	+ getURI():URI
+	+ getSubprotocols():String[]
 }
 
 class ServerHandshake extends Message {
-	public boolean mSuccess
+	+ mSuccess:boolean
 
-	public ServerHandshake(boolean success)
+	+ ServerHandshake(success:boolean)
 }
 
 class ServerError extends Message {
-	public int mStatusCode
-	public String mStatusMessage
+	+ mStatusCode:int
+	+ mStatusMessage:String
 
-	public ServerError(int statusCode, String statusMessage)
+	+ ServerError(statusCode:int, statusMessage:String)
 }
 
 class ProtocolViolation extends Message {
-	public WebSocketException mException
+	+ mException:WebSocketException
 
-	public ProtocolViolation(WebSocketException e)
+	+ ProtocolViolation(e:WebSocketException)
 }
 
 class Error extends Message {
-	public Exception mException
+	+ mException:
 
-	public Error(Exception e)
+	+ Error(e:Exception)
 }
 Error -() Exception : sets
 
 class TextMessage extends Message {
-	public String mPayload
+	+ mPayload:String
 
-	TextMessage(String payload)
+	TextMessage(payload:String)
 }
 
 class RawTextMessage extends Message {
-	public byte[] mPayload
+	+ mPayload:byte[]
 
-	RawTextMessage(byte[] payload)
+	RawTextMessage(payload:byte[])
 }
 
 class BinaryMessage extends Message {
-	public byte[] mPayload
+	+ mPayload:byte[]
 
-	BinaryMessage(byte[] payload)
+	BinaryMessage(payload:byte[])
 }
 
 class Close extends Message {
-	private int mCode
-	private String mReason
+	- mCode:int
+	- mReason:String
 
 	Close()
-	Close(int code)
-	Close(int code, String reason)
-	public int getCode()
-	public String getReason()
+	Close(code:int)
+	Close(code:int, reason:String)
+	+ getCode():int
+	+ getReason():String
 }
 Close ..> WebSocketCloseCode
 
 class Ping extends Message {
-	public byte[] mPayload
+	+ mPayload:byte[]
 
 	Ping()
-	Ping(byte[] payload)
+	Ping(payload:byte[])
 }
 
 class Pong extends Message {
-	public byte[] mPayload
+	+ mPayload:byte[]
 
 	Pong()
-	Pong(byte[] payload)
+	Pong(payload:byte[])
 }
 
 class WebSocketOptions {
-	private int mMaxFramePayloadSize
-    private int mMaxMessagePayloadSize
-    private boolean mReceiveTextMessagesRaw
-    private boolean mTcpNoDelay
-    private int mSocketReceiveTimeout
-    private int mSocketConnectTimeout
-    private boolean mValidateIncomingUtf8
-    private boolean mMaskClientFrames
-    private int mReconnectInterval
+	- mMaxFramePayloadSize:int
+	- mMaxMessagePayloadSize:int
+	- mReceiveTextMessagesRaw:boolean
+	- mTcpNoDelay:boolean
+	- mSocketReceiveTimeout:int
+	- mSocketConnectTimeout:int
+	- mValidateIncomingUtf8:boolean
+	- mMaskClientFrames:boolean
+	- mReconnectInterval:int
 
-    public WebSocketOptions()
-    public WebSocketOptions(WebSocketOptions other)
-    public void setReceiveTextMessagesRaw(boolean enabled)
-    public boolean getReceiveTextMessagesRaw()
-    public void setMaxFramePayloadSize(int size)
-    public int getMaxFramePayloadSize()
-    public void setMaxMessagePayloadSize(int size)
-    public int getMaxMessagePayloadSize()
-    public void setTcpNoDelay(boolean enabled)
-    public boolean getTcpNoDelay()
-    public void setSocketReceiveTimeout(int timeoutMs)
-    public int getSocketReceiveTimeout()
-    public void setSocketConnectTimeout(int timeoutMs)
-    public int getSocketConnectTimeout()
-    public void setValidateIncomingUtf8(boolean enabled)
-    public boolean getValidateIncomingUtf8()
-    public void setMaskClientFrames(boolean enabled)
-    public boolean getMaskClientFrames()
-    public void setReconnectInterval(int reconnectInterval)
-    public int getReconnectInterval()
+	+ WebSocketOptions()
+	+ WebSocketOptions(other:WebSocketOptions)
+	+ setReceiveTextMessagesRaw(enabled:boolean)
+	+ getReceiveTextMessagesRaw():boolean
+	+ setMaxFramePayloadSize(size:int)
+	+ getMaxFramePayloadSize():int
+	+ setMaxMessagePayloadSize(size:int)
+	+ getMaxMessagePayloadSize():int
+	+ setTcpNoDelay(enabled:boolean)
+	+ getTcpNoDelay():boolean
+	+ setSocketReceiveTimeout(timeoutMs:int)
+	+ getSocketReceiveTimeout():int
+	+ setSocketConnectTimeout(timeoutMs:int)
+	+ getSocketConnectTimeout():int
+	+ setValidateIncomingUtf8(enabled:boolean)
+	+ getValidateIncomingUtf8():boolean
+	+ setMaskClientFrames(enabled:boolean)
+	+ getMaskClientFrames():boolean
+	+ setReconnectInterval(reconnectInterval:int)
+	+ getReconnectInterval():int
 }
 
 class WebSocketReader < extends Thread > {
-	private static final String TAG
-	private final Handler mWebSocketConnectionHandler
-	private final Socket mSocket
-	private InputStream mInputStream
-	private final WebSocketOptions mWebSocketOptions
-	private volatile boolean mStopped
-	private final byte[] mNetworkBuffer
-	private final ByteBuffer mApplicationBuffer
-	private NoCopyByteArrayOutputStream mMessagePayload
-	private ReaderState mState
-	private boolean mInsideMessage
-	private int mMessageOpcode
-	private WebSocketFrameHeader mFrameHeader
-	private Utf8Validator mUTF8Validator
+	- mWebSocketConnectionHandler:Handler
+	- mSocket:Socket
+	- mInputStream:InputStream
+	- mWebSocketOptions:WebSocketOptions
+	- mStopped:boolean
+	- mNetworkBuffer:byte[]
+	- mApplicationBuffer:ByteBuffer
+	- mMessagePayload:NoCopyByteArrayOutputStream
+	- mState:ReaderState
+	- mInsideMessage:boolean
+	- mMessageOpcode:int
+	- mFrameHeader:WebSocketFrameHeader
+	- mUTF8Validator:Utf8Validator
 
-	public WebSocketReader(Handler master, Socket socket, WebSocketOptions options, String threadName)
-	public void quit()
-	protected void notify(Object message)
-	private boolean processData()
-	protected void onHandshake(boolean success)
-	protected void onClose(int code, String reason)
-	protected void onPing(byte[] payload)
-	protected void onPong(byte[] payload)
-	protected void onTextMessage(String payload)
-	protected void onRawTextMessage(byte[] payload)
-	protected void onBinaryMessage(byte[] payload)
-	private boolean processHandshake()
-	private Pair<Integer, String> parseHTTPStatus()
-	private boolean consumeData()
-	public void run()
+	+ WebSocketReader(master:Handler, socket:Socket, options:WebSocketOptions, threadName:String)
+	+ quit()
+	# notify(message:Object)
+	- processData():boolean
+	# onHandshake(success:boolean)
+	# onClose(code:int, reason:String)
+	# onPing(payload:byte[])
+	# onPong(payload:byte[])
+	# onTextMessage(payload:String)
+	# onRawTextMessage(payload:byte[])
+	# onBinaryMessage(payload:byte[])
+	- processHandshake():boolean
+	- Pair<Integer, String> parseHTTPStatus()
+	- consumeData():boolean
+	+ run()
 }
 WebSocketReader +-- ReaderState
 WebSocketReader --> WebSocketOptions
@@ -588,44 +684,44 @@ WebSocketReader --> TextMessage
 WebSocketReader --> RawTextMessage
 WebSocketReader --> BinaryMessage
 WebSocketReader -() UnsupportedEncodingException : throws
+WebSocketReader ..> WebSocketStrings
 
-enum ReaderState {
-	STATE_CLOSED
-	STATE_CONNECTING
-	STATE_CLOSING
-	STATE_OPEN
+enum ReaderState << MODEL >> {
+	{static} STATE_CLOSED
+	{static} STATE_CONNECTING
+	{static} STATE_CLOSING
+	{static} STATE_OPEN
 }
 
 class WebSocketWriter < extends Thread > {
-	private static final String TAG
-	private static final int WEB_SOCKETS_VERSION
-    private static final String CRLF
-    private final Random mRandom
-    private final Handler mWebSocketConnectionHandler
-    private final WebSocketOptions mWebSocketOptions
-    private final ByteBuffer mApplicationBuffer
-    private final Socket mSocket
-    private OutputStream mOutputStream
-    private Handler mHandler
+	- {static} WEB_SOCKETS_VERSION:int
+	- {static} CRLF:String
+	- mRandom:Random
+	- mWebSocketConnectionHandler:Handler
+	- mWebSocketOptions:WebSocketOptions
+	- mApplicationBuffer:ByteBuffer
+	- mSocket:Socket
+	- mOutputStream:OutputStream
+	- mHandler:Handler
 
-    public WebSocketWriter(Handler master, Socket socket, WebSocketOptions options, String threadName)
-    public void forward(Object message)
-    private void notify(Object message)
-    private String newHandshakeKey()
-    private byte[] newFrameMask()
-    private void sendClientHandshake(WebSocketMessage.ClientHandshake message)
-    private void sendClose(WebSocketMessage.Close message)
-    private void sendPing(WebSocketMessage.Ping message)
-    private void sendPong(WebSocketMessage.Pong message)
-    private void sendBinaryMessage(WebSocketMessage.BinaryMessage message)
-    private void sendTextMessage(WebSocketMessage.TextMessage message)
-    private void sendRawTextMessage(WebSocketMessage.RawTextMessage message)
-    protected void sendFrame(int opcode, boolean fin, byte[] payload)
-    protected void sendFrame(int opcode, boolean fin, byte[] payload, int offset, int length)
-    protected void processMessage(Object msg)
-    public void writeMessageToBuffer(Message message)
-    protected void processAppMessage(Object msg)
-    public void run()
+	+ WebSocketWriter(master:Handler, socket:Socket, options:WebSocketOptions, threadName:String)
+	+ forward(message:Object)
+	- notify(message:Object)
+	- newHandshakeKey():String
+	- newFrameMask():byte[]
+	- sendClientHandshake(message:WebSocketMessage.ClientHandshake)
+	- sendClose(message:WebSocketMessage.Close)
+	- sendPing(message:WebSocketMessage.Ping)
+	- sendPong(message:WebSocketMessage.Pong)
+	- sendBinaryMessage(message:WebSocketMessage.BinaryMessage)
+	- sendTextMessage(message:WebSocketMessage.TextMessage)
+	- sendRawTextMessage(message:WebSocketMessage.RawTextMessage)
+	# sendFrame(opcode:int, fin:boolean, payload:byte[])
+	# sendFrame(opcode:int, fin:boolean, payload:byte[], offset:int, length:int)
+	# processMessage(msg:Object)
+	+ writeMessageToBuffer(message:Message)
+	# processAppMessage(msg:Object)
+	+ run()
 }
 WebSocketWriter +-- ThreadHandler
 WebSocketWriter --> WebSocketOptions
@@ -639,15 +735,7 @@ WebSocketWriter ..> Pong
 WebSocketWriter ..> BinaryMessage
 WebSocketWriter ..> TextMessage
 WebSocketWriter ..> RawTextMessage
-
-class ThreadHandler < extends Handler > {
-	private final WeakReference<WebSocketWriter> mWebSocketWriterReference
-
-	public ThreadHandler(WebSocketWriter webSocketWriter)
-	public void handleMessage(Message message)
-}
-ThreadHandler ..> WebSocketWriter
-ThreadHandler ..> Message
+WebSocketWriter ..> WebSocketStrings
 }
 
 legend

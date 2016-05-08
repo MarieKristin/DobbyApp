@@ -36,7 +36,7 @@ public class ConnectDrawer extends AppCompatActivity {
         fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.add(R.id.connect_container, new ConnectFragment());
         fragmentTransaction.commit();
-        getSupportActionBar().setTitle("Connect Fragment");
+        getSupportActionBar().setTitle(R.string.conn_frag);
 
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -48,14 +48,14 @@ public class ConnectDrawer extends AppCompatActivity {
                         fragmentTransaction = getFragmentManager().beginTransaction();
                         fragmentTransaction.replace(R.id.connect_container,new ConnectFragment());
                         fragmentTransaction.commit();
-                        getSupportActionBar().setTitle("Connect to Dobby");
+                        getSupportActionBar().setTitle(R.string.conn_tDobby);
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
                         break;
                     case R.id.id_logout:
                         LoginData.notLogged();
                         LoginData.setCurrUser("");
-                        CharSequence text = "Successfully logged out";
+                        CharSequence text = getString(R.string.logged_out);
                         Context context = getApplicationContext();
                         int duration = Toast.LENGTH_SHORT;
                         Toast toast = Toast.makeText(context, text, duration);
@@ -69,7 +69,7 @@ public class ConnectDrawer extends AppCompatActivity {
                         fragmentTransaction.replace(R.id.connect_container,new InformationFragment()
                         );
                         fragmentTransaction.commit();
-                        getSupportActionBar().setTitle("General Information");
+                        getSupportActionBar().setTitle(R.string.gen_info);
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
                         break;

@@ -46,9 +46,8 @@ import teamdobby.dobby.SecureWebSockets.WebSocketMessage.WebSocketCloseCode;
  * Created by Marie on 11.04.2016.
  */
 public class WebSocketReader extends Thread {
-    private static final String TAG = "SecureWebSockets";
 
-    private static enum ReaderState {
+    private enum ReaderState {
         STATE_CLOSED,
         STATE_CONNECTING,
         STATE_CLOSING,
@@ -90,7 +89,7 @@ public class WebSocketReader extends Thread {
         this.mFrameHeader = null;
         this.mState = ReaderState.STATE_CONNECTING;
 
-        Log.d(TAG, "WebSocket reader created.");
+        Log.d(WebSocketStrings.TAG, WebSocketStrings.wreader_created);
     }
 
     /**
@@ -98,7 +97,7 @@ public class WebSocketReader extends Thread {
      */
     public void quit() {
         mStopped = true;
-        Log.d(TAG, "quit");
+        Log.d(WebSocketStrings.TAG, WebSocketStrings.quit);
     }
 
     /**
@@ -137,38 +136,38 @@ public class WebSocketReader extends Thread {
                 // now check protocol compliance
 
                 if (rsv != 0) {
-                    throw new WebSocketException("RSV != 0 and no extension negotiated");
+                    throw new WebSocketException(WebSocketStrings.rsv_notNull);
                 }
 
                 if (masked) {
                     // currently, we don't allow this. need to see whats the final spec.
-                    throw new WebSocketException("masked server frame");
+                    throw new WebSocketException(WebSocketStrings.masked_servFrame);
                 }
 
                 if (opcode > 7) {
                     // control frame
                     if (!fin) {
-                        throw new WebSocketException("fragmented control frame");
+                        throw new WebSocketException(WebSocketStrings.frag_contrFrame);
                     }
                     if (payload_len1 > 125) {
-                        throw new WebSocketException("control frame with payload length > 125 octets");
+                        throw new WebSocketException(WebSocketStrings.contr_framePay);
                     }
                     if (opcode != 8 && opcode != 9 && opcode != 10) {
-                        throw new WebSocketException("control frame using reserved opcode " + opcode);
+                        throw new WebSocketException(WebSocketStrings.contr_frameOpc + opcode);
                     }
                     if (opcode == 8 && payload_len1 == 1) {
-                        throw new WebSocketException("received close control frame with payload len 1");
+                        throw new WebSocketException(WebSocketStrings.cls_contrFrame);
                     }
                 } else {
                     // message frame
                     if (opcode != 0 && opcode != 1 && opcode != 2) {
-                        throw new WebSocketException("data frame using reserved opcode " + opcode);
+                        throw new WebSocketException(WebSocketStrings.dataFrame_opc + opcode);
                     }
                     if (!mInsideMessage && opcode == 0) {
-                        throw new WebSocketException("received continuation data frame outside fragmented message");
+                        throw new WebSocketException(WebSocketStrings.contFrame);
                     }
                     if (mInsideMessage && opcode != 0) {
-                        throw new WebSocketException("received non-continuation data frame while inside fragmented message");
+                        throw new WebSocketException(WebSocketStrings.nonContFrame);
                     }
                 }
 
@@ -183,7 +182,7 @@ public class WebSocketReader extends Thread {
                     header_len = 2 + 8 + mask_len;
                 } else {
                     // should not arrive here
-                    throw new Exception("logic error");
+                    throw new Exception(WebSocketStrings.logik_err);
                 }
 
                 // continue when complete frame header is available
@@ -195,12 +194,12 @@ public class WebSocketReader extends Thread {
                     if (payload_len1 == 126) {
                         payload_len = ((0xff & mApplicationBuffer.get(i)) << 8) | (0xff & mApplicationBuffer.get(i+1));
                         if (payload_len < 126) {
-                            throw new WebSocketException("invalid data frame length (not using minimal length encoding)");
+                            throw new WebSocketException(WebSocketStrings.inv_frameLenght_notMinEnc);
                         }
                         i += 2;
                     } else if (payload_len1 == 127) {
                         if ((0x80 & mApplicationBuffer.get(i+0)) != 0) {
-                            throw new WebSocketException("invalid data frame length (> 2^63)");
+                            throw new WebSocketException(WebSocketStrings.inv_frameLenght);
                         }
                         payload_len = ((0xff & mApplicationBuffer.get(i+0)) << 56) |
                                 ((0xff & mApplicationBuffer.get(i+1)) << 48) |
@@ -211,7 +210,7 @@ public class WebSocketReader extends Thread {
                                 ((0xff & mApplicationBuffer.get(i+6)) <<  8) |
                                 ((0xff & mApplicationBuffer.get(i+7))      );
                         if (payload_len < 65536) {
-                            throw new WebSocketException("invalid data frame length (not using minimal length encoding)");
+                            throw new WebSocketException(WebSocketStrings.inv_frameLenght_notMinEnc);
                         }
                         i += 8;
                     } else {
@@ -220,7 +219,7 @@ public class WebSocketReader extends Thread {
 
                     // immediately bail out on frame too large
                     if (payload_len > mWebSocketOptions.getMaxFramePayloadSize()) {
-                        throw new WebSocketException("frame payload too large");
+                        throw new WebSocketException(WebSocketStrings.frameLenght_tooLarge);
                     }
 
                     // save frame header metadata
@@ -293,7 +292,7 @@ public class WebSocketReader extends Thread {
                                     code != 1000 && code != 1001 && code != 1002 && code != 1003 && code != 1007 && code != 1008 && code != 1009 && code != 1010 && code != 1011)
                                     || code >= 5000) {
 
-                                throw new WebSocketException("invalid close code " + code);
+                                throw new WebSocketException(WebSocketStrings.cls_inv + code);
                             }
 
                             // parse and check close reason
@@ -305,7 +304,7 @@ public class WebSocketReader extends Thread {
                                 Utf8Validator val = new Utf8Validator();
                                 val.validate(ra);
                                 if (!val.isValid()) {
-                                    throw new WebSocketException("invalid close reasons (not UTF-8)");
+                                    throw new WebSocketException(WebSocketStrings.clsRsn_inv);
                                 } else {
                                     reason = new String(ra, WebSocket.UTF8_ENCODING);
                                 }
@@ -324,7 +323,7 @@ public class WebSocketReader extends Thread {
                     } else {
 
                         // should not arrive here (handled before)
-                        throw new Exception("logic error");
+                        throw new Exception(WebSocketStrings.logik_err);
                     }
 
                 } else {
@@ -343,12 +342,12 @@ public class WebSocketReader extends Thread {
 
                         // immediately bail out on message too large
                         if (mMessagePayload.size() + framePayload.length > mWebSocketOptions.getMaxMessagePayloadSize()) {
-                            throw new WebSocketException("message payload too large");
+                            throw new WebSocketException(WebSocketStrings.msg_tooLarge);
                         }
 
                         // validate incoming UTF-8
                         if (mMessageOpcode == 1 && mWebSocketOptions.getValidateIncomingUtf8() && !mUTF8Validator.validate(framePayload)) {
-                            throw new WebSocketException("invalid UTF-8 in text message payload");
+                            throw new WebSocketException(WebSocketStrings.msg_inv);
                         }
 
                         // buffer frame payload for message
@@ -362,7 +361,7 @@ public class WebSocketReader extends Thread {
 
                             // verify that UTF-8 ends on codepoint
                             if (mWebSocketOptions.getValidateIncomingUtf8() && !mUTF8Validator.isValid()) {
-                                throw new WebSocketException("UTF-8 text message payload ended within Unicode code point");
+                                throw new WebSocketException(WebSocketStrings.utf_uni_err);
                             }
 
                             // deliver text message
@@ -386,7 +385,7 @@ public class WebSocketReader extends Thread {
                         } else {
 
                             // should not arrive here (handled before)
-                            throw new Exception("logic error");
+                            throw new Exception(WebSocketStrings.logik_err);
                         }
 
                         // ok, message completed - reset all
@@ -555,7 +554,7 @@ public class WebSocketReader extends Thread {
         mApplicationBuffer.position(end);
         mApplicationBuffer.get(statusBuf, 0, statusMessageLength);
         String statusMessage = new String(statusBuf, WebSocket.UTF8_ENCODING);
-        Log.w(TAG, String.format("Status: %d (%s)", statusCode, statusMessage));
+        Log.w(WebSocketStrings.TAG, String.format("Status: %d (%s)", statusCode, statusMessage));
         return new Pair<Integer, String>(statusCode, statusMessage);
     }
 
@@ -589,13 +588,13 @@ public class WebSocketReader extends Thread {
         try {
             inputStream = mSocket.getInputStream();
         } catch (IOException e) {
-            Log.e(TAG, e.getLocalizedMessage());
+            Log.e(WebSocketStrings.TAG, e.getLocalizedMessage());
             return;
         }
 
         this.mInputStream = inputStream;
 
-        Log.d(TAG, "WebSocker reader running.");
+        Log.d(WebSocketStrings.TAG, WebSocketStrings.reader_run);
         mApplicationBuffer.clear();
 
         while (!mStopped) {
@@ -607,36 +606,36 @@ public class WebSocketReader extends Thread {
                     while (consumeData()) {
                     }
                 } else if (bytesRead == -1) {
-                    Log.d(TAG, "run() : ConnectionLost");
+                    Log.d(WebSocketStrings.TAG, WebSocketStrings.run_connLost);
 
                     notify(new WebSocketMessage.ConnectionLost());
                     this.mStopped = true;
                 } else {
-                    Log.e(TAG, "WebSocketReader read() failed.");
+                    Log.e(WebSocketStrings.TAG, WebSocketStrings.read_fail);
                 }
 
             } catch (WebSocketException e) {
-                Log.d(TAG, "run() : WebSocketException (" + e.toString() + ")");
+                Log.d(WebSocketStrings.TAG, WebSocketStrings.run_wExc + " (" + e.toString() + ")");
 
                 // wrap the exception and notify master
                 notify(new WebSocketMessage.ProtocolViolation(e));
             } catch (SocketException e) {
-                Log.d(TAG, "run() : SocketException (" + e.toString() + ")");
+                Log.d(WebSocketStrings.TAG, WebSocketStrings.run_sockExc + " (" + e.toString() + ")");
 
                 // wrap the exception and notify master
                 notify(new WebSocketMessage.ConnectionLost());
             } catch (IOException e) {
-                Log.d(TAG, "run() : IOException (" + e.toString() + ")");
+                Log.d(WebSocketStrings.TAG, WebSocketStrings.run_ioExc + " (" + e.toString() + ")");
 
                 notify(new WebSocketMessage.ConnectionLost());
             } catch (Exception e) {
-                Log.d(TAG, "run() : Exception (" + e.toString() + ")");
+                Log.d(WebSocketStrings.TAG, WebSocketStrings.run_Exc + " (" + e.toString() + ")");
 
                 // wrap the exception and notify master
                 notify(new WebSocketMessage.Error(e));
             }
         }
 
-        Log.d(TAG, "WebSocket reader ended.");
+        Log.d(WebSocketStrings.TAG, WebSocketStrings.reader_ended);
     }
 }
