@@ -56,6 +56,10 @@ public class LoginTest {
         doNothing().when(login).finish();
         suppress(method(Login.class, "toastShow"));
         suppress(method(Login.class, "setUser"));
+
+        doReturn("User not found").when(login).getString(R.string.inv_usr);
+        doReturn("Wrong Password").when(login).getString(R.string.inv_pass);
+        doReturn("Successfully logged in").when(login).getString(R.string.logged_in);
     }
 
     @Test

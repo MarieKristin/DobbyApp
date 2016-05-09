@@ -58,9 +58,9 @@
     <string name="pref_g_port">pref_get_port_number() value: </string>
     <string name="pref_g_time">pref_get_timeout() value: </string>
 
-    <string name="conn_fail_wExc">Can't connect to server - 'WebSocketException'</string>
-    <string name="conn_fail_uri">Can't connect to server - 'URISyntaxException'</string>
-    <string name="conn_fail_exc">Can't connect to server - 'Exception'</string>
+    <string name="conn_fail_wExc">Can\'t connect to server - \'WebSocketException\'</string>
+    <string name="conn_fail_uri">Can\'t connect to server - \'URISyntaxException\'</string>
+    <string name="conn_fail_exc">Can\'t connect to server - \'Exception\'</string>
     <string name="conn">Connected</string>
     <string name="conn_already">You are already connected to the server</string>
     <string name="conn_exit">Disconnected</string>
@@ -72,6 +72,6 @@
     <string name="notif_dis">Notifications are disabled</string>
     <string name="notif_async">[SERVER] Asynchronous Notification</string>
 
-    <string name="nExp_rTM">We didn't expect 'RawTextMessage'</string>
-    <string name="nExp_bM">We didn't expect 'BinaryMessage'</string>
+    <string name="nExp_rTM">We didn\'t expect \'RawTextMessage\'</string>
+    <string name="nExp_bM">We didn\'t expect \'BinaryMessage\'</string>
 </resources>
