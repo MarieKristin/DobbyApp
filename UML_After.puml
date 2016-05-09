@@ -36,10 +36,10 @@ skinparam class {
 
 interface AndroidManifest << (M,green) MANIFEST >>
 interface ic_launcher << (P,blue) PNG >>
-AndroidManifest --> ic_launcher
+AndroidManifest -right-> ic_launcher
 AndroidManifest --> Splashscreen
 AndroidManifest --> Login
-AndroidManifest --> ConnectDrawer
+AndroidManifest -left-> ConnectDrawer
 AndroidManifest ..> strings
 AndroidManifest ..> styles
 
@@ -76,8 +76,8 @@ content_infoabout ..> dimens
 
 interface activity_splash << (X,lightblue) XML >>
 interface background << (J,blue) JPG >>
-activity_splash ..> background
-activity_splash --> logo
+activity_splash .right.> background
+activity_splash -down-> logo
 
 interface activity_login << (X,lightblue) XML >>
 activity_login ..> dimens
@@ -100,9 +100,9 @@ class Splashscreen < extends Activity > {
 	- animationListener(animation:Animation)
 	+ onBackPressed()
 }
-Splashscreen ..> activity_splash
+Splashscreen .right.> activity_splash
 Splashscreen ..> welcome_animation
-Splashscreen ..> Login
+Splashscreen .left.> Login
 
 class Settings < extends Activity > {
 	- {static} TAG_DISABLE_NOTIFICATIONS:String
@@ -152,7 +152,7 @@ class Login < extends AppCompatActivity > {
 	- toastShow()
 	+ onBackPressed()
 }
-Login ..> activity_login
+Login .left.> activity_login
 Login ..> LoginData
 Login ..> strings
 
@@ -257,7 +257,7 @@ interface WebSocket {
 	+ sendRawTextMessage(payload:byte[])
 	+ sendTextMessage(payload:String)
 }
-WebSocket +-- WebSocketConnectionObserver
+WebSocket +-left- WebSocketConnectionObserver
 WebSocket ..> WebSocketOptions
 WebSocket ..> WebSocketException : throws
 
@@ -268,7 +268,7 @@ interface WebSocketConnectionObserver {
 	+ onRawTextMessage(payload:byte[])
 	+ onBinaryMessage(payload:byte[])
 }
-WebSocketConnectionObserver +-- WebSocketCloseNotification
+WebSocketConnectionObserver +-left- WebSocketCloseNotification
 
 enum WebSocketCloseNotification << MODEL >> {
 	+{static}NORMAL
@@ -497,7 +497,7 @@ WebSocketMessage +-- ServerError
 WebSocketMessage +-- ProtocolViolation
 WebSocketMessage +-- Error
 WebSocketMessage +-- TextMessage
-WebSocketMessage +-- RaxTextMessage
+WebSocketMessage +-- RawTextMessage
 WebSocketMessage +-- BinaryMessage
 WebSocketMessage +-- Close
 WebSocketMessage +-- Ping
@@ -723,7 +723,7 @@ class WebSocketWriter < extends Thread > {
 	# processAppMessage(msg:Object)
 	+ run()
 }
-WebSocketWriter +-- ThreadHandler
+WebSocketWriter +-left- ThreadHandler
 WebSocketWriter --> WebSocketOptions
 WebSocketWriter --> Message
 WebSocketWriter ..> ClientHandshake
