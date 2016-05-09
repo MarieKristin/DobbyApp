@@ -5,6 +5,7 @@ before_install:
 
 android:
  components:
+  - platform-tools
   - tools-23.1.0
   - build-tools-23.0.2
   - android-23
