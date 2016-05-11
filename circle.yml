@@ -9,7 +9,7 @@ general:
     branches:
       only:
         - CIrcleCI # list of branches to build
-		
+
 machine:
     environment:
         ANDROID_HOME: /usr/local/android-sdk-linux
