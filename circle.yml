@@ -6,9 +6,9 @@ general:
     artifacts:
         - /home/ubuntu/your-app-name/app/build/outputs/apk/
 
-  branches:
-    only:
-      - CIrcleCI  # list of branches to build
+    branches:
+      only:
+        - CIrcleCI # list of branches to build
 		
 machine:
     environment:
