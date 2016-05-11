@@ -20,14 +20,13 @@ dependencies:
     override:
         - chmod +x gradlew
         - echo y | android update sdk --no-ui --all --filter tools,platform-tools,build-tools-21.1.2,android-21,extra-google-m2repository,extra-google-google_play_services,extra-android-support
-        - echo y | android update sdk --no-ui --all --filter gradle-2.10
         - ANDROID_HOME=/usr/local/android-sdk-linux ./gradlew dependencies
 
 test:
   pre:
     - sudo add-apt-repository ppa:cwchien/gradle -y
     - sudo apt-get update
-    - sudo apt-get install gradle-2.6
+    - sudo apt-get install gradle-2.10
   override:
     - gradle check jacocoTestReport
   post:
