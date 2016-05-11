@@ -29,7 +29,6 @@ test:
     - sudo apt-get install gradle-2.10
   override:
     - gradle check jacocoTestReport
-  post:
-    - cp -R build/reports/* $CIRCLE_ARTIFACTS
+
 
 
