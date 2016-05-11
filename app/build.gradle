@@ -34,5 +34,5 @@ dependencies {
         exclude module: 'support-v4'
     }
 
-    compile files('libs/powermock-mockito-1.6.5-full.jar')
+   // compile files('libs/powermock-mockito-1.6.5-full.jar')
 }
