@@ -1,26 +1,39 @@
+#
+# Build configuration for Circle CI
+#
+
+general:
+    artifacts:
+        - /home/ubuntu/DobbyApp/app/build/outputs/apk/
+        
+
+    branches:
+      only:
+        - CIrcleCI # list of branches to build
+
 machine:
-   environment:
-     ANDROID_HOME: /usr/local/android-sdk-linux
+    environment:
+        ANDROID_HOME: /usr/local/android-sdk-linux
+
+
 
 dependencies:
-  pre:
-    - chmod +x gradlew
-    - touch app/google-services.json
-    - echo $GOOGLE_SERVICES_JSON > app/google-services.json
-    - echo y | android update sdk --no-ui --all --filter "tools,platform-tools,android-23"
-    - echo y | android update sdk --no-ui --all --filter "build-tools-23.0.2"
+    override:
+        - chmod +x gradlew
+        - echo y | android update sdk --no-ui --all --filter tools,platform-tools,build-tools-21.1.2,android-21,extra-google-m2repository,extra-google-google_play_services,extra-android-support
+        - ANDROID_HOME=/usr/local/android-sdk-linux ./gradlew dependencies
 
 test:
   pre:
-    - android list targets
-
-
+    - sudo add-apt-repository ppa:cwchien/gradle -y
+    - sudo apt-get update
+    - sudo apt-get install gradle-2.10
   override:
-    - ./gradlew createMockDebugCoverageReport
-    - ./gradlew test
+    - gradle check jacocoTestReport
+     # copy the build outputs to artifacts
+    - cp -r home/ubuntu/DobbyApp/app/build/reports/tests $CIRCLE_ARTIFACTS
+     # copy the test results to the test results directory.
+    - cp -r /home/ubuntu/DobbyApp/app/build/reports/tests $CIRCLE_TEST_REPORTS
 
-  post:
-    - cp -r app/build/outputs $CIRCLE_ARTIFACTS
-    - cp -r app/build/outputs/androidTest-results/ $CIRCLE_TEST_REPORTS
-    - cp -r app/build/reports/coverage/ $CIRCLE_TEST_REPORTS
-    - cp -r app/build/test-results/mockDebug/ $CIRCLE_TEST_REPORTS
+
+
