@@ -20,7 +20,6 @@ test:
     - emulator -avd emulatorwithgoogleapi22 -no-audio -no-window :
         background: true
         parallel: true
-    - circle-android wait-for-boot
     - adb shell input keyevent 82
     - adb shell svc power stayon true
     - adb shell settings put global window_animation_scale 0
