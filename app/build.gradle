@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'jacoco-android'
 
 
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
@@ -43,8 +44,7 @@ android {
 jacocoAndroidUnitTestReport {
     excludes += ['**/AutoValue_*.*',
                  '**/*JavascriptBridge.class']
-    csv.enabled false
-    html.enabled true
+    html.enabled false
     xml.enabled true
 }
 
@@ -93,8 +93,6 @@ dependencies {
 
 
 }
-
-
 
 
 
