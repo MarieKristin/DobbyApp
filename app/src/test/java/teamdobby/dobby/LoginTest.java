@@ -19,7 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import static org.hamcrest.CoreMatchers.any;
-import static org.hamcrest.CoreMatchers.isA;
+
 import static org.powermock.api.support.membermodification.MemberMatcher.method;
 import static org.powermock.api.support.membermodification.MemberModifier.suppress;
 
