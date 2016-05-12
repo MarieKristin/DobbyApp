@@ -29,7 +29,6 @@ test:
     - sudo apt-get update
     - sudo apt-get install gradle-2.10
   override:
-    - ./gradlew test
     - gradle check jacocoTestReport
      # copy the build outputs to artifacts
     - cp -r home/ubuntu/DobbyApp/app/build/reports/tests $CIRCLE_ARTIFACTS
