@@ -1,4 +1,4 @@
-package teamdobby.dobby;
+/*package teamdobby.dobby;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -32,7 +32,7 @@ import static org.mockito.Mockito.*;
 
 /**
  * Created by Marie on 02.05.2016.
- */
+ *//*
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Splashscreen.class,AnimationUtils.class})
 public class SplashscreenTest {
@@ -77,10 +77,12 @@ public class SplashscreenTest {
 
         verify(animation).setAnimationListener((Animation.AnimationListener) Matchers.any());
     }*/
-
+/*
     @Test
     public void testOnBackPressed() {
         splashscreen.onBackPressed();
         assertTrue(true);
     }
 }
+
+*/
