@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'jacoco-android'
 
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
@@ -13,10 +14,13 @@ android {
         versionName "1.0"
     }
 
+
+
     productFlavors {
         free {}
         paid {}
     }
+
 
 
     buildTypes {
@@ -35,7 +39,10 @@ android {
 
 }
 
-
+jacocoAndroidUnitTestReport {
+    excludes += ['**/AutoValue_*.*',
+                 '**/*JavascriptBridge.class']
+}
 
 
 repositories { jcenter() }
@@ -82,6 +89,11 @@ dependencies {
 
 
 }
+
+
+
+
+
 
 
 
