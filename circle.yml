@@ -31,7 +31,7 @@ test:
   override:
     - gradle check jacocoTestReport
      # copy the build outputs to artifacts
-    - cp -r home/ubuntu/DobbyApp/app/build/reports/tests $CIRCLE_ARTIFACTS
+    - cp -r home/ubuntu/DobbyApp/app/build/reports $CIRCLE_ARTIFACTS
      # copy the test results to the test results directory.
     - cp -r /home/ubuntu/DobbyApp/app/build/reports/tests $CIRCLE_TEST_REPORTS
   post:
