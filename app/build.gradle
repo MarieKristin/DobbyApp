@@ -1,8 +1,15 @@
 apply plugin: 'com.android.application'
+apply plugin: 'jacoco-android'
+
 
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
+
+    productFlavors {
+                free {}
+                paid {}
+            }
 
     defaultConfig {
         applicationId "teamdobby.dobby"
@@ -11,13 +18,33 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
+
+
     buildTypes {
+        debug {
+            debuggable true
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            testCoverageEnabled true
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            testCoverageEnabled true
         }
     }
 }
+
+jacocoAndroidUnitTestReport {
+        excludes += ['**/AutoValue_*.*',
+                     '**/*JavascriptBridge.class']
+        html.enabled false
+        xml.enabled true
+    }
+
+
 
 repositories { jcenter() }
 
