@@ -61,7 +61,7 @@ public class SplashscreenTest {
         //suppress(method(Splashscreen.class, "animationListener", Animation.class));
     }
 
- /*   @Test
+    @Test
     public void testOnCreate() {
         suppress(method(Splashscreen.class, "animationListener", Animation.class));
 
@@ -69,13 +69,13 @@ public class SplashscreenTest {
 
         verify(splashscreen).findViewById(anyInt());
     }
-*/
+
     /*@Test
     public void testAnimationListener() {
         splashscreen.onCreate(mock(Bundle.class));
         verify(animation).setAnimationListener((Animation.AnimationListener) Matchers.any());
-    }
-*/
+    }*/
+
     @Test
     public void testOnBackPressed() {
         splashscreen.onBackPressed();
