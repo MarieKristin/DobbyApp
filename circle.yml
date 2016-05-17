@@ -28,8 +28,7 @@ test:
     - sudo add-apt-repository ppa:cwchien/gradle -y
     - sudo apt-get update
     - sudo apt-get install gradle-2.10
-    - ruby dk.rb init
-    - ruby dk.rb install
+    - sudo apt-get install ruby 2.4.4
     - gem install calabash-android
   override:
     - gradle check jacocoTestReport
@@ -37,7 +36,7 @@ test:
     - cp -r /home/ubuntu/DobbyApp/app/build/reports/tests $CIRCLE_TEST_REPORTS
     - ./gradlew assembleDebug
     - cp -r /home/ubuntu/DobbyApp/app/build $CIRCLE_ARTIFACTS
-    - test.sh
+
   post:
     - if [ -e ./gradlew ]; then ./gradlew jacocoTestReport;else gradle jacocoTestReport;fi
     - bash <(curl -s https://codecov.io/bash)
