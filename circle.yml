@@ -32,16 +32,17 @@ test:
     - rvm use 2.2.4 --default
     - ruby --version
     - gem install calabash-android
-    - emulator -avd circleci-android22 -no-audio -no-window:
-            background: true
-            parallel: true
-    - circle-android wait-for-boot
+
   override:
     - gradle check jacocoTestReport
      # copy the test results to the test results directory.
     - cp -r /home/ubuntu/DobbyApp/app/build/reports/tests $CIRCLE_TEST_REPORTS
     - ./gradlew assembleDebug
     - cp -r ./ $CIRCLE_ARTIFACTS
+    - emulator -avd circleci-android22 -no-audio -no-window:
+                background: true
+                parallel: true
+    - circle-android wait-for-boot
     - calabash-android resign app-free-debug.apk
     - calabash-android run app-free-debug.apk  --format html –-out report.html
 
