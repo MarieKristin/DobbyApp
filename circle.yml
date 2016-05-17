@@ -43,8 +43,8 @@ test:
                 background: true
                 parallel: true
     - circle-android wait-for-boot
-    - calabash-android resign app-free-debug.apk
-    - calabash-android run app-free-debug.apk  --format html –-out report.html
+    - ./ calabash-android resign app-free-debug.apk
+    - ./ calabash-android run app-free-debug.apk  --format html –-out report.html
 
   post:
     - if [ -e ./gradlew ]; then ./gradlew jacocoTestReport;else gradle jacocoTestReport;fi
