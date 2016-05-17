@@ -32,6 +32,7 @@ test:
     - gradle check jacocoTestReport
      # copy the test results to the test results directory.
     - cp -r /home/ubuntu/DobbyApp/app/build/reports/tests $CIRCLE_TEST_REPORTS
+    - ./gradlew assembleDebug
     - cp -r /home/ubuntu/DobbyApp/app/build $CIRCLE_ARTIFACTS
   post:
     - if [ -e ./gradlew ]; then ./gradlew jacocoTestReport;else gradle jacocoTestReport;fi
