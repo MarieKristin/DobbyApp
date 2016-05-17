@@ -38,9 +38,8 @@ test:
     - cp -r /home/ubuntu/DobbyApp/app/build/reports/tests $CIRCLE_TEST_REPORTS
     - ./gradlew assembleDebug
     - cp -r /home/ubuntu/DobbyApp/app/build $CIRCLE_ARTIFACTS
-    - cd /home/ubuntu/DobbyApp/app/build/
-    - calabash-android resign app-free-debug.apk
-    - calabash-android run app-free-debug.apk  --format html –-out report.html
+    - cd /home/ubuntu/DobbyApp/app/build calabash-android resign app-free-debug.apk
+    - cd /home/ubuntu/DobbyApp/app/build calabash-android run app-free-debug.apk  --format html –-out report.html
 
   post:
     - if [ -e ./gradlew ]; then ./gradlew jacocoTestReport;else gradle jacocoTestReport;fi
