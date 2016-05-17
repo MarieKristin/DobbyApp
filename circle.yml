@@ -43,7 +43,7 @@ test:
                 parallel: true
     - circle-android wait-for-boot
     - calabash-android resign /home/ubuntu/DobbyApp/app/build/outputs/apk/app-free-debug.apk
-    - calabash-android run /home/ubuntu/DobbyApp/app/build/outputs/apk/app-free-debug.apk
+    - calabash-android run /home/ubuntu/DobbyApp/app/build/outputs/apk/app-free-debug.apk  --format html --out report.html
 
   post:
     - if [ -e ./gradlew ]; then ./gradlew jacocoTestReport;else gradle jacocoTestReport;fi
