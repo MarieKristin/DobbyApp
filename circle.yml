@@ -29,7 +29,9 @@ test:
     - sudo apt-get update
     - sudo apt-get install gradle-2.10
     - sudo apt-get install ruby 2.4.4
+    - sudo update ruby
     - gem install calabash-android
+    - ruby --version
   override:
     - gradle check jacocoTestReport
      # copy the test results to the test results directory.
