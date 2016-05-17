@@ -29,6 +29,7 @@ test:
     - sudo apt-get update
     - sudo apt-get install gradle-2.10
     - sudo apt-get install ruby 2.4.4
+    - rvm use 2.2.4 --default
     - ruby --version
     - gem install calabash-android
   override:
