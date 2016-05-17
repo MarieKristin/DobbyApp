@@ -14,7 +14,7 @@ general:
 machine:
     environment:
         ANDROID_HOME: /usr/local/android-sdk-linux
-        ruby: 2.1.5
+        ruby: 2.4.4
 
 
 dependencies:
@@ -28,6 +28,9 @@ test:
     - sudo add-apt-repository ppa:cwchien/gradle -y
     - sudo apt-get update
     - sudo apt-get install gradle-2.10
+    - ruby dk.rb init
+    - ruby dk.rb install
+    - gem install calabash-android
   override:
     - gradle check jacocoTestReport
      # copy the test results to the test results directory.
