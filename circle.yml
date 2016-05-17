@@ -31,7 +31,6 @@ test:
     - sudo apt-get install ruby 2.4.4
     - rvm use 2.2.4 --default
     - sudo apt-get install ruby2.4.4-dev
-    - ruby-dev --version
     - gem install calabash-android
 
   override:
