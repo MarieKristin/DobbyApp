@@ -43,7 +43,7 @@ test:
                 parallel: true
     - circle-android wait-for-boot
     - calabash-android resign /home/ubuntu/DobbyApp/app/build/outputs/apk/app-free-debug.apk
-    - calabash-android run /home/ubuntu/DobbyApp/app/build/outputs/apk/app-free-debug.apk
+    - calabash-android run /home/ubuntu/DobbyApp/app/build/outputs/apk/app-free-debug.apk  --format junit  --out report.xml
     - cp -r /home/ubuntu/DobbyApp/app/build/reports/tests $CIRCLE_TEST_REPORTS
 
   post:
