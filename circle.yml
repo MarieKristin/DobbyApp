@@ -43,20 +43,24 @@ test:
     - gem install calabash-android
 
   override:
+    # create sdcard image file
+    - mksdcard -l e 512M mysdcard.img
+      # start the emulator
+    - emulator -avd circleci-android22   -no-audio -no-window:
+          background: true
+          parallel: true
+      # wait for it to have booted
+    - ./gradlew assembleDebugAndroidTest -PdisablePreDex
+    - circle-android wait-for-boot
+      # wait a little longer, just in case :)
+    - sleep 30
+      # confirm devices
+    - adb devices
     - gradle check jacocoTestReport
      # copy the test results to the test results directory.
     - cp -r /home/ubuntu/DobbyApp/app/build/reports/tests $CIRCLE_TEST_REPORTS
     - ./gradlew assembleDebug
     - cp -r /home/ubuntu/DobbyApp/app/build $CIRCLE_ARTIFACTS
-    - emulator -avd circleci-android23 -no-audio -no-window:
-                background: true
-                parallel: true
-    - circle-android wait-for-boot
-    - sleep 5
-    - adb shell input keyevent 82
-    - sleep 5
-    - adb shell input touchscreen swipe 370 735 371 735
-    - sleep 5
     - calabash-android resign /home/ubuntu/DobbyApp/app/build/outputs/apk/app-free-debug.apk
 #    - calabash-android console /home/ubuntu/DobbyApp/app/build/outputs/apk/app-free-debug.apk
     - calabash-android run /home/ubuntu/DobbyApp/app/build/outputs/apk/app-free-debug.apk  --format junit  --out report.xml
