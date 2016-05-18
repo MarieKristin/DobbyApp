@@ -20,6 +20,12 @@ test:
     - gem install calabash-android
 
   override:
+     # run tests  against the emulator.
+    - ./gradlew connectedAndroidTest -PdisablePreDex
+        # copy the build outputs to artifacts
+    - cp -r app/build/outputs $CIRCLE_ARTIFACTS
+        # copy the test results to the test results directory.
+    - cp -r app/build/outputs/androidTest-results/* $CIRCLE_TEST_REPORTS
     # start the emulator
     - emulator -avd circleci-android22 -no-audio -no-window:
         background: true
@@ -29,13 +35,7 @@ test:
     # unlock the emulator screen
     - sleep 30
     - adb shell input keyevent 82
-    # run tests  against the emulator.
-    # - ./gradlew connectedAndroidTest -PdisablePreDex
-    # copy the build outputs to artifacts
-    # - cp -r app/build/outputs $CIRCLE_ARTIFACTS
-    # copy the test results to the test results directory.
-    # - cp -r app/build/outputs/androidTest-results/* $CIRCLE_TEST_REPORTS
-    # - calabash-android resign $CIRCLE_ARTIFACTS/outputs/apk/app-free-debug.apk
+    - calabash-android resign $CIRCLE_ARTIFACTS/outputs/apk/app-free-debug.apk
     - $CIRCLE_ARTIFACTS/outputs/apk/ calabash-android run app-free-debug.apk  --format junit  --out report.xml
     - cp -r /home/ubuntu/DobbyApp/app/build/reports/tests $CIRCLE_TEST_REPORTS
     - gradle check jacocoTestReport
