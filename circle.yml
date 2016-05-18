@@ -9,7 +9,7 @@ general:
     artifacts:
         - /home/ubuntu/DobbyApp/app/build/outputs/apk/
 
-     branches:
+    branches:
           only:
             - CIrcleCI # list of branches to build
 
