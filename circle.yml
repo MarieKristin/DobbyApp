@@ -27,7 +27,7 @@ dependencies:
 
 test:
   pre:
-    - echo y | android update sdk --no-ui --all --filter tools,platform-tools,build-tools-21.1.2,android-21,extra-google-m2repository,extra-google-google_play_services,extra-android-support
+    - emulator -avd circleci-android22 -no-audio -no-window
     - circle-android wait-for-boot
     - sudo add-apt-repository ppa:cwchien/gradle -y
     - sudo apt-get update
