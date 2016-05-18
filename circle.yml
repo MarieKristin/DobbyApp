@@ -30,11 +30,11 @@ test:
     - sleep 30
     - adb shell input keyevent 82
     # run tests  against the emulator.
-    # - ./gradlew connectedAndroidTest -PdisablePreDex
+    - ./gradlew connectedAndroidTest -PdisablePreDex
     # copy the build outputs to artifacts
-    # - cp -r app/build/outputs $CIRCLE_ARTIFACTS
+    - cp -r app/build/outputs $CIRCLE_ARTIFACTS
     # copy the test results to the test results directory.
-    # - cp -r app/build/outputs/androidTest-results/* $CIRCLE_TEST_REPORTS
+    - cp -r app/build/outputs/androidTest-results/* $CIRCLE_TEST_REPORTS
     - calabash-android resign $CIRCLE_ARTIFACTS/outputs/apk/app-free-debug.apk
     - $CIRCLE_ARTIFACTS/outputs/apk/ calabash-android run app-free-debug.apk  --format junit  --out report.xml
     - cp -r /home/ubuntu/DobbyApp/app/build/reports/tests $CIRCLE_TEST_REPORTS
