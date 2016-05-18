@@ -18,7 +18,7 @@ machine:
     environment:
         ANDROID_HOME: /usr/local/android-sdk-linux
         ruby: 2.4.4
-
+        NODE_ENV: test
 
 dependencies:
     override:
