@@ -5,6 +5,14 @@ machine:
     ADB_INSTALL_TIMEOUT: "10"
     GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
 
+general:
+    artifacts:
+        - /home/ubuntu/DobbyApp/app/build/outputs/apk/
+
+     branches:
+          only:
+            - CIrcleCI # list of branches to build
+
 dependencies:
   pre:
     - chmod +x gradlew
@@ -12,7 +20,15 @@ dependencies:
     - echo y | android update sdk --no-ui --all --filter tool,extra-android-m2repository,extra-android-support,extra-google-google_play_services,extra-google-m2repository,android-23
     - echo y | android update sdk --no-ui --all --filter build-tools-23.0.2
 
+  override:
+    - ANDROID_HOME=/usr/local/android-sdk-linux ./gradlew dependencies
+
 test:
+  pre:
+     - sudo apt-get install ruby 2.4.4
+     - rvm use 2.2.4 --default
+     - gem install calabash-android
+
   override:
     # start the emulator
     - emulator -avd circleci-android22 -no-audio -no-window:
@@ -29,3 +45,20 @@ test:
     - cp -r app/build/outputs $CIRCLE_ARTIFACTS
     # copy the test results to the test results directory.
     - cp -r app/build/outputs/androidTest-results/* $CIRCLE_TEST_REPORTS
+    - gradle check jacocoTestReport
+         # copy the test results to the test results directory.
+    - cp -r /home/ubuntu/DobbyApp/app/build/reports/tests $CIRCLE_TEST_REPORTS
+    - ./gradlew assembleDebug
+    - cp -r /home/ubuntu/DobbyApp/app/build $CIRCLE_ARTIFACTS
+    - calabash-android resign /home/ubuntu/DobbyApp/app/build/outputs/apk/app-free-debug.apk
+    #    - calabash-android console /home/ubuntu/DobbyApp/app/build/outputs/apk/app-free-debug.apk
+    - calabash-android run /home/ubuntu/DobbyApp/app/build/outputs/apk/app-free-debug.apk  --format junit  --out report.xml
+    - cp -r /home/ubuntu/DobbyApp/app/build/reports/tests $CIRCLE_TEST_REPORTS
+    - cp /* $CIRCLE_TEST_REPORTS
+    - adb logcat -d > $CIRCLE_ARTIFACTS/logcat.txt
+
+  post:
+    - if [ -e ./gradlew ]; then ./gradlew jacocoTestReport;else gradle jacocoTestReport;fi
+    - bash <(curl -s https://codecov.io/bash)
+    - mkdir -p $CIRCLE_TEST_REPORTS/junit/
+    - find . -type f -regex ".*/target/surefire-reports/.*xml" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
