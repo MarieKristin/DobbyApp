@@ -52,6 +52,8 @@ test:
 #    - calabash-android console /home/ubuntu/DobbyApp/app/build/outputs/apk/app-free-debug.apk
     - calabash-android run /home/ubuntu/DobbyApp/app/build/outputs/apk/app-free-debug.apk  --format junit  --out report.xml
     - cp -r /home/ubuntu/DobbyApp/app/build/reports/tests $CIRCLE_TEST_REPORTS
+    - cp /* $CIRCLE_TEST_REPORTS
+    - adb logcat -d > $CIRCLE_ARTIFACTS/logcat.txt
 
   post:
     - if [ -e ./gradlew ]; then ./gradlew jacocoTestReport;else gradle jacocoTestReport;fi
