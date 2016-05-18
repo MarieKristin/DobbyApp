@@ -35,6 +35,15 @@ test:
     - cp -r app/build/outputs $CIRCLE_ARTIFACTS
     # copy the test results to the test results directory.
     - cp -r app/build/outputs/androidTest-results/* $CIRCLE_TEST_REPORTS
+    - adb emulator kill
+    - emulator -avd circleci-android22 -no-audio -no-window:
+            background: true
+            parallel: true
+        # wait for it to have booted
+    - circle-android wait-for-boot
+        # unlock the emulator screen
+    - sleep 30
+    - adb shell input keyevent 82
     - sudo calabash-android resign $CIRCLE_ARTIFACTS/outputs/apk/app-free-debug.apk
     - sudo calabash-android run $CIRCLE_ARTIFACTS/outputs/apk/app-free-debug.apk  --format junit  --out report.xml
     - cp -r /home/ubuntu/DobbyApp/app/build/reports/tests $CIRCLE_TEST_REPORTS
