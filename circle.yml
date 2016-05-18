@@ -27,8 +27,6 @@ dependencies:
 
 test:
   pre:
-    - emulator -avd circleci-android22 -no-audio -no-window
-    - circle-android wait-for-boot
     - sudo add-apt-repository ppa:cwchien/gradle -y
     - sudo apt-get update
     - sudo apt-get install gradle-2.10
@@ -42,15 +40,6 @@ test:
     - cp -r /home/ubuntu/DobbyApp/app/build/reports/tests $CIRCLE_TEST_REPORTS
     - ./gradlew assembleDebug
     - cp -r /home/ubuntu/DobbyApp/app/build $CIRCLE_ARTIFACTS
-    - emulator -avd circleci-android21 -no-audio -no-window:
-        background: true
-        parallel: true
-    - circle-android wait-for-boot
-    - sleep 5
-    - adb shell input keyevent 82
-    - sleep 5
-    - adb shell input touchscreen swipe 370 735 371 735
-    - sleep 5
     - calabash-android resign /home/ubuntu/DobbyApp/app/build/outputs/apk/app-free-debug.apk
 #    - calabash-android console /home/ubuntu/DobbyApp/app/build/outputs/apk/app-free-debug.apk
     - calabash-android run /home/ubuntu/DobbyApp/app/build/outputs/apk/app-free-debug.apk  --format junit  --out report.xml
