@@ -12,6 +12,9 @@ general:
         - CIrcleCI # list of branches to build
 
 machine:
+    java:
+        version: oraclejdk8
+
     environment:
         ANDROID_HOME: /usr/local/android-sdk-linux
         ruby: 2.4.4
