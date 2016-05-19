@@ -38,7 +38,7 @@ test:
    # - adb reverse --remove-all
     - adb kill-server
     - adb -s emulator-5554 emu kill
-    - adb devices -l
+    # - adb devices -l
     - emulator -avd circleci-android22 -no-audio -no-window:
             background: true
             parallel: true
