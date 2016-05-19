@@ -54,7 +54,7 @@ test:
     - adb devices -l
     - adb -s emulator-5556 shell input keyevent 82
     - calabash-android resign $CIRCLE_ARTIFACTS/outputs/apk/app-free-debug.apk
-    - calabash-android run $CIRCLE_ARTIFACTS/outputs/apk/app-free-debug.apk  --verbose
+    - ADB_DEVICE_ARG = emulator-5556 calabash-android run $CIRCLE_ARTIFACTS/outputs/apk/app-free-debug.apk  --verbose
     - adb -s emulator-5554 emu kill
     - adb devices -l
     - cp -r /home/ubuntu/DobbyApp/app/build/reports/tests $CIRCLE_TEST_REPORTS
