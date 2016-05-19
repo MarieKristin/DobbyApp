@@ -18,7 +18,7 @@ test:
     - sudo apt-get install ruby 2.4.4
     - rvm use 2.2.4 --default
     - gem install calabash-android
-
+    - sudo apt-get update
   override:
     # start the emulator
     - emulator -avd circleci-android22 -no-audio -no-window:
