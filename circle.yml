@@ -37,7 +37,7 @@ test:
     - cp -r app/build/outputs/androidTest-results/* $CIRCLE_TEST_REPORTS
    # - adb reverse --remove-all
     - adb kill-server
-    - adb -s emulator-5554 emu kill
+    - adb -s ANDROID_SERIAL emu kill
     - emulator -avd circleci-android22 -no-audio -no-window:
             background: true
             parallel: true
