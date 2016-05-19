@@ -35,11 +35,12 @@ test:
     - cp -r app/build/outputs $CIRCLE_ARTIFACTS
     # copy the test results to the test results directory.
     - cp -r app/build/outputs/androidTest-results/* $CIRCLE_TEST_REPORTS
-    - adb reverse --remove-all
-    - emu kill
-    - emulator -avd circleci-android22 -no-audio -no-window:
-            background: true
-            parallel: true
+    - adb root
+   # - adb reverse --remove-all
+   # - emu kill
+   # - emulator -avd circleci-android22 -no-audio -no-window:
+   #         background: true
+   #         parallel: true
         # wait for it to have booted
     - circle-android wait-for-boot
         # unlock the emulator screen
