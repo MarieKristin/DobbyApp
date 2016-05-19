@@ -16,7 +16,7 @@ dependencies:
 test:
   pre:
     - sudo apt-get install ruby 2.4.4
-    - rvm use 2.2.4 --default
+    - sudo rvm use 2.2.4 --default
     - sudo gem install calabash-android
     - sudo apt-get update
   override:
