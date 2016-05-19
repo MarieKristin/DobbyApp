@@ -35,7 +35,7 @@ test:
     - cp -r app/build/outputs $CIRCLE_ARTIFACTS
     # copy the test results to the test results directory.
     - cp -r app/build/outputs/androidTest-results/* $CIRCLE_TEST_REPORTS
-    - adb -s circleci-android22 emu kill
+    - adb -s emulator-5037 circleci-android22 kill
     - emulator -avd circleci-android22 -no-audio -no-window:
             background: true
             parallel: true
