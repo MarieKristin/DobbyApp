@@ -6,7 +6,7 @@ end
 
 Before do |scenario|
   scenario = scenario.scenario_outline if scenario.respond_to?(:scenario_outline)
-
+  ADB_DEVICE_ARG = emulator-5556
   feature = scenario.feature
   if FeatureMemory.feature != feature || ENV['RESET_BETWEEN_SCENARIOS'] == '1'
     if ENV['RESET_BETWEEN_SCENARIOS'] == '1'
