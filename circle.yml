@@ -36,7 +36,7 @@ test:
     # copy the test results to the test results directory.
     - cp -r app/build/outputs/androidTest-results/* $CIRCLE_TEST_REPORTS
     - adb reverse --remove-all
-    - adb -s emu kill
+    - emulator kill
     - emulator -avd circleci-android22 -no-audio -no-window:
             background: true
             parallel: true
