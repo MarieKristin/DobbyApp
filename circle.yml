@@ -38,7 +38,6 @@ test:
    # - adb reverse --remove-all
     - adb kill-server
     - adb -s emulator-5554 emu kill
-    # - adb devices -l
     - emulator -avd circleci-android22 -no-audio -no-window:
             background: true
             parallel: true
@@ -46,6 +45,7 @@ test:
     - circle-android wait-for-boot
         # unlock the emulator screen
     - sleep 30
+    - adb devices -l
     - adb shell input keyevent 82
     - calabash-android resign $CIRCLE_ARTIFACTS/outputs/apk/app-free-debug.apk
     - calabash-android run $CIRCLE_ARTIFACTS/outputs/apk/app-free-debug.apk  --format junit  --out report.xml
