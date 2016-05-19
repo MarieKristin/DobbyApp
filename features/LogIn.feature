@@ -1,72 +1,23 @@
-
-
-
-Feature: Dobby - LogIn
+Feature: Dobby LogOut
 
 		As 			an user
-		I want 		to log in into the intern main page
-		so that		I can control Dobby
+		I want 		to log out
+		so that		Dobbys control-pannel is logged
 
 		
-  Scenario Outline: Dobby LogIn
-		
-		Given 		I wait for the "MainActivity" screen to appear
-   
-		When 		I press "buttonLogin"
-			And 		I enter "<User>" into input field number 1
-			And 		I press the enter button
-			And 		I enter "<Password>" into input field number 2
-			And 		I press the enter button
-			And 		I press "loginConfirm"
-			
-		Then 		I should see "Successfully logged in"
-	
-		Examples:
-			| 	User		 |    Password    |
-			| 	Dobby	 |    123         |
-
-	
-	
-  Scenario Outline: Dobby LogIn failed - User not found
+  Scenario Outline: Dobby LogOut
   
-		Given 		I wait for the "MainActivity" screen to appear
-   
-		When 		I press "buttonLogin"
-			And 		I enter "<User>" into input field number 1
-			And 		I press the enter button
-			And 		I enter "<Password>" into input field number 2
-			And 		I press the enter button
-			And 		I press "loginConfirm"	
-			
-		Then 		I should see "User not found"
-
-		Examples:
-			| User 		|	Password    |
-			| Daniel 	|	123         |
-			| Marie		|	123         |
-			| Martin 	|	123         |
-			| Nico 		|	123         |
-
-
-
-  Scenario Outline: Dobby LogIn failed - Wrong Password
-   
-		Given		I wait for the "MainActivity" screen to appear
-   
-		When 		I press "buttonLogin"
+		Given 		I wait for the "Splashscreen" screen to appear
+				
+		When 	 		I wait for 10 seconds
 			And 		I enter "<User>" into input field number 1
 			And 		I press the enter button
 			And 		I enter "<Password>" into input field number 2
 			And 		I press the enter button
 			And 		I press "loginConfirm"
-			
-		Then 		I should see "Wrong Password"
+				
+		Then 		I should see "Successfully logged in"
 
-		Examples:
-			| User 		|   Password    |
-			| Dobby 		|   4444        |
-			| Dobby 		|   235         |
-			| Dobby 		|   23433       |
-			| Dobby 		|   234         |
-	
-
+	Examples:
+		| User  		|   Password    |
+		| Dobby 		|   123         |
