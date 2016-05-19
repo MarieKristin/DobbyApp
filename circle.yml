@@ -37,7 +37,7 @@ test:
     # copy the test results to the test results directory.
     - cp -r app/build/outputs/androidTest-results/* $CIRCLE_TEST_REPORTS
     - adb kill-server
-    - emulator-5554 emu destroy
+    - adb -s emulator-5554 emu destroy
     - adb devices -l
     - curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
     - sudo apt-get install -y nodejs

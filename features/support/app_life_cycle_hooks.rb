@@ -3,7 +3,7 @@ require 'calabash-android/operations'
 
 Before do |scenario|
   start_test_server_in_background
-  ADB_DEVICE_ARG = emulator-5556
+
 end
 
 After do |scenario|
