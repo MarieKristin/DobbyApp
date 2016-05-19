@@ -38,6 +38,10 @@ test:
    # - adb reverse --remove-all
     - adb kill-server
     - adb -s emulator-5554 emu kill
+    - curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
+    - sudo apt-get install -y nodejs
+    - gem install rails -v 4.2.6
+    - rbenv rehash
     - adb devices -l
     - emulator -avd circleci-android22 -no-audio -no-window:
             background: true
