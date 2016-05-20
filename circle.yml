@@ -45,6 +45,7 @@ test:
     - rbenv rehash
     - adb devices -l
     - emulator -avd circleci-android22 -no-audio -no-window:
+            background: true
             parallel: true
         # wait for it to have booted
     - circle-android wait-for-boot
@@ -52,7 +53,7 @@ test:
     - sleep 30
     - adb devices -l
     - adb -s emulator-5556 shell input keyevent 82
-    - adb -s emulator-5556 shell install $CIRCLE_ARTIFACTS/outputs/apk/app-free-debug.apk
+    - adb -s emulator-5556 pm shell install $CIRCLE_ARTIFACTS/outputs/apk/app-free-debug.apk
     - calabash-android resign $CIRCLE_ARTIFACTS/outputs/apk/app-free-debug.apk
     - adb devices -l
     - adb -s emulator-5556 shell input keyevent 82
