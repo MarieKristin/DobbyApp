@@ -35,23 +35,17 @@ test:
     # copy the build outputs to artifacts
     - cp -r app/build/outputs $CIRCLE_ARTIFACTS
     # copy the test results to the test results directory.
-    - cp -r app/build/outputs/androidTest-results/* $CIRCLE_TEST_REPORTS
     - adb kill-server
     - adb -s emulator-5554 emu destroy
-    - adb devices -l
     - curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
     - sudo apt-get install -y nodejs
     - gem install rails -v 4.2.6
     - rbenv rehash
     - adb -s emulator-5554 shell input keyevent 82
-    - adb devices -l
     - calabash-android run $CIRCLE_ARTIFACTS/outputs/apk/app-free-debug.apk  ADB_DEVICE_ARG=emulator-5554  --format html  --out report.html
-    - cp -r /home/ubuntu/DobbyApp/app/build/reports/coverage/ $CIRCLE_TEST_REPORTS
-    - adb -s emulator-5554 emu kill
-    - adb devices -l
     - gradle check jacocoTestReport
          # copy the test results to the test results directory.
-    - cp -r /home/ubuntu/DobbyApp/app/build/reports/tests $CIRCLE_TEST_REPORTS
+    - cp -r /home/ubuntu/DobbyApp/app/build/ $CIRCLE_TEST_REPORTS
 
   post:
     - bash <(curl -s https://codecov.io/bash)

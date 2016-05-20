@@ -15,7 +15,7 @@ Feature: Dobby LogOut
 			And 		I enter "<Password>" into input field number 2
 			And 		I press the enter button
 			And 		I press "loginConfirm"
-			And         I click on screen 3% from the left and 7% from the top
+		
 		Then 		I should see "Connect Fragment"
 
 	Examples:
