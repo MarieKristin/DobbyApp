@@ -55,6 +55,8 @@ test:
     - adb devices -l
     - adb -s emulator-5556 shell input keyevent 82
     - adb devices -l
+    - adb root
+    - circle-android wait-for-boot
     - calabash-android run $CIRCLE_ARTIFACTS/outputs/apk/app-free-debug.apk  ADB_DEVICE_ARG=emulator-5556  --verbose
     - adb -s emulator-5556 emu kill
     - adb devices -l
