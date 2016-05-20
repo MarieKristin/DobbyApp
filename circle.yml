@@ -25,7 +25,7 @@ test:
     - emulator -avd circleci-android22 -no-audio -no-window:
         background: true
         parallel: true
-        # wait for it to have booted
+        # wait for it to have booted #
     - circle-android wait-for-boot
         # unlock the emulator screen
     - sleep 30
