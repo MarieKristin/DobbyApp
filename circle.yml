@@ -21,28 +21,34 @@ test:
     - sudo apt-get update
 
   override:
-    # start the emulator
+        # start the emulator
     - emulator -avd circleci-android22 -no-audio -no-window:
         background: true
         parallel: true
-    # wait for it to have booted
+        # wait for it to have booted
     - circle-android wait-for-boot
-    # unlock the emulator screen
+        # unlock the emulator screen
     - sleep 30
+        # Tastensperre lösen am Emulator
     - adb shell input keyevent 82
-    # run tests  against the emulator.
+        # run tests  against the emulator for creating .apk-file (for cucumber-test)
     - ./gradlew connectedAndroidTest -PdisablePreDex
-    # copy the build outputs to artifacts
+        # copy the build outputs to artifacts
     - cp -r app/build/outputs $CIRCLE_ARTIFACTS
-    # copy the test results to the test results directory.
+        # Emulatoren und Server herunterfahren
     - adb kill-server
     - adb -s emulator-5554 emu destroy
+        #
     - curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
     - sudo apt-get install -y nodejs
+        # install ruby rails
     - gem install rails -v 4.2.6
     - rbenv rehash
+        # Emualtor erneut starten
     - adb -s emulator-5554 shell input keyevent 82
+        # run cucumber-test
     - calabash-android run $CIRCLE_ARTIFACTS/outputs/apk/app-free-debug.apk  ADB_DEVICE_ARG=emulator-5554  --format html  --out report.html
+        # run jacoco-Report
     - gradle check jacocoTestReport
          # copy the test results to the test results directory.
     - cp -r /home/ubuntu/DobbyApp/app/build/ $CIRCLE_TEST_REPORTS
