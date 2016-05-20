@@ -21,6 +21,7 @@ test:
     - sudo apt-get update
 
   override:
+    - pwd
         # start the emulator
     - emulator -avd circleci-android22 -no-audio -no-window:
         background: true
@@ -45,6 +46,7 @@ test:
     - gem install rails -v 4.2.6
     - rbenv rehash
         # Emualtor erneut starten
+    - pwd
     - adb -s emulator-5554 shell input keyevent 82
         # run cucumber-test
     - calabash-android run $CIRCLE_ARTIFACTS/outputs/apk/app-free-debug.apk  ADB_DEVICE_ARG=emulator-5554  --format html  --out report.html  --verbose
