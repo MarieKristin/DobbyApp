@@ -12,7 +12,7 @@ dependencies:
     - echo y | android update sdk --no-ui --all --filter tool,extra-android-m2repository,extra-android-support,extra-google-google_play_services,extra-google-m2repository,android-23
     - echo y | android update sdk --no-ui --all --filter build-tools-23.0.2
 
-#
+
 test:
   pre:
     - sudo apt-get install ruby 2.4.4
@@ -45,7 +45,7 @@ test:
     - rbenv rehash
     - adb -s emulator-5554 shell input keyevent 82
     - adb devices -l
-    - calabash-android run $CIRCLE_ARTIFACTS/outputs/apk/app-free-debug.apk  ADB_DEVICE_ARG=emulator-5554  --format junit  --out report.xml
+    - calabash-android run $CIRCLE_ARTIFACTS/outputs/apk/app-free-debug.apk  ADB_DEVICE_ARG=emulator-5554  --format html  --out report.html
     - cp -r /home/ubuntu/DobbyApp/app/build/reports/coverage/ $CIRCLE_TEST_REPORTS
     - adb -s emulator-5554 emu kill
     - adb devices -l

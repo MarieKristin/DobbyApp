@@ -1,4 +1,4 @@
-Feature: Dobby LogOut
+Feature: Dobby Get General Information
 
 		As 			an user
 		I want 		to log out
@@ -15,8 +15,10 @@ Feature: Dobby LogOut
 			And 		I enter "<Password>" into input field number 2
 			And 		I press the enter button
 			And 		I press "loginConfirm"
-			And         I click on screen 3% from the left and 7% from the top
-		Then 		I should see "Connect Fragment"
+			And			I click on screen 3% from the left and 7% from the top
+
+			
+		Then 		I should see "DobbyApp"
 
 	Examples:
 		| User  		|   Password    |
