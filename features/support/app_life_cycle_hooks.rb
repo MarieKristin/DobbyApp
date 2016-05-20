@@ -3,7 +3,7 @@ require 'calabash-android/operations'
 
 Before do |scenario|
   start_test_server_in_background
-  wait-for-device
+
 end
 
 After do |scenario|
