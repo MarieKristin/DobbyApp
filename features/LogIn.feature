@@ -16,7 +16,7 @@ Feature: Dobby LogOut
 			And 		I press the enter button
 			And 		I press "loginConfirm"
 				
-		Then 		I should see "Successfully logged in"
+		Then 		I should see "Connect Fragment"
 
 	Examples:
 		| User  		|   Password    |
