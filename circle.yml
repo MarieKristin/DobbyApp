@@ -44,10 +44,7 @@ test:
     - gem install rails -v 4.2.6
     - rbenv rehash
     - adb -s emulator-5554 shell input keyevent 82
-    - adb devices -l
     - calabash-android run $CIRCLE_ARTIFACTS/outputs/apk/app-free-debug.apk  ADB_DEVICE_ARG=emulator-5554  --verbose
-    - adb -s emulator-5554 emu kill
-    - adb devices -l
     - cp -r /home/ubuntu/DobbyApp/app/build/reports/tests $CIRCLE_TEST_REPORTS
     - gradle check jacocoTestReport
          # copy the test results to the test results directory.
