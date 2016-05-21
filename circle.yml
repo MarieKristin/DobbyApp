@@ -34,7 +34,7 @@ test:
         # run tests  against the emulator for creating .apk-file (for cucumber-test)
     - ./gradlew connectedAndroidTest -PdisablePreDex
         # copy the build outputs to artifacts
-    - cp -r app/build/outputs $CIRCLE_ARTIFACTS
+    - cp -r app/build/outputs/apk/ $CIRCLE_ARTIFACTS
         # Emulatoren und Server herunterfahren
     - adb kill-server
     - adb -s emulator-5554 emu destroy
