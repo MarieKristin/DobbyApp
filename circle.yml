@@ -51,7 +51,7 @@ test:
     - adb -s emulator-5554 shell input keyevent 82
         # run cucumber-test
     - calabash-android run $CIRCLE_ARTIFACTS/App/apk/app-free-debug.apk  ADB_DEVICE_ARG=emulator-5554  --format html  --out report.html  --verbose
-    - cp -r /home/ubuntu/DobbyApp/report.html $CIRCLE_TEST_REPORTS
+    - cp -r /home/ubuntu/DobbyApp/report.html $CIRCLE_TEST_REPORTS/Cucumber/
         # run jacoco-Report
     - gradle check jacocoTestReport
          # copy the test results to the test results directory.
