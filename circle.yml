@@ -35,7 +35,8 @@ test:
     - ./gradlew connectedAndroidTest -PdisablePreDex
         # copy the build outputs to artifacts
     - cp -r app/build/outputs/apk/ $CIRCLE_ARTIFACTS/App/
-    - cp -r app/build/outputs/code-coverage/ $CIRCLE_TEST_REPORTS/connectedAndroidTest-Report
+    - cp -r app/build/outputs/code-coverage/ $CIRCLE_TEST_REPORTS/connectedAndroidTest
+    - cp -r app/build/outputs/androidTest-results/ $CIRCLE_TEST_REPORTS/connectedAndroidTest
         # Emulatoren und Server herunterfahren
     - adb kill-server
     - adb -s emulator-5554 emu destroy
