@@ -42,13 +42,13 @@ test:
     - curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
     - sudo apt-get install -y nodejs
         # install ruby rails #
-    - calabash-android resign $CIRCLE_ARTIFACTS/outputs/apk/app-free-debug.apk
+    - calabash-android resign $CIRCLE_ARTIFACTS/apk/app-free-debug.apk
     - gem install rails -v 4.2.6
     - rbenv rehash
         # Emualtor erneut starten
     - adb -s emulator-5554 shell input keyevent 82
         # run cucumber-test
-    - calabash-android run $CIRCLE_ARTIFACTS/outputs/apk/app-free-debug.apk  ADB_DEVICE_ARG=emulator-5554  --format html  --out report.html  --verbose
+    - calabash-android run $CIRCLE_ARTIFACTS/apk/app-free-debug.apk  ADB_DEVICE_ARG=emulator-5554  --format html  --out report.html  --verbose
     - cp -r /home/ubuntu/DobbyApp/report.html $CIRCLE_TEST_REPORTS
         # run jacoco-Report
     - gradle check jacocoTestReport
