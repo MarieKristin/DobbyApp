@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId "teamdobby.dobby"
-        minSdkVersion 16
+        minSdkVersion 15
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
@@ -36,7 +36,7 @@ android {
                     "build/intermediates/exploded-aar/**/classes.jar"
 
             property "sonar.host.url", "http://sonarqube.it.dh-karlsruhe.de/"
-            property "sonar.projectKey", "DobbyApp" // some shortcut name
+            property "sonar.projectKey", "DobbyControlApp" // some shortcut name
             property "sonar.projectName", "DobbyApp"
             property "sonar.projectVersion", 1.0
 
