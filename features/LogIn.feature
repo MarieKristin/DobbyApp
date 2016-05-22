@@ -5,7 +5,7 @@ Feature: Dobby LogIn
 		so that		Dobbys control-pannel is unlogged
 
 		
-  Scenario Outline: Dobby LogOut
+  Scenario Outline: Dobby LogIn - Successfull
   
 		Given 		I wait for the "Splashscreen" screen to appear
 				

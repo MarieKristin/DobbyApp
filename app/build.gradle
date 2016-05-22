@@ -21,8 +21,8 @@ android {
 
     }
 
-    def flavor = "develop" // flavor we want to have tested. Should be static
-    def Flavor = "Develop" // flavor again, but starting with upper case
+    def flavor = "paid" // flavor we want to have tested. Should be static
+    def Flavor = "Paid" // flavor again, but starting with upper case
 
 // noinspection is used to remove some "warnings" from Android Studio
     sonarqube {
