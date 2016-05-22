@@ -64,11 +64,12 @@ Examples:
 
 	When 			I click on screen 3% from the left and 7% from the top 	
 		
-		Then 		I press "General Information"	
+		And 		I press "General Information"	
 			
 	
 	
-		
+	Then 			I should see "v0.1"
+	
 	
 	
 
@@ -83,7 +84,7 @@ Examples:
 
 
 
-Scenario Outline: Check version on "General Information Page"
+ Scenario Outline: Check developer on "General Information Page"
     
 	
 
@@ -101,7 +102,7 @@ Scenario Outline: Check version on "General Information Page"
 			
 	
 	
-	Then 			I should see "Daniel Stumpf, Nicolas Huentz, Marie Kaiser and Martin Mössner"
+	Then 			I should see "Daniel Stumpf, Nicolas Huentz, Marie Kaiser and Martin M"
 	
 	
 	
@@ -114,3 +115,19 @@ Examples:
 
 
  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
