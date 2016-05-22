@@ -42,21 +42,21 @@ android {
 
             property "sonar.sourceEncoding", "UTF-8"
             property "sonar.sources", "src/main/java,src/main/res" // first defines where the java files are, the second where the xml files are
-            property "sonar.binaries", "build/intermediates/classes/${flavor}/debug"
+            property "sonar.binaries", "$CIRCLE_TEST_REPORTS/build/intermediates/classes/${flavor}/debug"
             property "sonar.libraries", libraries
-            property "sonar.java.binaries", "build/intermediates/classes/${flavor}/debug"
+            property "sonar.java.binaries", "$CIRCLE_TEST_REPORTS/build/intermediates/classes/${flavor}/debug"
             property "sonar.java.libraries", libraries
 
             property "sonar.tests", "src/test/java" // where the tests are located
-            property "sonar.java.test.binaries", "build/intermediates/classes/${flavor}/debug"
+            property "sonar.java.test.binaries", "$CIRCLE_TEST_REPORTS/build/intermediates/classes/${flavor}/debug"
             property "sonar.java.test.libraries", libraries
 
             property "sonar.scm.provider", "git"
 
-            property "sonar.jacoco.reportPath", "build/jacoco/test${Flavor}DebugUnitTest.exec" // path to coverage reports
+            property "sonar.jacoco.reportPath", "$CIRCLE_TEST_REPORTS/build/jacoco/test${Flavor}DebugUnitTest.exec" // path to coverage reports
             property "sonar.java.coveragePlugin", "jacoco"
-            property "sonar.junit.reportsPath", "build/test-results/${flavor}Debug" // path to junit reports
-            property "sonar.android.lint.report", "build/outputs/lint-results-${flavor}Debug.xml" // path to lint reports
+            property "sonar.junit.reportsPath", "$CIRCLE_TEST_REPORTS/build/test-results/${flavor}Debug" // path to junit reports
+            property "sonar.android.lint.report", "$CIRCLE_TEST_REPORTS/build/outputs/lint-results-${flavor}Debug.xml" // path to lint reports
         }
     }
 
