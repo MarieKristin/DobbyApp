@@ -40,7 +40,6 @@ test:
         # Emulatoren und Server herunterfahren
     - adb kill-server
     - adb -s emulator-5554 emu destroy
-        #
     - curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
     - sudo apt-get install -y nodejs
         # install ruby rails #
