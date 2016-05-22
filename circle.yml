@@ -55,7 +55,9 @@ test:
         # run jacoco-Report
     - gradle check jacocoTestReport
          # copy the test results to the test results directory.
-    - cp -r /home/ubuntu/DobbyApp/app/build/ $CIRCLE_TEST_REPORTS
+    - cp -r /home/ubuntu/DobbyApp/app/build/outputs/ $CIRCLE_TEST_REPORTS
+    - cp -r /home/ubuntu/DobbyApp/app/build/reports/ $CIRCLE_TEST_REPORTS
+    - cp -r /home/ubuntu/DobbyApp/app/build/test-results/ $CIRCLE_TEST_REPORTS
 
   post:
     - bash <(curl -s https://codecov.io/bash)
