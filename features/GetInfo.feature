@@ -1,6 +1,3 @@
-
-
-
 Feature: Dobby - Get General Information Page
 
 		
