@@ -21,7 +21,7 @@ Scenario Outline: Connection - Successfull
 		And 		I press "loginConfirm"
 
 		And I wait for 5 seconds
-		And I go back		
+			
 
 	When 			I click on screen 50% from the left and 12% from the top 				
 		
