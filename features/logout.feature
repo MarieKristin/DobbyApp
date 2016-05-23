@@ -24,7 +24,9 @@ Scenario Outline: Dobby LogOut
 		And 		I enter "<Password>" into input field number 2
 		And 		I press the enter button
 		And 		I press "loginConfirm"
-		
+
+		And I wait for 5 seconds
+		And I go back		
 
 	When 			I click on screen 3% from the left and 7% from the top 	
 			
@@ -56,7 +58,9 @@ Scenario Outline: Dobby LogOut
 		And 		I enter "<Password>" into input field number 2
 		And 		I press the enter button
 		And 		I press "loginConfirm"
-		
+
+		And I wait for 5 seconds
+		And I go back		
 
 	When 			I click on screen 3% from the left and 7% from the top 	
 			
