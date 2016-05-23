@@ -23,7 +23,7 @@ Scenario Outline: Connection - Successfull
 		And I wait for 5 seconds
 		And I go back		
 
-	When 			I click on screen 50% from the left and 15% from the top 				
+	When 			I click on screen 50% from the left and 12% from the top 				
 		
 
 	Then 			I should see "Connection Error - try again"
