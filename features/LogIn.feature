@@ -9,17 +9,15 @@ Feature: Dobby LogIn
   
 		Given 		I wait for the "Splashscreen" screen to appear
 				
-		When 	 		I wait for 10 seconds
+		When 	 		I wait for 8 seconds
 			And 		I enter "<User>" into input field number 1
-			And I wait for 10 seconds
 			And 		I press the enter button
-			And I wait for 10 seconds
+			And I wait for 8 seconds
 			And 		I enter "<Password>" into input field number 2
-			And I wait for 10 seconds
 			And 		I press the enter button
-			And I wait for 10 seconds
+			And I wait for 8 seconds
 			And 		I press "loginConfirm"
-			And I wait for 10 seconds
+			And I wait for 8 seconds
 		
 		Then 			I should see "Connect Fragment"
 			
@@ -35,20 +33,18 @@ Feature: Dobby LogIn
 		Given 			I wait for the "Splashscreen" screen to appear
    
 
-		When 	 		I wait for 10 seconds
+		When 	 		I wait for 8 seconds
 			And 		I enter "<User>" into input field number 1
-			And I wait for 10 seconds
 			And 		I press the enter button
-			And I wait for 10 seconds
+			And I wait for 8 seconds
 			And 		I enter "<Password>" into input field number 2
-			And I wait for 10 seconds
 			And 		I press the enter button
-			And I wait for 10 seconds
+			And I wait for 8 seconds
 			And 		I press "loginConfirm"
 					
 
 		Then 			I should see "User not found"
-			And I wait for 10 seconds
+			And I wait for 8 seconds
 
 
 	Examples:
@@ -65,16 +61,13 @@ Feature: Dobby LogIn
    
 		Given			I wait for the "Splashscreen" screen to appear
    
-		When 	 		I wait for 1 seconds
-			And I wait for 10 seconds
+		When 	 		I wait for 7 seconds
 			And 		I enter "<User>" into input field number 1
-			And I wait for 10 seconds
 			And 		I press the enter button
-			And I wait for 10 seconds
+			And I wait for 7 seconds
 			And 		I enter "<Password>" into input field number 2
-			And I wait for 10 seconds
 			And 		I press the enter button
-			And I wait for 10 seconds
+			And I wait for 7 seconds
 			And 		I press "loginConfirm"		
 	
 		Then 			I should see "Wrong password"

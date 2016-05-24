@@ -7,22 +7,23 @@ Feature: Dobby - Get General Information Page
 
  Scenario Outline: Navigate to "Get General Information Page"
     
-	Given 			I wait for the "Splashscreen" screen to appear	
-		And 		I wait for 10 seconds
-		And 		I enter "<User>" into input field number 1
-		And 		I press the enter button
-		And I wait for 10 seconds
-		And 		I enter "<Password>" into input field number 2
-		And 		I press the enter button
-		And 		I press "loginConfirm"
-		And I wait for 10 seconds
+
+	Given 		I wait for the "Splashscreen" screen to appear	
+	And 		I wait for 8 seconds
+	And 		I enter "<User>" into input field number 1
+	And 		I press the enter button
+	And I wait for 8 seconds
+	And 		I enter "<Password>" into input field number 2
+	And 		I press the enter button
+	And 		I press "loginConfirm"
+	And I wait for 8 seconds
 
 
-	When 			I click on screen 3% from the left and 7% from the top
-	    And I wait for 10 seconds
-		And 		I press "General Information"	
+	When 		I click on screen 3% from the left and 7% from the top
+	And I wait for 8 seconds
+	And 		I press "General Information"	
 			
-	Then 			I should see "General Information"
+	Then 		I should see "General Information"
 	
 Examples:
 | User		|   Password    |
@@ -32,21 +33,23 @@ Examples:
  Scenario Outline: Check version on "General Information Page"
     
 	
-	Given 			I wait for the "Splashscreen" screen to appear	
-		And 		I wait for 10 seconds
-		And 		I enter "<User>" into input field number 1
-		And 		I press the enter button
-		And 		I enter "<Password>" into input field number 2
-		And 		I press the enter button
-		And 		I press "loginConfirm"
-		And I wait for 10 seconds
-	
+	Given 		I wait for the "Splashscreen" screen to appear	
+	And 		I wait for 8 seconds
+	And 		I enter "<User>" into input field number 1
+	And 		I press the enter button
+	And I wait for 8 seconds
+	And 		I enter "<Password>" into input field number 2
+	And 		I press the enter button
+	And 		I press "loginConfirm"
+	And I wait for 8 seconds
+	And I go back
 
-	When 			I click on screen 3% from the left and 7% from the top
-	    And I wait for 10 seconds
-		And 		I press "General Information"	
+	When 		I click on screen 3% from the left and 7% from the top
+	And I wait for 8 seconds
+	And 		I press "General Information"
+	And I wait for 8 seconds	
 			
-	Then 			I should see "v0.1"
+	Then 		I should see "v0.1"
 	
 Examples:	
 | User		|   Password    |	
@@ -58,20 +61,20 @@ Examples:
  Scenario Outline: Check developer on "General Information Page"
     
 	Given 			I wait for the "Splashscreen" screen to appear	
-		And 		I wait for 10 seconds
+		And 		I wait for 8 seconds
 		And 		I enter "<User>" into input field number 1
 		And 		I press the enter button
 		And 		I enter "<Password>" into input field number 2
 		And 		I press the enter button
-		And I wait for 10 seconds
+		And I wait for 8 seconds
 		And 		I press "loginConfirm"
-		And I wait for 10 seconds
+		And I wait for 8 seconds
 		And I go back
 
 	When 			I click on screen 3% from the left and 7% from the top
-	 	And I wait for 10 seconds
+	 	And I wait for 8 seconds
 		And 		I press "General Information"	
-			
+		And I wait for 8 seconds	
 	Then 			I should see "Daniel Stumpf, Nicolas Huentz, Marie Kaiser and Martin M"	
 
 Examples:	
