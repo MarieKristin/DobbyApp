@@ -28,7 +28,7 @@ Scenario Outline: Dobby LogOut
 		And I wait for 8 seconds
 		And 		I press "Logout"			
 		
-	Then 			I should see "Successfully logged out"
+	Then 			I should see "Username"
 
 Examples:
 	| User  		|   Password    |

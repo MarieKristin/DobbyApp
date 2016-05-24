@@ -5,7 +5,8 @@ Feature: Dobby Connection
 	so that			I can control Dobby	
   
 
-Scenario Outline: Connection - Successfull		
+Scenario Outline: Connection - Successfull
+		
 
 	Given	 	I wait for the "Splashscreen" screen to appear		
 	And 		I wait for 8 seconds
@@ -20,7 +21,7 @@ Scenario Outline: Connection - Successfull
 	And I go back		
 
 	When 		I click on screen 50% from the left and 16% from the top
-	And I wait for 8 seconds
+	And I wait for 2 seconds
 
 	Then 		I should see "Connection Error - try again"
 
