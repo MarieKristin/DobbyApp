@@ -18,6 +18,7 @@ Feature: Dobby - Get General Information Page
 
 
 	When 			I click on screen 3% from the left and 7% from the top
+	    And I wait for 5 seconds
 		And 		I press "General Information"	
 			
 	Then 			I should see "General Information"
@@ -41,6 +42,7 @@ Examples:
 	
 
 	When 			I click on screen 3% from the left and 7% from the top
+	    And I wait for 5 seconds
 		And 		I press "General Information"	
 			
 	Then 			I should see "v0.1"
@@ -64,7 +66,8 @@ Examples:
 		And I wait for 5 seconds
 		And I go back
 
-	When 			I click on screen 3% from the left and 7% from the top 	
+	When 			I click on screen 3% from the left and 7% from the top
+	 	And I wait for 5 seconds
 		And 		I press "General Information"	
 			
 	Then 			I should see "Daniel Stumpf, Nicolas Huentz, Marie Kaiser and Martin M"	
