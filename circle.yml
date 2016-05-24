@@ -50,8 +50,8 @@ test:
         # Emualtor erneut starten
     - adb -s emulator-5554 shell input keyevent 82
         # run cucumber-test
-    - calabash-android run $CIRCLE_ARTIFACTS/App/app-free-debug.apk  ADB_DEVICE_ARG=emulator-5554  --format html  --out CUCUMBER_REPORT.html  --verbose
-    - calabash-android run $CIRCLE_ARTIFACTS/App/app-free-debug.apk  ADB_DEVICE_ARG=emulator-5554  --format html  --out CUCUMBER_REPORT1.html  --verbose
+    - calabash-android run $CIRCLE_ARTIFACTS/App/app-free-debug.apk  ADB_DEVICE_ARG=emulator-5554  --format html  --out CUCUMBER_REPORT.html
+    - calabash-android run $CIRCLE_ARTIFACTS/App/app-free-debug.apk  ADB_DEVICE_ARG=emulator-5554  --format html  --out CUCUMBER_REPORT1.html
     - cp -r /home/ubuntu/DobbyApp/ $CIRCLE_TEST_REPORTS
         # run jacoco-Report
     - gradle check jacocoTestReport
@@ -64,7 +64,7 @@ test:
     - adb install $CIRCLE_ARTIFACTS/App/app-free-debug.apk
    # - cd /opt/android/sdk/platform-tools
     - adb -s emulator-5554 shell input keyevent 82
-    - adb shell monkey -p teamdobby.dobby -v 1000
+    - adb shell monkey -p teamdobby.dobby -v 100000
 
   post:
     - bash <(curl -s https://codecov.io/bash)
