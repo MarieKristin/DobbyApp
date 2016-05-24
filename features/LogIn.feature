@@ -18,6 +18,7 @@ Feature: Dobby LogIn
 			And I wait for 8 seconds
 			And 		I press "loginConfirm"
 			And I wait for 8 seconds
+			And I go back
 		
 		Then 			I should see "Connect Fragment"
 			
@@ -41,7 +42,7 @@ Feature: Dobby LogIn
 			And 		I press the enter button
 			And I wait for 8 seconds
 			And 		I press "loginConfirm"
-					
+			And I go back		
 
 		Then 			I should see "User not found"
 			And I wait for 8 seconds
@@ -69,7 +70,7 @@ Feature: Dobby LogIn
 			And 		I press the enter button
 			And I wait for 7 seconds
 			And 		I press "loginConfirm"		
-	
+			And I go back
 		Then 			I should see "Wrong password"
 
 	
