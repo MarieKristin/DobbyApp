@@ -62,7 +62,7 @@ test:
     - cp -r /home/ubuntu/DobbyApp/app/build/ $CIRCLE_TEST_REPORTS
     - ./gradlew sonarqube
     - adb install $CIRCLE_ARTIFACTS/App/app-free-debug.apk
-    - cd /opt/android/sdk/platform-tools
+   # - cd /opt/android/sdk/platform-tools
     - adb -s emulator-5554 shell input keyevent 82
     - adb shell monkey teamdobby.dobby -v 10000
 
