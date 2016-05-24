@@ -21,11 +21,9 @@ Scenario Outline: Dobby LogOut
 	When 	 		I wait for 1 seconds
 		And I wait for 10 seconds
 		And 		I enter "<User>" into input field number 1
-		And I wait for 10 seconds
 		And 		I press the enter button
 		And I wait for 10 seconds
 		And 		I enter "<Password>" into input field number 2
-		And I wait for 10 seconds
 		And 		I press the enter button
 		And I wait for 10 seconds
 		And 		I press "loginConfirm"
@@ -37,32 +35,23 @@ Scenario Outline: Dobby LogOut
 		And I wait for 10 seconds
 		And 		I press "Logout"			
 		
-
 	Then 			I should see "Successfully logged out"
 
-	
-
 Examples:
-
 	| User  		|   Password    |
-		
 	| Dobby 		|   123         |
 
 
 
 Scenario Outline: Dobby LogOut
   
-		
-
 	Given	 		I wait for the "Splashscreen" screen to appear
 				
 	When 	 		I wait for 10 seconds
 		And 		I enter "<User>" into input field number 1
-		And I wait for 10 seconds
 		And 		I press the enter button
 		And I wait for 10 seconds
 		And 		I enter "<Password>" into input field number 2
-		And I wait for 10 seconds
 		And 		I press the enter button
 		And I wait for 10 seconds
 		And 		I press "loginConfirm"
@@ -75,10 +64,6 @@ Scenario Outline: Dobby LogOut
 			
 	Then 			I should not see "Successfully logged out"
 
-	
-
 Examples:
-
 	| User  		|   Password    |
-		
 	| Dobby 		|   123         |
