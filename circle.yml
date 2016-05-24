@@ -32,12 +32,12 @@ test:
         # Tastensperre loesen am Emulator
     - adb shell input keyevent 82
         # run tests  against the emulator for creating .apk-file (for cucumber-test)
-    - ./gradlew connectedAndroidTest -PdisablePreDex
+   # - ./gradlew connectedAndroidTest -PdisablePreDex
         # copy the build outputs to artifacts
-   # - ./gradlew build
+    - ./gradlew build
     - cp -r app/build/outputs/apk/ $CIRCLE_ARTIFACTS/App/
-    - cp -r app/build/outputs/code-coverage/ $CIRCLE_TEST_REPORTS/connectedAndroidTest/
-    - cp -r app/build/outputs/androidTest-results/ $CIRCLE_TEST_REPORTS/connectedAndroidTest/
+   # - cp -r app/build/outputs/code-coverage/ $CIRCLE_TEST_REPORTS/connectedAndroidTest/
+   # - cp -r app/build/outputs/androidTest-results/ $CIRCLE_TEST_REPORTS/connectedAndroidTest/
         # Emulatoren und Server herunterfahren
     - adb kill-server
     - adb -s emulator-5554 emu destroy
