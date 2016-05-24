@@ -14,11 +14,11 @@ Feature: Dobby - Get General Information Page
 		And 		I enter "<Password>" into input field number 2
 		And 		I press the enter button
 		And 		I press "loginConfirm"
-		And I wait for 5 seconds
+		And I wait for 10 seconds
 
 
 	When 			I click on screen 3% from the left and 7% from the top
-	    And I wait for 5 seconds
+	    And I wait for 10 seconds
 		And 		I press "General Information"	
 			
 	Then 			I should see "General Information"
@@ -38,11 +38,11 @@ Examples:
 		And 		I enter "<Password>" into input field number 2
 		And 		I press the enter button
 		And 		I press "loginConfirm"
-		And I wait for 5 seconds
+		And I wait for 10 seconds
 	
 
 	When 			I click on screen 3% from the left and 7% from the top
-	    And I wait for 5 seconds
+	    And I wait for 10 seconds
 		And 		I press "General Information"	
 			
 	Then 			I should see "v0.1"
@@ -63,7 +63,7 @@ Examples:
 		And 		I enter "<Password>" into input field number 2
 		And 		I press the enter button
 		And 		I press "loginConfirm"
-		And I wait for 5 seconds
+		And I wait for 10 seconds
 		And I go back
 
 	When 			I click on screen 3% from the left and 7% from the top
