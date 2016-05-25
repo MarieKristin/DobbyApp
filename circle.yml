@@ -36,8 +36,6 @@ test:
         # copy the build outputs to artifacts
     - ./gradlew build
     - cp -r app/build/outputs/apk/ $CIRCLE_ARTIFACTS/App/
-   # - cp -r app/build/outputs/code-coverage/ $CIRCLE_TEST_REPORTS/connectedAndroidTest/
-   # - cp -r app/build/outputs/androidTest-results/ $CIRCLE_TEST_REPORTS/connectedAndroidTest/
         # Emulatoren und Server herunterfahren
     - adb kill-server
     - adb -s emulator-5554 emu destroy
@@ -54,14 +52,9 @@ test:
     - cp -r /home/ubuntu/DobbyApp/ $CIRCLE_TEST_REPORTS
         # run jacoco-Report
     - gradle check jacocoTestReport
-         # copy the test results to the test results directory.
-   # - cp -r /home/ubuntu/DobbyApp/app/build/outputs/ $CIRCLE_TEST_REPORTS
-   # - cp -r /home/ubuntu/DobbyApp/app/build/reports/ $CIRCLE_TEST_REPORTS
-   # - cp -r /home/ubuntu/DobbyApp/app/build/test-results/ $CIRCLE_TEST_REPORTS
     - cp -r /home/ubuntu/DobbyApp/app/build/ $CIRCLE_TEST_REPORTS
     - ./gradlew sonarqube
     - adb install $CIRCLE_ARTIFACTS/App/app-free-debug.apk
-   # - cd /opt/android/sdk/platform-tools
     - adb -s emulator-5554 shell input keyevent 82
     - adb shell monkey -p teamdobby.dobby -v 100000
 
