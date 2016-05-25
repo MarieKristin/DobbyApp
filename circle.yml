@@ -61,7 +61,7 @@ test:
     - adb install $CIRCLE_ARTIFACTS/App/app-free-debug.apk
     - adb -s emulator-5554 shell input keyevent 82
     - adb shell monkey -p teamdobby.dobby -v 100000
-    - ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME CUCUMBER_REPORT_v1.0.$CIRCLE_BUILD_NUM.html $CIRCLE_TEST_REPORTS/DobbyApp/CUCUMBER_REPORT.html || true
+    - ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME CUCUMBER_REPORT_v1.0.$CIRCLE_BUILD_NUM $CIRCLE_TEST_REPORTS/DobbyApp/CUCUMBER_REPORT.html || true
 
   post:
     - bash <(curl -s https://codecov.io/bash)
