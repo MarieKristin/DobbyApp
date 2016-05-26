@@ -4,7 +4,6 @@ machine:
     TERM: "dumb"
     ADB_INSTALL_TIMEOUT: "10"
     GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
-    REPORTROOT=./reports
 
 
 
@@ -58,14 +57,13 @@ test:
     - gradle check jacocoTestReport
     - cp -r /home/ubuntu/DobbyApp/app/build/ $CIRCLE_TEST_REPORTS
     - ./gradlew sonarqube
-    - sudo mkdir $REPORTROOT
     - adb install $CIRCLE_ARTIFACTS/App/app-free-debug.apk
     - adb -s emulator-5554 shell input keyevent 82
-    - adb shell monkey -p teamdobby.dobby -v -v -v 100000 > $REPORTROOT/MONKEYS_SYS_REPORT.txt
-    - grep -A 5 -h -r CRASH $REPORTROOT > $REPORTROOT/MONKEYS_CRASH_REPORT.txt
+    - adb shell monkey -p teamdobby.dobby -v -v -v 100000 > $CIRCLE_TEST_REPORTS/DobbyApp/MONKEYS_SYS_REPORT.txt
+    - grep -A 5 -h -r CRASH $CIRCLE_TEST_REPORTS/DobbyApp/ > $CIRCLE_TEST_REPORTS/DobbyApp/MONKEYS_CRASH_REPORT.txt
     - ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME CUCUMBER_REPORT_v1.0.$CIRCLE_BUILD_NUM $CIRCLE_TEST_REPORTS/DobbyApp/CUCUMBER_REPORT.html || true
-    - ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME MONKEYS_SYS_REPORT_v1.0.$CIRCLE_BUILD_NUM $REPORTROOT/MONKEYS_SYS_REPORT.txt || true
-    - ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME MONKEYS_CRASH_REPORT_v1.0.$CIRCLE_BUILD_NUM $REPORTROOT/MONKEYS_CRASH_REPORT.txt || true
+    - ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME MONKEYS_SYS_REPORT_v1.0.$CIRCLE_BUILD_NUM $CIRCLE_TEST_REPORTS/DobbyApp/MONKEYS_SYS_REPORT.txt || true
+    - ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME MONKEYS_CRASH_REPORT_v1.0.$CIRCLE_BUILD_NUM $CIRCLE_TEST_REPORTS/DobbyApp/MONKEYS_CRASH_REPORT.txt || true
 
   post:
     - bash <(curl -s https://codecov.io/bash)
