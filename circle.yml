@@ -56,13 +56,15 @@ test:
         # run jacoco-Report
     - gradle check jacocoTestReport
     - cp -r /home/ubuntu/DobbyApp/app/build/ $CIRCLE_TEST_REPORTS
+    - tar -czf ANDROID_LINT_REPORT.tar.gz $CIRCLE_TEST_REPORTS/build/
+    - cp -r /home/ubuntu/DobbyApp/app/build/ANDROID_LINT_REPORT.tar.gz $CIRCLE_TEST_REPORTS/build/
     - ./gradlew sonarqube
     - adb install $CIRCLE_ARTIFACTS/App/app-free-debug.apk
     - adb -s emulator-5554 shell input keyevent 82
     - adb shell monkey -p teamdobby.dobby -v -v -v 100000 > $CIRCLE_TEST_REPORTS/DobbyApp/MONKEYS_SYS_REPORT.txt
     - ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME CUCUMBER_REPORT_v1.0.$CIRCLE_BUILD_NUM $CIRCLE_TEST_REPORTS/DobbyApp/CUCUMBER_REPORT.html || true
     - ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME MONKEYS_SYS_REPORT_v1.0.$CIRCLE_BUILD_NUM $CIRCLE_TEST_REPORTS/DobbyApp/MONKEYS_SYS_REPORT.txt || true
-    - ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME ANDROID_LINT_REPORT_v1.0.$CIRCLE_BUILD_NUM $CIRCLE_TEST_REPORTS/build/outputs/lint-results-freeDebug.html || true
+    - ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME ANDROID_LINT_REPORT_v1.0.$CIRCLE_BUILD_NUM $CIRCLE_TEST_REPORTS/build/ANDROID_LINT_REPORT.tar.gz || true
 
   post:
     - bash <(curl -s https://codecov.io/bash)
