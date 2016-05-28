@@ -57,7 +57,7 @@ test:
     - gradle check jacocoTestReport
     - cp -r /home/ubuntu/DobbyApp/app/build/ $CIRCLE_TEST_REPORTS
     - tar -czf ANDROID_LINT_REPORT.tar.gz $CIRCLE_TEST_REPORTS/build/
-    - cp -r /home/ubuntu/DobbyApp/app/build/ANDROID_LINT_REPORT.tar.gz $CIRCLE_TEST_REPORTS/build/
+    - cp -r /home/ubuntu/DobbyApp/ANDROID_LINT_REPORT.tar.gz $CIRCLE_TEST_REPORTS/build/
     - ./gradlew sonarqube
     - adb install $CIRCLE_ARTIFACTS/App/app-free-debug.apk
     - adb -s emulator-5554 shell input keyevent 82
