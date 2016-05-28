@@ -5,3 +5,4 @@
 Weitere Test-Reports sind im "Releases"-Bereich dieses Repositorys vorhanden:
   - CUCUMBER-Testreport
   - MONKEY-Testreport
+  - ANDROID-LINT-Testreport
