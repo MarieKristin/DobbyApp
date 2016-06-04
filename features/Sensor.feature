@@ -1,11 +1,11 @@
-Feature: Break
+Feature: Sensor
 
 	As 				an user	
-	I want 			to decelerate Dobby	
-	so that			I break the accellerate-signal 
+	I want 			activate the sensor	
+	so that			Dobby is not driving against objects
 
 		
-Scenario Outline: Break - Successfull		
+Scenario Outline: Sensor - Successfull		
 
 	Given	 		I wait for the "Splashscreen" screen to appear		
 		And 		I wait for 8 seconds
@@ -20,11 +20,11 @@ Scenario Outline: Break - Successfull
 		And I click on screen 50% from the left and 20% from the top
 		And I wait for 2 seconds
 
-	When 			I enter "Break" into input field number 1	
+	When 			I enter "Sensor" into input field number 1	
 		And 		I press the enter button		
 		And I wait for 2 seconds			
 			
-	Then 			I should see "Break"
+	Then 			I should see "Sensor"
 
 Examples:	
 	| User  		|   Password    |	
@@ -32,7 +32,7 @@ Examples:
 
 
 
-Scenario Outline: Break - Failure - Wrong Code	
+Scenario Outline: Sensor - Failure	- Wrong Code	
 
 	Given	 		I wait for the "Splashscreen" screen to appear		
 		And 		I wait for 8 seconds
@@ -47,11 +47,11 @@ Scenario Outline: Break - Failure - Wrong Code
 		And I click on screen 50% from the left and 20% from the top
 		And I wait for 2 seconds
 
-	When 			I enter "Br" into input field number 1	
+	When 			I enter "s" into input field number 1	
 		And 		I press the enter button		
 		And I wait for 2 seconds			
 			
-	Then 			I should not see "Break"
+	Then 			I should not see "Sensor"
 
 Examples:	
 	| User  		|   Password    |	
@@ -59,7 +59,7 @@ Examples:
 
 
 
-Scenario Outline: Break - Failure - Wrong Page
+Scenario Outline: Sensor - Failure	- Wrong Answer
 
 	Given	 		I wait for the "Splashscreen" screen to appear		
 		And 		I wait for 8 seconds
@@ -71,16 +71,14 @@ Scenario Outline: Break - Failure - Wrong Page
 		And 		I press "loginConfirm"		
 		And I wait for 8 seconds
 		And I go back
-		And I click on screen 3% from the left and 7% from the top 	
-		And I wait for 8 seconds
-	
+		And I click on screen 50% from the left and 20% from the top
+		And I wait for 2 seconds
 
-	When 	  		I press "General Information"		
-		And I wait for 2 seconds	
-
-	Then I should not see "Enter command here"	
+	When 			I enter "Sensor" into input field number 1	
+		And 		I press the enter button		
+		And I wait for 2 seconds			
 			
-
+	Then 			I should not see "Cheers"
 
 Examples:	
 	| User  		|   Password    |	
