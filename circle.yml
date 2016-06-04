@@ -77,5 +77,5 @@ test:
                     - ./.send_ticket.sh
 
               EHD
-                    :
+            :
                       parallel: true
