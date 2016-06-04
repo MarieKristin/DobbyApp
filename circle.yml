@@ -5,8 +5,6 @@ machine:
     ADB_INSTALL_TIMEOUT: "10"
     GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
 
-after_failure:
-    - ./.send_ticket.sh
 
 dependencies:
   pre:
@@ -69,3 +67,6 @@ test:
 
   post:
     - bash <(curl -s https://codecov.io/bash)
+
+after_failure:
+    - ./.send_ticket.sh
