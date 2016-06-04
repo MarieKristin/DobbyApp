@@ -68,7 +68,8 @@ test:
 
   post:
     - bash <(curl -s https://codecov.io/bash)
-    override:
+
+  override:
         - ? |
               circle-matrix <<"EHD"
 
