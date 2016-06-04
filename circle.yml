@@ -5,7 +5,6 @@ machine:
     ADB_INSTALL_TIMEOUT: "10"
     GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m -XX:+HeapDumpOnOutOfMemoryError"'
 
-
 dependencies:
   pre:
     - chmod +x gradlew
@@ -16,66 +15,72 @@ dependencies:
 
 
 test:
-  pre:
-    - sudo apt-get install ruby 2.4.4
-    - go get github.com/tcnksm/ghr
-    - rvm use 2.2.4 --default
-    - gem install calabash-android
-    - sudo apt-get update
-
   override:
-        # start the emulator
-    - emulator -avd circleci-android22 -no-audio -no-window:
-        background: true
+    - ? |
+          circle-matrix <<"EHD"
+            env:
+              - VERSION=centos6
+              - VERSION=centos7
+              - VERSION=fedora22
+              - VERSION=fedora23
+
+            before_script:
+              - sudo apt-get install ruby 2.4.4
+              - go get github.com/tcnksm/ghr
+              - rvm use 2.2.4 --default
+              - gem install calabash-android
+              - sudo apt-get update
+
+            script:
+           # start the emulator
+              - emulator -avd circleci-android22 -no-audio -no-window:
+                 background: true
+                 parallel: true
+                 # wait for it to have booted #
+              - circle-android wait-for-boot
+                 # unlock the emulator screen
+              - sleep 30
+                 # Tastensperre loesen am Emulator
+              - adb shell input keyevent 82
+                 # run tests  against the emulator for creating .apk-file (for cucumber-test)
+            # - ./gradlew connectedAndroidTest -PdisablePreDex
+                 # copy the build outputs to artifacts
+              - ./gradlew build
+              - cp -r app/build/outputs/apk/ $CIRCLE_ARTIFACTS/App/
+                 # Emulatoren und Server herunterfahren
+              - adb kill-server
+              - adb -s emulator-5554 emu destroy
+              - curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
+              - sudo apt-get install -y nodejs
+                 # install ruby rails #
+              - calabash-android resign $CIRCLE_ARTIFACTS/App/app-free-debug.apk
+              - gem install rails -v 4.2.6
+              - rbenv rehash
+                 # Emualtor erneut starten
+              - adb -s emulator-5554 shell input keyevent 82
+                 # run cucumber-test
+              - calabash-android run $CIRCLE_ARTIFACTS/App/app-free-debug.apk  ADB_DEVICE_ARG=emulator-5554  --format html  --out CUCUMBER_REPORT.html
+              - cp -r /home/ubuntu/DobbyApp/ $CIRCLE_TEST_REPORTS
+                 # run jacoco-Report
+              - gradle check jacocoTestReport
+              - cp -r /home/ubuntu/DobbyApp/app/build/ $CIRCLE_TEST_REPORTS
+              - ./gradlew sonarqube
+              - adb install $CIRCLE_ARTIFACTS/App/app-free-debug.apk
+              - adb -s emulator-5554 shell input keyevent 82
+              - adb shell monkey -p teamdobby.dobby -v -v -v 1000 > $CIRCLE_TEST_REPORTS/DobbyApp/MONKEYS_SYS_REPORT.txt
+              - tar -czf ANDROID_LINT_REPORT.tar.gz $CIRCLE_TEST_REPORTS/build/
+              - cp -r /home/ubuntu/DobbyApp/ANDROID_LINT_REPORT.tar.gz $CIRCLE_TEST_REPORTS/build/
+              - ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME CUCUMBER_REPORT_v1.0.$CIRCLE_BUILD_NUM $CIRCLE_TEST_REPORTS/DobbyApp/CUCUMBER_REPORT.html || true
+              - ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME MONKEYS_SYS_REPORT_v1.0.$CIRCLE_BUILD_NUM $CIRCLE_TEST_REPORTS/DobbyApp/MONKEYS_SYS_REPORT.txt || true
+              - ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME ANDROID_LINT_REPORT_v1.0.$CIRCLE_BUILD_NUM $CIRCLE_TEST_REPORTS/build/ANDROID_LINT_REPORT.tar.gz || true
+
+
+            after_script:
+              - bash <(curl -s https://codecov.io/bash)
+
+            after_failure:
+              - ./.send_ticket.sh
+
+          EHD
+      :
         parallel: true
-        # wait for it to have booted #
-    - circle-android wait-for-boot
-        # unlock the emulator screen
-    - sleep 30
-        # Tastensperre loesen am Emulator
-    - adb shell input keyevent 82
-        # run tests  against the emulator for creating .apk-file (for cucumber-test)
-   # - ./gradlew connectedAndroidTest -PdisablePreDex
-        # copy the build outputs to artifacts
-    - ./gradlew build
-    - cp -r app/build/outputs/apk/ $CIRCLE_ARTIFACTS/App/
-        # Emulatoren und Server herunterfahren
-    - adb kill-server
-    - adb -s emulator-5554 emu destroy
-    - curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash -
-    - sudo apt-get install -y nodejs
-        # install ruby rails #
-    - calabash-android resign $CIRCLE_ARTIFACTS/App/app-free-debug.apk
-    - gem install rails -v 4.2.6
-    - rbenv rehash
-        # Emualtor erneut starten
-    - adb -s emulator-5554 shell input keyevent 82
-        # run cucumber-test
-    - calabash-android run $CIRCLE_ARTIFACTS/App/app-free-debug.apk  ADB_DEVICE_ARG=emulator-5554  --format html  --out CUCUMBER_REPORT.html
-    - cp -r /home/ubuntu/DobbyApp/ $CIRCLE_TEST_REPORTS
-        # run jacoco-Report
-    - gradle check jacocoTestReport
-    - cp -r /home/ubuntu/DobbyApp/app/build/ $CIRCLE_TEST_REPORTS
-    - ./gradlew sonarqube
-    - adb install $CIRCLE_ARTIFACTS/App/app-free-debug.apk
-    - adb -s emulator-5554 shell input keyevent 82
-    - adb shell monkey -p teamdobby.dobby -v -v -v 1000 > $CIRCLE_TEST_REPORTS/DobbyApp/MONKEYS_SYS_REPORT.txt
-    - tar -czf ANDROID_LINT_REPORT.tar.gz $CIRCLE_TEST_REPORTS/build/
-    - cp -r /home/ubuntu/DobbyApp/ANDROID_LINT_REPORT.tar.gz $CIRCLE_TEST_REPORTS/build/
-    - ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME CUCUMBER_REPORT_v1.0.$CIRCLE_BUILD_NUM $CIRCLE_TEST_REPORTS/DobbyApp/CUCUMBER_REPORT.html || true
-    - ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME MONKEYS_SYS_REPORT_v1.0.$CIRCLE_BUILD_NUM $CIRCLE_TEST_REPORTS/DobbyApp/MONKEYS_SYS_REPORT.txt || true
-    - ghr -t $GITHUB_TOKEN -u $CIRCLE_PROJECT_USERNAME -r $CIRCLE_PROJECT_REPONAME ANDROID_LINT_REPORT_v1.0.$CIRCLE_BUILD_NUM $CIRCLE_TEST_REPORTS/build/ANDROID_LINT_REPORT.tar.gz || true
-
-  post:
-    - bash <(curl -s https://codecov.io/bash)
-
-  override:
-        - ? |
-              circle-matrix <<"EHD"
-
-                after_failure:
-                    - ./.send_ticket.sh
-
-              EHD
-            :
-                      parallel: true
