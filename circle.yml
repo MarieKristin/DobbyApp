@@ -68,6 +68,9 @@ test:
 
   post:
     - bash <(curl -s https://codecov.io/bash)
+    override:
+        - ? |
+              circle-matrix <<"EHD"
 
-after_failure:
-    - ./.send_ticket.sh
+                after_failure:
+                    - ./.send_ticket.sh
