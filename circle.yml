@@ -74,3 +74,7 @@ test:
 
                 after_failure:
                     - ./.send_ticket.sh
+
+              EHD
+                    :
+                      parallel: true
