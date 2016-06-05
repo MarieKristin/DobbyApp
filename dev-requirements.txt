@@ -1,6 +1,0 @@
--r requirements.txt
-
-testfixtures
-pytest
-tox
-coveralls

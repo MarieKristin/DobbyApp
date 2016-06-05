@@ -1,4 +1,0 @@
-pyaml
-pykwalify
-docopt
-termcolor
