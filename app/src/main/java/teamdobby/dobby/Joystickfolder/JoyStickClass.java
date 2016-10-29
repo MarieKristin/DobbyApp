@@ -57,6 +57,12 @@ public class JoyStickClass {
         params = mLayout.getLayoutParams();
     }
 
+    public void drawDefaultStick() {
+        draw.position((params.width / 2),(params.height / 2));
+        draw();
+        touch_state = false;
+    }
+
     public void drawStick(MotionEvent arg1) {
         position_x = (int) (arg1.getX() - (params.width / 2));
         position_y = (int) (arg1.getY() - (params.height / 2));
@@ -85,7 +91,9 @@ public class JoyStickClass {
                 mLayout.removeView(draw);
             }
         } else if(arg1.getAction() == MotionEvent.ACTION_UP) {
-            mLayout.removeView(draw);
+            //mLayout.removeView(draw);
+            draw.position((params.width / 2),(params.height / 2));
+            draw();
             touch_state = false;
         }
     }

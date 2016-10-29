@@ -14,6 +14,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import teamdobby.dobby.Joystickfolder.JoyStickClass;
+import teamdobby.dobby.Joystickfolder.Main;
+
 public class ConnectDrawer extends AppCompatActivity {
     DrawerLayout drawerLayout;
     Toolbar toolbar;
@@ -51,6 +54,16 @@ public class ConnectDrawer extends AppCompatActivity {
                         getSupportActionBar().setTitle(R.string.conn_tDobby);
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
+                        item.setChecked(false);
+                        break;
+                    case R.id.id_joystick:
+                        fragmentTransaction = getFragmentManager().beginTransaction();
+                        fragmentTransaction.replace(R.id.connect_container,new Main());
+                        fragmentTransaction.commit();
+                        getSupportActionBar().setTitle("Joystick");
+                        item.setChecked(true);
+                        drawerLayout.closeDrawers();
+                        item.setChecked(false);
                         break;
                     case R.id.id_logout:
                         LoginData.notLogged();
@@ -66,12 +79,13 @@ public class ConnectDrawer extends AppCompatActivity {
                         break;
                     case R.id.id_information:
                         fragmentTransaction = getFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.connect_container,new InformationFragment()
+                        fragmentTransaction.replace(R.id.connect_container, new InformationFragment()
                         );
                         fragmentTransaction.commit();
                         getSupportActionBar().setTitle(R.string.gen_info);
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
+                        item.setChecked(false);
                         break;
                 }
                 return true;
