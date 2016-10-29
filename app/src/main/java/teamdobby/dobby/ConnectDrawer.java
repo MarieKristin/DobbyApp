@@ -54,16 +54,14 @@ public class ConnectDrawer extends AppCompatActivity {
                         getSupportActionBar().setTitle(R.string.conn_tDobby);
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
-                        item.setChecked(false);
                         break;
-                    case R.id.id_joystick:
+                    case R.id.id_mode:
                         fragmentTransaction = getFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.connect_container,new Main());
+                        fragmentTransaction.replace(R.id.connect_container, new ChooseModeFragment());
                         fragmentTransaction.commit();
-                        getSupportActionBar().setTitle("Joystick");
+                        getSupportActionBar().setTitle("Choose your Mode");
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
-                        item.setChecked(false);
                         break;
                     case R.id.id_logout:
                         LoginData.notLogged();
@@ -79,13 +77,11 @@ public class ConnectDrawer extends AppCompatActivity {
                         break;
                     case R.id.id_information:
                         fragmentTransaction = getFragmentManager().beginTransaction();
-                        fragmentTransaction.replace(R.id.connect_container, new InformationFragment()
-                        );
+                        fragmentTransaction.replace(R.id.connect_container, new InformationFragment());
                         fragmentTransaction.commit();
                         getSupportActionBar().setTitle(R.string.gen_info);
                         item.setChecked(true);
                         drawerLayout.closeDrawers();
-                        item.setChecked(false);
                         break;
                 }
                 return true;

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center"
+    tools:context="teamdobby.dobby.ChooseModeFragment">
+
+    <com.dd.CircularProgressButton
+        android:id="@+id/btnAutomatic"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:layout_centerVertical="true"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:cpb_textComplete="Automatic Mode started"
+        app:cpb_textError="not possible starting Automatic Mode"
+        app:cpb_textIdle="Automatic Mode"
+        app:cpb_cornerRadius="12dp" />
+
+    <com.dd.CircularProgressButton
+        android:id="@+id/btnManual"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:layout_below="@+id/btnAutomatic"
+        android:layout_marginTop="40dp"
+        android:layout_centerVertical="true"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:cpb_textComplete="Manual Mode started"
+        app:cpb_textError="not possible starting Manual Mode"
+        app:cpb_textIdle="Manual Mode"
+        app:cpb_cornerRadius="12dp" />
+
+</RelativeLayout>
