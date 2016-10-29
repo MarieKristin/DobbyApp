@@ -9,6 +9,11 @@
             android:icon="@android:drawable/ic_menu_compass"
             ></item>
         <item
+            android:id="@+id/id_joystick"
+            android:title="Joystick"
+            android:icon="@android:drawable/ic_menu_mylocation"
+            ></item>
+        <item
             android:id="@+id/id_logout"
             android:title="Logout"
             android:icon="@android:drawable/ic_input_delete"
